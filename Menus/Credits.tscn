@@ -1,0 +1,187 @@
+[gd_scene format=3 uid="uid://b6pmd8ujin6tc"]
+
+[ext_resource type="Theme" uid="uid://uc40vps8qn37" path="res://Menus/MenuTheme.tres" id="1_qqjfd"]
+[ext_resource type="Script" uid="uid://dls50o644dmn2" path="res://Scripts/Menus/Credits.gd" id="2_il7mn"]
+
+[sub_resource type="Animation" id="Animation_il7mn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScrollContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScrollContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 11)]
+}
+
+[sub_resource type="Animation" id="Animation_lw8m3"]
+resource_name = "scroll_credits"
+length = 30.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScrollContainer:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScrollContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(1, 30),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(0, 383), Vector2(0, -1096)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_m6n7f"]
+_data = {
+&"RESET": SubResource("Animation_il7mn"),
+&"scroll_credits": SubResource("Animation_lw8m3")
+}
+
+[node name="Credits" type="Control" unique_id=1067656539]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_qqjfd")
+script = ExtResource("2_il7mn")
+
+[node name="Panel" type="Panel" parent="." unique_id=1330944838]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ScrollContainer" type="MarginContainer" parent="." unique_id=1473259122]
+modulate = Color(1, 1, 1, 0)
+layout_mode = 1
+anchors_preset = 10
+anchor_right = 1.0
+offset_top = 11.0
+offset_bottom = 1531.0
+grow_horizontal = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=659402501]
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="RichTextLabel" type="RichTextLabel" parent="ScrollContainer/VBoxContainer" unique_id=2039581342]
+layout_mode = 2
+size_flags_vertical = 0
+bbcode_enabled = true
+text = "[font size=48 name=\"res://Fonts/super_wonder/Super Wonder.ttf\"]Credits[/font]
+
+
+
+[font size=32 name=\"res://Fonts/super_wonder/Super Wonder.ttf\"]Team[/font]
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Concept and Design[/font]
+
+Mike Gossmann
+Amy Tapley
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Programing[/font]
+
+Mike Gossmann
+Amy Tapley
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Music[/font]
+
+Amy Tapley
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]3D Modeling and Animation[/font]
+
+Mike Gossmann
+
+[hr]
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=32]Resources and Tools[/font]
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Music[/font]
+
+[url=https://lmms.io/]LMMS[/url]
+[url=https://www.schristiancollins.com/generaluser.php]GeneralUser GS by S. Christian Collns[/url]
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Sound Effects[/font]
+
+[url=https://freesound.org/]freesound.org[/url]
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Fonts[/font]
+
+[url=https://www.dafont.com/super-wonder.font]Super Wonder[/url] (via [url=https://www.dafont.com]dafont.com[/url])
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Development[/font]
+
+Godot Game Engine
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Artwork and Modeling[/font]
+
+Blender
+The GNU Image Manipulation Program
+
+[hr]
+
+[font size=48 name=\"res://Fonts/super_wonder/Super Wonder.ttf\"]Created for Bad Ideas Game Jam 2026[/font]
+
+[hr]
+"
+fit_content = true
+horizontal_alignment = 1
+justification_flags = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="ScrollContainer/VBoxContainer" unique_id=1752215721]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="MarginContainer" type="MarginContainer" parent="ScrollContainer/VBoxContainer/PanelContainer" unique_id=126126033]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="ScrollContainer/VBoxContainer/PanelContainer/MarginContainer" unique_id=1668492889]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 32
+
+[node name="MainMenuButton" type="Button" parent="ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" unique_id=853937799]
+layout_mode = 2
+text = "Main Menu"
+
+[node name="QuitButton" type="Button" parent="ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer" unique_id=2057598436]
+layout_mode = 2
+text = "Quit"
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1837013663]
+libraries/ = SubResource("AnimationLibrary_m6n7f")
+
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

@@ -2,12 +2,10 @@
 
 [ext_resource type="Theme" uid="uid://uc40vps8qn37" path="res://Menus/MenuTheme.tres" id="1_3g7qx"]
 [ext_resource type="Script" uid="uid://cf7w2exjded7g" path="res://Scripts/Menus/MainMenu.gd" id="1_r8dbq"]
-
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8dbq"]
-bg_color = Color(0.28703514, 0.12389998, 0.59, 1)
+[ext_resource type="PackedScene" uid="uid://b6pmd8ujin6tc" path="res://Menus/Credits.tscn" id="3_n6o36"]
 
 [sub_resource type="Theme" id="Theme_7ihqj"]
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_r8dbq")
+PanelContainer/styles/panel = null
 
 [node name="MainMenu" type="Control" unique_id=1220054263 node_paths=PackedStringArray("start_button")]
 layout_mode = 3
@@ -19,6 +17,7 @@ grow_vertical = 2
 theme = SubResource("Theme_7ihqj")
 script = ExtResource("1_r8dbq")
 start_button = NodePath("PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Start Button")
+credits_scene = ExtResource("3_n6o36")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1825587894]
 layout_mode = 1
