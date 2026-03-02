@@ -65,6 +65,7 @@ focus_neighbor_top = NodePath("../Start Button")
 focus_neighbor_bottom = NodePath("../Credits Button")
 focus_next = NodePath("../Credits Button")
 focus_previous = NodePath("../Start Button")
+disabled = true
 text = "Options
 "
 
