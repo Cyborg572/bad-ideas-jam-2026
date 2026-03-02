@@ -1,0 +1,92 @@
+[gd_scene format=3 uid="uid://bdgb2e8xn3ry4"]
+
+[ext_resource type="Theme" uid="uid://uc40vps8qn37" path="res://Menus/MenuTheme.tres" id="1_3g7qx"]
+[ext_resource type="Script" uid="uid://cf7w2exjded7g" path="res://Scripts/Menus/MainMenu.gd" id="1_r8dbq"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_r8dbq"]
+bg_color = Color(0.28703514, 0.12389998, 0.59, 1)
+
+[sub_resource type="Theme" id="Theme_7ihqj"]
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_r8dbq")
+
+[node name="MainMenu" type="Control" unique_id=1220054263 node_paths=PackedStringArray("start_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_7ihqj")
+script = ExtResource("1_r8dbq")
+start_button = NodePath("PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Start Button")
+
+[node name="PanelContainer" type="PanelContainer" parent="." unique_id=1825587894]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_3g7qx")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=1368086567]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HBoxContainer" unique_id=74094461]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/MarginContainer2" unique_id=571932135]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1237055171]
+layout_mode = 2
+size_flags_vertical = 3
+theme_type_variation = &"Title"
+theme_override_font_sizes/normal_font_size = 72
+theme_override_font_sizes/bold_font_size = 72
+bbcode_enabled = true
+text = "[b]Game Title Here[/b]"
+fit_content = true
+
+[node name="Start Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=777100360]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Options Button")
+focus_next = NodePath("../Options Button")
+text = "New Game"
+
+[node name="Options Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1534645383]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Start Button")
+focus_neighbor_bottom = NodePath("../Credits Button")
+focus_next = NodePath("../Credits Button")
+focus_previous = NodePath("../Start Button")
+text = "Options
+"
+
+[node name="Credits Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=2053390167]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Options Button")
+focus_neighbor_bottom = NodePath("../Quit Button")
+focus_next = NodePath("../Quit Button")
+focus_previous = NodePath("../Options Button")
+text = "Credits"
+
+[node name="Quit Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1207329540]
+layout_mode = 2
+focus_neighbor_top = NodePath("../Credits Button")
+focus_previous = NodePath("../Credits Button")
+text = "Quit"
+
+[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer" unique_id=1194675601]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/HBoxContainer/MarginContainer" unique_id=1764131540]
+layout_mode = 2
+text = "Something useful goes here?"
+
+[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Start Button" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Options Button" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Credits Button" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Quit Button" to="." method="_on_quit_button_pressed"]
