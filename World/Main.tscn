@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://cdbis65vjtoox" path="res://World/Levels/Gym.tscn" id="1_e7rx8"]
 [ext_resource type="Theme" uid="uid://cnaxn7u3n0m3n" path="res://World/UITheme.tres" id="1_q6i1d"]
+[ext_resource type="PackedScene" uid="uid://y8x8jkr2afcw" path="res://Menus/PauseMenu.tscn" id="3_475tg"]
 
 [node name="Main" type="Control" unique_id=645567632]
 layout_mode = 3
@@ -43,3 +44,7 @@ size_flags_vertical = 8
 [node name="Label" type="Label" parent="MarginContainer/PanelContainer" unique_id=680313845]
 layout_mode = 2
 text = "Health or something?"
+
+[node name="PauseMenu" parent="." unique_id=793828353 instance=ExtResource("3_475tg")]
+visible = false
+layout_mode = 1
