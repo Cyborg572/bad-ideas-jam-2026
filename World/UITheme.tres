@@ -1,0 +1,11 @@
+[gd_resource type="Theme" format=3 uid="uid://cnaxn7u3n0m3n"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bel44"]
+bg_color = Color(0.5934, 0.69, 0.66102, 1)
+
+[resource]
+MarginContainer/constants/margin_bottom = 32
+MarginContainer/constants/margin_left = 32
+MarginContainer/constants/margin_right = 32
+MarginContainer/constants/margin_top = 32
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_bel44")

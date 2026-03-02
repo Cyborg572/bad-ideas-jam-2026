@@ -2,6 +2,7 @@
 
 [ext_resource type="Theme" uid="uid://uc40vps8qn37" path="res://Menus/MenuTheme.tres" id="1_3g7qx"]
 [ext_resource type="Script" uid="uid://cf7w2exjded7g" path="res://Scripts/Menus/MainMenu.gd" id="1_r8dbq"]
+[ext_resource type="PackedScene" uid="uid://l2jbxqdgxpqg" path="res://World/Main.tscn" id="2_7ihqj"]
 [ext_resource type="PackedScene" uid="uid://b6pmd8ujin6tc" path="res://Menus/Credits.tscn" id="3_n6o36"]
 
 [sub_resource type="Theme" id="Theme_7ihqj"]
@@ -17,6 +18,7 @@ grow_vertical = 2
 theme = SubResource("Theme_7ihqj")
 script = ExtResource("1_r8dbq")
 start_button = NodePath("PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Start Button")
+main_scene = ExtResource("2_7ihqj")
 credits_scene = ExtResource("3_n6o36")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1825587894]

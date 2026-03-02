@@ -1,0 +1,45 @@
+[gd_scene format=3 uid="uid://l2jbxqdgxpqg"]
+
+[ext_resource type="PackedScene" uid="uid://cdbis65vjtoox" path="res://World/Levels/Gym.tscn" id="1_e7rx8"]
+[ext_resource type="Theme" uid="uid://cnaxn7u3n0m3n" path="res://World/UITheme.tres" id="1_q6i1d"]
+
+[node name="Main" type="Control" unique_id=645567632]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_q6i1d")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1360691485]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=542780104]
+handle_input_locally = false
+size = Vector2i(1152, 648)
+render_target_update_mode = 4
+
+[node name="Gym" parent="SubViewportContainer/SubViewport" unique_id=1956799741 instance=ExtResource("1_e7rx8")]
+
+[node name="MarginContainer" type="MarginContainer" parent="." unique_id=949245670]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=1192110520]
+layout_mode = 2
+size_flags_horizontal = 8
+size_flags_vertical = 8
+
+[node name="Label" type="Label" parent="MarginContainer/PanelContainer" unique_id=680313845]
+layout_mode = 2
+text = "Health or something?"

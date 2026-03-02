@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://cdbis65vjtoox"]
+
+[ext_resource type="Script" uid="uid://m40dtgkl4ia3" path="res://Scripts/Level.gd" id="1_3yyff"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_4b813"]
+
+[node name="Gym" type="Node3D" unique_id=1956799741]
+script = ExtResource("1_3yyff")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=550462442]
+mesh = SubResource("BoxMesh_4b813")
+
+[node name="Camera3D" type="Camera3D" parent="." unique_id=251473246]
+transform = Transform3D(1, 0, 0, 0, 0.85486656, 0.5188479, 0, -0.5188479, 0.85486656, 0, 1.1823342, 1.6783535)
