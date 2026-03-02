@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://cf7w2exjded7g" path="res://Scripts/Menus/MainMenu.gd" id="1_r8dbq"]
 [ext_resource type="PackedScene" uid="uid://l2jbxqdgxpqg" path="res://World/Main.tscn" id="2_7ihqj"]
 [ext_resource type="PackedScene" uid="uid://b6pmd8ujin6tc" path="res://Menus/Credits.tscn" id="3_n6o36"]
+[ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="5_5ncg0"]
 
 [sub_resource type="Theme" id="Theme_7ihqj"]
 PanelContainer/styles/panel = null
@@ -44,6 +45,8 @@ layout_mode = 2
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"Title"
+theme_override_fonts/normal_font = ExtResource("5_5ncg0")
+theme_override_fonts/bold_font = ExtResource("5_5ncg0")
 theme_override_font_sizes/normal_font_size = 72
 theme_override_font_sizes/bold_font_size = 72
 bbcode_enabled = true

@@ -1,9 +1,12 @@
 [gd_resource type="Theme" format=3 uid="uid://cnaxn7u3n0m3n"]
 
+[ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="1_js22f"]
+
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bel44"]
 bg_color = Color(0.5934, 0.69, 0.66102, 1)
 
 [resource]
+Button/fonts/font = ExtResource("1_js22f")
 MarginContainer/constants/margin_bottom = 32
 MarginContainer/constants/margin_left = 32
 MarginContainer/constants/margin_right = 32
