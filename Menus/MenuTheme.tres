@@ -2,8 +2,8 @@
 
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="1_7xl2i"]
 
-[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_vijh1"]
-bg_color = Color(0.65762186, 0.48520815, 0.97434145, 1)
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_7xl2i"]
+bg_color = Color(0.40208548, 0.114086606, 0.77222824, 1)
 
 [resource]
 Button/fonts/font = ExtResource("1_7xl2i")
@@ -11,4 +11,4 @@ MarginContainer/constants/margin_bottom = 32
 MarginContainer/constants/margin_left = 32
 MarginContainer/constants/margin_right = 32
 MarginContainer/constants/margin_top = 32
-PanelContainer/styles/panel = SubResource("StyleBoxFlat_vijh1")
+PanelContainer/styles/panel = SubResource("StyleBoxFlat_7xl2i")
