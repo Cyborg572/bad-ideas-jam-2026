@@ -1,7 +1,7 @@
 extends Control
 
 @onready var player: AnimationPlayer = $AnimationPlayer
-@onready var main_menu_button: Button = $ScrollContainer/VBoxContainer/PanelContainer/MarginContainer/HBoxContainer/MainMenuButton
+@onready var main_menu_button: Button = $ScrollContainer/VBoxContainer/HBoxContainer/MainMenuButton
 
 
 func _ready() -> void:
