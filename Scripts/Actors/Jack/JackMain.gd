@@ -148,7 +148,7 @@ func _physics_process(delta: float) -> void:
 		State.Grounded:
 			#print("Grounded. ", is_on_floor())
 
-			var direction = get_direction()
+			var direction := get_direction()
 			apply_movement(direction, delta)
 
 			var speed := get_ground_speed(velocity).length()
@@ -157,7 +157,6 @@ func _physics_process(delta: float) -> void:
 				if can_flip == false:
 					anim.play("Skid", 0.25)
 				can_flip = true
-				# follow_motion(direction, delta * 20)
 			else:
 				if can_flip == true:
 					anim.play_backwards("Skid")
@@ -165,7 +164,7 @@ func _physics_process(delta: float) -> void:
 				can_flip = false
 
 				if (direction):
-					follow_motion(direction, delta * 3)
+					follow_motion(direction, delta * 6)
 
 				if speed > get_max_move_speed() / 2:
 					anim.play("Run", 0.5)
@@ -184,14 +183,20 @@ func _physics_process(delta: float) -> void:
 
 		State.Airborn when is_on_wall_only() && is_falling():
 			print("Wall! Wall!")
+			var wall_normal := get_wall_normal()
 
 			# Apply gravity
-			velocity += (get_gravity() / 2) * delta
+			velocity += ((wall_normal * -1) + (get_gravity() / 10)) * delta
+
+			# Handle movement
+			var direction := get_direction().slide(wall_normal)
+			apply_movement(direction, delta)
+			follow_motion(wall_normal, 1)
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
 				wallslide = false
-				velocity = (get_jump_strength() * Vector3.UP) + (get_wall_normal() * 2)
+				velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 
 		State.Airborn:
 			print("Airborn")
