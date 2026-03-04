@@ -46,5 +46,4 @@ layout_mode = 2
 text = "Health or something?"
 
 [node name="PauseMenu" parent="." unique_id=793828353 instance=ExtResource("3_475tg")]
-visible = false
 layout_mode = 1
