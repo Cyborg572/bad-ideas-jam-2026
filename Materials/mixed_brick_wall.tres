@@ -1,0 +1,17 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://dr2k52yf2c45l"]
+
+[ext_resource type="Texture2D" uid="uid://b21wlmmjysj6d" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_diff_1k.jpg" id="1_3xr82"]
+[ext_resource type="Texture2D" uid="uid://bf1t57mika40s" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_arm_1k.jpg" id="2_fnf8a"]
+[ext_resource type="Texture2D" uid="uid://bl7bk1piuj0xx" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_nor_gl_1k.jpg" id="3_d7wwd"]
+
+[resource]
+resource_name = "mixed_brick_wall"
+cull_mode = 2
+albedo_texture = ExtResource("1_3xr82")
+metallic_texture = ExtResource("2_fnf8a")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_fnf8a")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_d7wwd")
+uv1_scale = Vector3(2, 1, 2)
