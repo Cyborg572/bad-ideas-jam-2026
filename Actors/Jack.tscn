@@ -63,7 +63,6 @@ height = 0.1
 
 [sub_resource type="Animation" id="Animation_21le6"]
 resource_name = "Fall"
-length = 0.5
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -71,7 +70,7 @@ tracks/0/path = NodePath("Model/Node3D/Hat:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
+"times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
 "values": [Vector3(-0.03408611, 0.4053204, -0.05356658), Vector3(-0.03408611, 0.4584607, -0.05356658)]
@@ -87,30 +86,6 @@ tracks/1/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(-0.40372956, 0.4379031, 0)]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D:position")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("Model/Node3D:rotation")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 0,
-"values": [Vector3(0, 0, 0)]
 }
 
 [sub_resource type="Animation" id="Animation_rmggf"]
@@ -267,6 +242,58 @@ tracks/3/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_4ka4m"]
+resource_name = "Jump"
+length = 0.2
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Node3D:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Model/Node3D:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector3(-0.40372956, 0.4379031, 0), Vector3(-0.8432877, 0.6265828, -0.31371176)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Model/Node3D/Hat:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0, 0.2),
+"transitions": PackedFloat32Array(0.5, 1),
+"update": 0,
+"values": [Vector3(-0.03408611, 0.4053204, -0.05356658), Vector3(-0.03408611, 0.35339165, -0.13795091)]
 }
 
 [sub_resource type="Animation" id="Animation_yu5vu"]
@@ -483,6 +510,7 @@ _data = {
 &"Falling": SubResource("Animation_rmggf"),
 &"Flip": SubResource("Animation_kyi2e"),
 &"Idle": SubResource("Animation_di1ys"),
+&"Jump": SubResource("Animation_4ka4m"),
 &"RESET": SubResource("Animation_yu5vu"),
 &"Run": SubResource("Animation_pci0a"),
 &"Skid": SubResource("Animation_58ja8"),
@@ -516,7 +544,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1783824, 0.14784649)
 mesh = SubResource("SphereMesh_06umm")
 
 [node name="Hat" type="MeshInstance3D" parent="Model/Node3D" unique_id=427783462]
-transform = Transform3D(0.9056427, -0.16658506, 0.38994953, 0, 0.91960263, 0.39285094, -0.4240413, -0.35578266, 0.83283144, -0.03408611, 0.4053204, -0.05356658)
+transform = Transform3D(0.9056426, -0.16658506, 0.38994947, 0, 0.91960263, 0.39285088, -0.42404127, -0.35578266, 0.8328313, -0.03408611, 0.4053204, -0.05356658)
 mesh = SubResource("CylinderMesh_kyi2e")
 
 [node name="Pom" type="MeshInstance3D" parent="Model/Node3D/Hat" unique_id=12454894]

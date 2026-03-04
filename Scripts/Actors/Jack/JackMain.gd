@@ -15,7 +15,6 @@ var state : State = State.Grounded
 var attachment : Attachment = Attachment.Free
 var can_flip : bool = false
 var falling : bool = false
-var wallslide : bool = false
 var aiming : bool = false
 
 var active_camera : Camera3D
@@ -66,6 +65,10 @@ func _enter_state(from : State, to : State) -> void:
 	if from == to: return
 	print_debug("entering ", State.keys()[to])
 	match to:
+		State.Airborn:
+			falling = false
+			if (anim.current_animation != "Flip"):
+				anim.play("Jump", 0.1)
 		_:
 			pass
 
@@ -146,7 +149,7 @@ func _physics_process(delta: float) -> void:
 
 	match state:
 		State.Grounded:
-			#print("Grounded. ", is_on_floor())
+			print("Grounded. ", is_on_floor())
 
 			var direction := get_direction()
 			apply_movement(direction, delta)
@@ -191,11 +194,10 @@ func _physics_process(delta: float) -> void:
 			# Handle movement
 			var direction := get_direction().slide(wall_normal)
 			apply_movement(direction, delta)
-			follow_motion(wall_normal, 1)
+			follow_motion(wall_normal, 30 * delta)
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
-				wallslide = false
 				velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 
 		State.Airborn:
@@ -206,7 +208,11 @@ func _physics_process(delta: float) -> void:
 
 			var direction = get_direction()
 			apply_movement(direction, delta)
-
+			
+			if !falling && is_falling():
+				falling = true
+				anim.play("Fall", 1)
+				anim.queue("Falling")
 
 		State.Crouched:
 			print("Crouching")
@@ -214,7 +220,7 @@ func _physics_process(delta: float) -> void:
 		State.Armed when aiming:
 			print("Aiming!")
 
-		State.Aiming:
+		State.Armed:
 			print("Armed!")
 
 
