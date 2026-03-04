@@ -3,7 +3,7 @@ extends Node3D
 @export var is_main_camera : bool = false
 @export var target:Node3D;
 @export var camera_sensitivity: float = 2.5
-@export var mouse_sensitivity: float = 12.5
+@export var mouse_sensitivity: float = 5
 @export var camera_speed:float = 5
 
 @onready var camera_position: Node3D = $SpringArm3D/CameraPosition

@@ -6,6 +6,7 @@ var is_paused : bool = false
 
 
 func pause() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	get_tree().paused = true
 	is_paused = true
 	animations.play_backwards("HideMenu")
@@ -14,6 +15,7 @@ func pause() -> void:
 
 
 func resume() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	is_paused = false
 	animations.play("HideMenu")
 	get_tree().paused = false
@@ -24,6 +26,10 @@ func toggle_paused() -> void:
 		resume()
 	else:
 		pause()
+
+
+func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 
 
 func _process(_delta: float) -> void:
@@ -40,7 +46,7 @@ func _on_options_button_pressed() -> void:
 
 
 func _on_main_menu_button_pressed() -> void:
-	resume()
+	get_tree().paused = false
 	get_tree().change_scene_to_file("res://Menus/MainMenu.tscn")
 
 
