@@ -1,0 +1,132 @@
+[gd_scene format=3 uid="uid://cu1llcu6fuf5h"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_n05s6"]
+size = Vector3(0.75, 0.75, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n05s6"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.4807483, 0, 0.018277556, 1)
+roughness = 0.2
+
+[sub_resource type="BoxMesh" id="BoxMesh_7oreh"]
+material = SubResource("StandardMaterial3D_n05s6")
+size = Vector3(0.75, 0.6, 0.75)
+
+[sub_resource type="BoxMesh" id="BoxMesh_wbnku"]
+material = SubResource("StandardMaterial3D_n05s6")
+size = Vector3(0.75, 0.15, 0.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ltv4v"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.7682241, 0.4339734, 3.85046e-07, 1)
+metallic = 0.5
+metallic_specular = 0.43
+roughness = 0.02
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_sldcg"]
+material = SubResource("StandardMaterial3D_ltv4v")
+top_radius = 0.15
+bottom_radius = 0.15
+height = 0.15
+radial_segments = 16
+rings = 1
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_8v5c7"]
+material = SubResource("StandardMaterial3D_ltv4v")
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.15
+radial_segments = 16
+rings = 1
+
+[sub_resource type="Animation" id="Animation_n05s6"]
+resource_name = "Open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(-2, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-2.6312237, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_7oreh"]
+resource_name = "Pop"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.15, 0.25),
+"transitions": PackedFloat32Array(0.5, 1, 0.5, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(-3.1415925, 0, 0), Vector3(-2.1821504, 0, 0), Vector3(-2.6312237, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_wbnku"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Model/Lid:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_ltv4v"]
+_data = {
+&"Open": SubResource("Animation_n05s6"),
+&"Pop": SubResource("Animation_7oreh"),
+&"RESET": SubResource("Animation_wbnku")
+}
+
+[node name="TheBox" type="CharacterBody3D" unique_id=493307402]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1480961779]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
+shape = SubResource("BoxShape3D_n05s6")
+
+[node name="Model" type="Node3D" parent="." unique_id=204800911]
+
+[node name="Base" type="MeshInstance3D" parent="Model" unique_id=1919400778]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+mesh = SubResource("BoxMesh_7oreh")
+
+[node name="Lid" type="Node3D" parent="Model" unique_id=193584133]
+transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0.6, -0.375)
+
+[node name="LidModel" type="MeshInstance3D" parent="Model/Lid" unique_id=1092812080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0.375)
+mesh = SubResource("BoxMesh_wbnku")
+
+[node name="Crank" type="Node3D" parent="Model" unique_id=12387907]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.375, 0.375, 0)
+
+[node name="Shaft" type="MeshInstance3D" parent="Model/Crank" unique_id=707154094]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0, 0)
+mesh = SubResource("CylinderMesh_sldcg")
+
+[node name="Handle" type="MeshInstance3D" parent="Model/Crank/Shaft" unique_id=1682915004]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.075, -0.08)
+mesh = SubResource("CylinderMesh_8v5c7")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1069972282]
+libraries/ = SubResource("AnimationLibrary_ltv4v")
+
+[node name="AttachmentPoint" type="Node3D" parent="." unique_id=1107156217]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)

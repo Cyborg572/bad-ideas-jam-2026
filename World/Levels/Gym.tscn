@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://m40dtgkl4ia3" path="res://Scripts/Level.gd" id="1_3yyff"]
 [ext_resource type="PackedScene" uid="uid://duykwhism24sd" path="res://Actors/CameraRig.tscn" id="2_skitp"]
 [ext_resource type="PackedScene" uid="uid://wkiytlqj20xh" path="res://Actors/Jack.tscn" id="2_v1x4i"]
+[ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_8txj2"]
 [ext_resource type="Material" uid="uid://dpmtiyul7jbtp" path="res://Materials/granite_tile.tres" id="4_fd7au"]
 [ext_resource type="Material" uid="uid://dr2k52yf2c45l" path="res://Materials/mixed_brick_wall.tres" id="5_xyqiw"]
 [ext_resource type="Texture2D" uid="uid://b21wlmmjysj6d" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_diff_1k.jpg" id="6_gkq5e"]
@@ -79,6 +80,9 @@ target = NodePath("../Jack")
 
 [node name="Jack" parent="." unique_id=1250745410 instance=ExtResource("2_v1x4i")]
 
+[node name="TheBox" parent="." unique_id=493307402 instance=ExtResource("4_8txj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.126498, 0, 0)
+
 [node name="Floor" type="StaticBody3D" parent="." unique_id=460721603]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1352796337]
@@ -87,14 +91,14 @@ mesh = SubResource("PlaneMesh_v1x4i")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=321137014]
 shape = SubResource("WorldBoundaryShape3D_skitp")
 
-[node name="Box" type="StaticBody3D" parent="." unique_id=93749149]
+[node name="Box1" type="StaticBody3D" parent="." unique_id=93749149]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 2)
 
-[node name="MeshInstance3D" type="MeshInstance3D" parent="Box" unique_id=129666201]
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Box1" unique_id=129666201]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 mesh = SubResource("BoxMesh_tn2j0")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="Box" unique_id=812057416]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box1" unique_id=812057416]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("BoxShape3D_g1s66")
 
