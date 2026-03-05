@@ -157,10 +157,10 @@ func get_best_side_view(normal: Vector3) -> float:
 
 	if ((ccw - cam_direction).length_squared() > (cw - cam_direction).length_squared()):
 		print("CCW is closest ", ccw - cam_direction, ' ', cw - cam_direction)
-		return Vector2(ccw.z, -ccw.x).angle()
+		return Vector2(-ccw.z, -ccw.x).angle()
 	else:
 		print("CW is closest ", ccw - cam_direction, ' ', cw - cam_direction)
-		return Vector2(cw.z, -cw.x).angle()
+		return Vector2(-cw.z, -cw.x).angle()
 
 #endregion
 
@@ -185,7 +185,7 @@ func _physics_process(delta: float) -> void:
 			var sharp := is_sharp_turn(velocity, direction)
 
 			if get_max_move_speed() - speed < 0.2:
-				active_camera.align(rotation.y, 1)
+				active_camera.align(rotation.y, 1, true)
 
 			if sharp:
 				if can_flip == false:
@@ -234,9 +234,9 @@ func _physics_process(delta: float) -> void:
 			if direction:
 				# Explicit check here, because the else is "rotation" no "rotation.y"
 				if back_to_wall:
-					active_camera.align(best_side_view, 2)
+					active_camera.align(best_side_view, 3, true)
 				else:
-					active_camera.align(rotation, 2)
+					active_camera.align(rotation, 3, true)
 			else:
 				active_camera.cancel_align()
 
@@ -290,7 +290,7 @@ func _physics_process(delta: float) -> void:
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
-				active_camera.align(get_best_side_view(wall_normal), 5)
+				active_camera.align(get_best_side_view(wall_normal), 10)
 				velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 				follow_motion(wall_normal, 60 * delta)
 
@@ -314,8 +314,5 @@ func _physics_process(delta: float) -> void:
 
 		State.Armed:
 			print("Armed!")
-
-
-	
 
 	move_and_slide()

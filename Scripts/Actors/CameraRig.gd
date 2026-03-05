@@ -16,6 +16,7 @@ const default_alignment := Vector3(default_pitch, 0, 0);
 var aligning : bool = false
 var alignment_target : Vector3 = default_alignment
 var alignment_speed : float = 0.0
+var alignment_one_time : bool = false
 
 func get_target_position() -> Vector3:
 	var target_position : Vector3 = target.position
@@ -30,9 +31,10 @@ func rotate_relative_to_view(direction: Vector3) -> Vector3:
 	return direction.rotated(Vector3.UP, camera.global_rotation.y)
 
 
-func align(target_angle = default_alignment, speed: float = 0.0) -> void:
+func align(target_angle = default_alignment, speed: float = 0.0, one_time = false) -> void:
 	aligning = true
 	alignment_speed = speed
+	alignment_one_time = one_time
 	if target_angle is Vector3:
 		alignment_target = target_angle
 	elif target_angle is float:
@@ -49,6 +51,7 @@ func cancel_align() -> void:
 	aligning = false
 	alignment_target = default_alignment
 	alignment_speed = 0.0
+	alignment_one_time = false
 
 
 func _ready() -> void:
@@ -88,7 +91,7 @@ func _process(delta: float) -> void:
 		else:
 			rotation = current.slerp(goal, alignment_speed * delta).get_euler()
 
-		if sweep_angle < 0.05:
+		if sweep_angle < 0.05 || alignment_one_time:
 			cancel_align()
 			print("Aligned")
 
