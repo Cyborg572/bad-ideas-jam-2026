@@ -55,7 +55,7 @@ func change_state(to : State) -> void:
 
 func _leave_state(from : State, to : State) -> void:
 	if from == to: return
-	print_debug("leaving ", State.keys()[from])
+	#print_debug("leaving ", State.keys()[from])
 	match from:
 		_:
 			pass
@@ -63,7 +63,7 @@ func _leave_state(from : State, to : State) -> void:
 
 func _enter_state(from : State, to : State) -> void:
 	if from == to: return
-	print_debug("entering ", State.keys()[to])
+	#print_debug("entering ", State.keys()[to])
 	match to:
 		State.Airborn:
 			falling = false
@@ -210,7 +210,7 @@ func _physics_process(delta: float) -> void:
 					velocity.y = get_jump_strength()
 
 		State.Airborn when is_on_wall_only():
-			print("Wall! Wall!")
+			#print("Wall! Wall!")
 			var wall_normal := get_wall_normal()
 			var direction := get_direction()
 			var gravity := get_gravity()
@@ -235,13 +235,11 @@ func _physics_process(delta: float) -> void:
 				follow_motion(wall_normal, 60 * delta)
 
 		State.Airborn:
-			print("Airborn")
-
 			# Apply gravity
 			velocity += get_gravity() * delta
 
 			var direction = get_direction()
-			apply_movement(direction, delta, 2 if anim.current_animation == "Flip" else 1)
+			apply_movement(direction, delta, 1.5 if anim.current_animation == "Flip" else 1.0)
 			
 			if !falling && is_falling():
 				falling = true
