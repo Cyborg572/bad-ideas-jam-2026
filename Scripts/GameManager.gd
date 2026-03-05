@@ -1,8 +1,8 @@
 extends Node
 
-signal change_camera(camera)
+signal change_camera(camera: CameraRig)
 
-var main_camera : Camera3D = null:
+var main_camera : CameraRig = null:
 	set(camera):
 		if (main_camera == camera): return
 		main_camera = camera

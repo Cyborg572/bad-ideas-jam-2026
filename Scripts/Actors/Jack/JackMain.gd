@@ -17,7 +17,7 @@ var can_flip : bool = false
 var falling : bool = false
 var aiming : bool = false
 
-var active_camera : Camera3D
+var active_camera : CameraRig
 
 func _ready() -> void:
 	set_active_camera(GameManager.main_camera)
@@ -76,7 +76,7 @@ func _enter_state(from : State, to : State) -> void:
 
 
 #region Utilities
-func set_active_camera(camera):
+func set_active_camera(camera: CameraRig):
 	active_camera = camera
 
 
@@ -124,18 +124,38 @@ func get_direction() -> Vector3:
 	# Get the input direction and handle the movement/deceleration.
 	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("Left", "Right", "Forward", "Back")
-	var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))#.normalized()
+	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))#.normalized()
+	var direction := Vector3(input_dir.x, 0, input_dir.y)
 	
 	if active_camera:
-		direction = direction.rotated(Vector3.UP, active_camera.global_rotation.y)
+		direction = active_camera.rotate_relative_to_view(direction)
 	
 	return direction
 
 func follow_motion(direction: Vector3, rate: float) -> void:
 	var look_angle = Vector2(direction.z, direction.x).angle()
 	var q1 = Quaternion(Vector3.UP, look_angle)
-	var q2 = Quaternion.from_euler(model.rotation).normalized()
-	model.rotation = q2.slerp(q1, rate).get_euler()
+	#var q2 = Quaternion.from_euler(model.rotation).normalized()
+	#model.rotation = q2.slerp(q1, rate).get_euler()
+	var q2 = Quaternion.from_euler(rotation).normalized()
+	rotation = q2.slerp(q1, rate).get_euler()
+
+func get_best_side_view(normal: Vector3) -> float:
+	var ccw = normal.rotated(Vector3.UP, PI/2).normalized()
+	var cw = normal.rotated(Vector3.UP, -PI/2).normalized()
+	var cam_direction = Vector3.FORWARD.rotated(Vector3.UP, active_camera.rotation.y)
+	
+	print("ccw: ", ccw)
+	print("cw: ", cw)
+	print("cam: ", cam_direction)
+
+	if ((ccw - cam_direction).length_squared() > (cw - cam_direction).length_squared()):
+		print("CCW is closest ", ccw - cam_direction, ' ', cw - cam_direction)
+		return Vector2(ccw.z, -ccw.x).angle()
+	else:
+		print("CW is closest ", ccw - cam_direction, ' ', cw - cam_direction)
+		return Vector2(cw.z, -cw.x).angle()
+
 #endregion
 
 
@@ -147,15 +167,20 @@ func _physics_process(delta: float) -> void:
 	elif state == State.Airborn:
 		change_state(State.Grounded)
 
+	if Input.is_action_just_pressed("camera_reset"):
+		active_camera.align(rotation.y, 10)
+
 	match state:
 		State.Grounded:
-			print("Grounded. ", is_on_floor())
-
 			var direction := get_direction()
 			apply_movement(direction, delta)
 
 			var speed := get_ground_speed(velocity).length()
 			var sharp := is_sharp_turn(velocity, direction)
+
+			if get_max_move_speed() - speed < 0.2:
+				active_camera.align(rotation.y, 1)
+
 			if sharp:
 				if can_flip == false:
 					anim.play("Skid", 0.25)
@@ -205,6 +230,7 @@ func _physics_process(delta: float) -> void:
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
+				active_camera.align(get_best_side_view(wall_normal), 5)
 				velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 				follow_motion(wall_normal, 60 * delta)
 
