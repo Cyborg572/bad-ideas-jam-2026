@@ -10,12 +10,15 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @onready var indicator := $InteractionIndicator
 @onready var camera_target := $CameraTarget
 @onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var ledge_hook: RayCast3D = $LedgeHook
+@onready var wall_detect: RayCast3D = $WallDetect
 
 var state : State = State.Grounded
 var attachment : Attachment = Attachment.Free
 var can_flip : bool = false
 var falling : bool = false
 var aiming : bool = false
+var hanging : bool = false
 
 var active_camera : CameraRig
 
@@ -67,6 +70,7 @@ func _enter_state(from : State, to : State) -> void:
 	match to:
 		State.Airborn:
 			falling = false
+			hanging = false
 			if (anim.current_animation != "Flip"):
 				anim.play("Jump", 0.1)
 		_:
@@ -139,6 +143,8 @@ func follow_motion(direction: Vector3, rate: float) -> void:
 	#model.rotation = q2.slerp(q1, rate).get_euler()
 	var q2 = Quaternion.from_euler(rotation).normalized()
 	rotation = q2.slerp(q1, rate).get_euler()
+	ledge_hook.rotation.y = -rotation.y
+	wall_detect.rotation.y = -rotation.y
 
 func get_best_side_view(normal: Vector3) -> float:
 	var ccw = normal.rotated(Vector3.UP, PI/2).normalized()
@@ -209,18 +215,72 @@ func _physics_process(delta: float) -> void:
 				else:
 					velocity.y = get_jump_strength()
 
+		State.Airborn when hanging:
+			var wall_normal : Vector3
+
+			if is_on_wall():
+				wall_normal = get_wall_normal()
+				ledge_hook.target_position = wall_normal * -0.5
+				wall_detect.target_position = wall_normal * 2
+			else:
+				# If the wall's gone, we can work out what the normal was
+				wall_normal = ledge_hook.target_position.normalized() * -1
+
+			var back_to_wall := wall_detect.is_colliding()
+			var direction := get_direction()
+			var wall_dot := direction.normalized().dot(wall_normal)
+			var best_side_view = rotation.y if not back_to_wall else get_best_side_view(wall_normal);
+
+			if direction:
+				# Explicit check here, because the else is "rotation" no "rotation.y"
+				if back_to_wall:
+					active_camera.align(best_side_view, 2)
+				else:
+					active_camera.align(rotation, 2)
+			else:
+				active_camera.cancel_align()
+
+			# Left the ledge or hit crouch
+			if !ledge_hook.is_colliding() || Input.is_action_just_pressed("Crouch"):
+				active_camera.align(best_side_view, 10)
+				hanging = false
+
+			# Handle jump.
+			elif Input.is_action_just_pressed("Jump"):
+				active_camera.align(best_side_view, 10)
+				hanging = false
+				if wall_dot > 0.8:
+					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
+					follow_motion(wall_normal, 60 * delta)
+				else:
+					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * -0.5)
+
+			# Move along ledge
+			else:
+				direction = direction.slide(wall_normal)
+				var gravity := wall_normal * -1
+				follow_motion(wall_normal * -1, 60 * delta)
+				velocity = direction + (gravity * delta)
+				velocity.y = 0
+
 		State.Airborn when is_on_wall_only():
 			#print("Wall! Wall!")
 			var wall_normal := get_wall_normal()
 			var direction := get_direction()
 			var gravity := get_gravity()
 
-			if is_falling():
+			# Ledge Logic
+			ledge_hook.target_position = wall_normal * -0.5
+			wall_detect.target_position = wall_normal * -1
+
+			if ledge_hook.is_colliding() && not wall_detect.is_colliding():
+				hanging = true
+				velocity = Vector3.ZERO
+
+			if is_falling() && wall_detect.is_colliding():
 				direction = direction.slide(wall_normal)
 				gravity = ((wall_normal * -1) + (gravity / 10))
 				follow_motion(wall_normal, 30 * delta)
-			#else:
-				#gravity = ((wall_normal * -1) + (gravity / 10)) * delta
 
 			# Handle movement
 			apply_movement(direction, delta)
