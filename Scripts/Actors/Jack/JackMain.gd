@@ -126,21 +126,17 @@ func is_freefall() -> bool:
 
 func get_direction() -> Vector3:
 	# Get the input direction and handle the movement/deceleration.
-	# As good practice, you should replace UI actions with custom gameplay actions.
 	var input_dir := Input.get_vector("Left", "Right", "Forward", "Back")
-	#var direction := (transform.basis * Vector3(input_dir.x, 0, input_dir.y))#.normalized()
 	var direction := Vector3(input_dir.x, 0, input_dir.y)
 	
 	if active_camera:
 		direction = active_camera.rotate_relative_to_view(direction)
-	
+
 	return direction
 
 func follow_motion(direction: Vector3, rate: float) -> void:
 	var look_angle = Vector2(direction.z, direction.x).angle()
 	var q1 = Quaternion(Vector3.UP, look_angle)
-	#var q2 = Quaternion.from_euler(model.rotation).normalized()
-	#model.rotation = q2.slerp(q1, rate).get_euler()
 	var q2 = Quaternion.from_euler(rotation).normalized()
 	rotation = q2.slerp(q1, rate).get_euler()
 	ledge_hook.rotation.y = -rotation.y
@@ -150,16 +146,10 @@ func get_best_side_view(normal: Vector3) -> float:
 	var ccw = normal.rotated(Vector3.UP, PI/2).normalized()
 	var cw = normal.rotated(Vector3.UP, -PI/2).normalized()
 	var cam_direction = Vector3.FORWARD.rotated(Vector3.UP, active_camera.rotation.y)
-	
-	print("ccw: ", ccw)
-	print("cw: ", cw)
-	print("cam: ", cam_direction)
 
 	if ((ccw - cam_direction).length_squared() > (cw - cam_direction).length_squared()):
-		print("CCW is closest ", ccw - cam_direction, ' ', cw - cam_direction)
 		return Vector2(-ccw.z, -ccw.x).angle()
 	else:
-		print("CW is closest ", ccw - cam_direction, ' ', cw - cam_direction)
 		return Vector2(-cw.z, -cw.x).angle()
 
 #endregion
@@ -264,7 +254,6 @@ func _physics_process(delta: float) -> void:
 				velocity.y = 0
 
 		State.Airborn when is_on_wall_only():
-			#print("Wall! Wall!")
 			var wall_normal := get_wall_normal()
 			var direction := get_direction()
 			var gravity := get_gravity()
