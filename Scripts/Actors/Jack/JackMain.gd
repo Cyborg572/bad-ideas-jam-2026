@@ -19,6 +19,7 @@ var can_flip : bool = false
 var falling : bool = false
 var aiming : bool = false
 var hanging : bool = false
+var hanging_cooldown : float = 0.0
 
 var active_camera : CameraRig
 
@@ -71,6 +72,7 @@ func _enter_state(from : State, to : State) -> void:
 		State.Airborn:
 			falling = false
 			hanging = false
+			hanging_cooldown = 0.0
 			if (anim.current_animation != "Flip"):
 				anim.play("Jump", 0.1)
 		_:
@@ -262,9 +264,16 @@ func _physics_process(delta: float) -> void:
 			ledge_hook.target_position = wall_normal * -0.5
 			wall_detect.target_position = wall_normal * -1
 
-			if ledge_hook.is_colliding() && not wall_detect.is_colliding():
+			if (
+				hanging_cooldown <= 0
+				&& ledge_hook.is_colliding()
+				&& not wall_detect.is_colliding()
+			):
 				hanging = true
+				hanging_cooldown = 1
 				velocity = Vector3.ZERO
+			else:
+				hanging_cooldown -= delta
 
 			if is_falling() && wall_detect.is_colliding():
 				direction = direction.slide(wall_normal)
