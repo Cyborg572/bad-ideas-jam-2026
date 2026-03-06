@@ -297,7 +297,11 @@ func _physics_process(delta: float) -> void:
 			velocity += get_gravity() * delta
 
 			var direction = get_direction()
-			apply_movement(direction, delta, 1.5 if anim.current_animation == "Flip" else 1.0)
+			var flipping = anim.current_animation == "Flip"
+
+			apply_movement(direction, delta, 1.5 if flipping else 1.0)
+			if flipping:
+				follow_motion(direction, 6 * delta)
 			
 			if !falling && is_falling():
 				falling = true

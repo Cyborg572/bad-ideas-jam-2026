@@ -552,7 +552,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1783824, 0.14784649)
 mesh = SubResource("SphereMesh_06umm")
 
 [node name="Hat" type="MeshInstance3D" parent="Model/Node3D" unique_id=427783462]
-transform = Transform3D(0.90564257, -0.16658506, 0.38994944, 0, 0.91960263, 0.39285085, -0.42404127, -0.35578266, 0.83283126, -0.03408611, 0.4053204, -0.05356658)
+transform = Transform3D(0.9056425, -0.16658506, 0.38994944, 0, 0.91960263, 0.39285085, -0.42404124, -0.35578266, 0.83283126, -0.03408611, 0.4053204, -0.05356658)
 mesh = SubResource("CylinderMesh_kyi2e")
 
 [node name="Pom" type="MeshInstance3D" parent="Model/Node3D/Hat" unique_id=12454894]
