@@ -1,5 +1,8 @@
 [gd_scene format=3 uid="uid://cu1llcu6fuf5h"]
 
+[ext_resource type="PackedScene" uid="uid://dx1tfso30q1uh" path="res://Actors/Areas/InteractionPoint.tscn" id="1_7oreh"]
+[ext_resource type="Script" uid="uid://ckri8w1p4x2dx" path="res://Scripts/Actors/TheBox.gd" id="1_wbnku"]
+
 [sub_resource type="BoxShape3D" id="BoxShape3D_n05s6"]
 size = Vector3(0.75, 0.75, 0.75)
 
@@ -96,6 +99,7 @@ _data = {
 }
 
 [node name="TheBox" type="CharacterBody3D" unique_id=493307402]
+script = ExtResource("1_wbnku")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1480961779]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
@@ -130,3 +134,8 @@ libraries/ = SubResource("AnimationLibrary_ltv4v")
 
 [node name="AttachmentPoint" type="Node3D" parent="." unique_id=1107156217]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
+
+[node name="InteractionPoint" parent="." unique_id=697791151 instance=ExtResource("1_7oreh")]
+show_pointer_reference = false
+
+[connection signal="interaction" from="InteractionPoint" to="." method="_on_interaction_point_interaction"]

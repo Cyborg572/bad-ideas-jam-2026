@@ -2,6 +2,7 @@
 
 [ext_resource type="Script" uid="uid://b27e4ibvcwjpa" path="res://Scripts/Actors/Jack/JackMain.gd" id="1_06umm"]
 [ext_resource type="Script" uid="uid://6l81ycqfgjqh" path="res://Scripts/Actors/Jack/JackStateConfiguration.gd" id="2_kyi2e"]
+[ext_resource type="Script" uid="uid://b1ntf8csr8ow4" path="res://Scripts/Actors/Jack/InteractionIndicator.gd" id="3_yu5vu"]
 
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
@@ -60,6 +61,19 @@ height = 0.2
 material = SubResource("StandardMaterial3D_yu5vu")
 radius = 0.05
 height = 0.1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2hb5s"]
+shading_mode = 0
+disable_ambient_light = true
+albedo_color = Color(0, 0.6740415, 0.1877456, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_yu5vu"]
+material = SubResource("StandardMaterial3D_2hb5s")
+top_radius = 0.1
+bottom_radius = 0.0
+height = 0.25
+radial_segments = 16
+rings = 2
 
 [sub_resource type="Animation" id="Animation_21le6"]
 resource_name = "Fall"
@@ -518,6 +532,8 @@ _data = {
 }
 
 [node name="Jack" type="CharacterBody3D" unique_id=1250745410]
+collision_layer = 5
+collision_mask = 3
 script = ExtResource("1_06umm")
 state_config = Dictionary[int, ExtResource("2_kyi2e")]({
 0: SubResource("Resource_yu5vu"),
@@ -560,6 +576,13 @@ transform = Transform3D(0.90564287, 1.4901163e-08, -0.4240414, -0.166585, 0.9196
 mesh = SubResource("SphereMesh_58ja8")
 
 [node name="InteractionIndicator" type="Node3D" parent="." unique_id=1743642341]
+top_level = true
+script = ExtResource("3_yu5vu")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="InteractionIndicator" unique_id=323824407]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+cast_shadow = 0
+mesh = SubResource("CylinderMesh_yu5vu")
 
 [node name="CameraTarget" type="Node3D" parent="." unique_id=1298849542]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
