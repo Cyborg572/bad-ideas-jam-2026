@@ -86,14 +86,12 @@ func _process(delta: float) -> void:
 		var sweep_angle = current.angle_to(goal);
 
 		if alignment_speed <= 0:
-			print("Snap Aligning")
 			rotation = alignment_target
 		else:
 			rotation = current.slerp(goal, alignment_speed * delta).get_euler()
 
 		if sweep_angle < 0.05 || alignment_one_time:
 			cancel_align()
-			print("Aligned")
 
 	rotation.y -= delta * movement_x * camera_sensitivity
 	rotation.x -= delta * movement_y * camera_sensitivity
@@ -105,7 +103,7 @@ func _process(delta: float) -> void:
 	if !target:
 		return
 
-	position = get_target_position()
+	position = position.move_toward(get_target_position(), 10 * delta)
 	
 	camera.position = lerp(camera.position, camera_position.position, delta*camera_speed)
 	camera.global_rotation.z = 0

@@ -8,6 +8,7 @@
 [ext_resource type="Material" uid="uid://dr2k52yf2c45l" path="res://Materials/mixed_brick_wall.tres" id="5_xyqiw"]
 [ext_resource type="Texture2D" uid="uid://b21wlmmjysj6d" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_diff_1k.jpg" id="6_gkq5e"]
 [ext_resource type="Texture2D" uid="uid://bf1t57mika40s" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_arm_1k.jpg" id="7_8txj2"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
 [ext_resource type="Texture2D" uid="uid://bl7bk1piuj0xx" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_nor_gl_1k.jpg" id="8_veq21"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3yyff"]
@@ -54,6 +55,8 @@ size = Vector3(1, 3, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_lqj5n"]
 size = Vector3(1, 3, 1)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_veq21"]
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_gkq5e"]
 material = ExtResource("5_xyqiw")
 top_radius = 2.0
@@ -78,14 +81,17 @@ shadow_enabled = true
 is_main_camera = true
 target = NodePath("../Jack")
 
-[node name="Jack" parent="." unique_id=1250745410 instance=ExtResource("2_v1x4i")]
+[node name="Jack" parent="." unique_id=1250745410 node_paths=PackedStringArray("box") instance=ExtResource("2_v1x4i")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.4292407, 1.5, -1.3901386)
+box = NodePath("../TheBox")
 
 [node name="TheBox" parent="." unique_id=493307402 instance=ExtResource("4_8txj2")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.126498, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.126498, 0.375, 0)
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=460721603]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Floor" unique_id=1352796337]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00065135956, 0.0050611496, -0.0025186539)
 mesh = SubResource("PlaneMesh_v1x4i")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=321137014]
@@ -156,6 +162,17 @@ mesh = SubResource("BoxMesh_wfd2y")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Box3" unique_id=101380480]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_lqj5n")
+
+[node name="InteractionPoint" type="Area3D" parent="Box3" unique_id=684243992]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56202793, -0.9677346, 0)
+collision_layer = 3
+collision_mask = 4
+script = ExtResource("7_veq21")
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Box3/InteractionPoint" unique_id=616263316]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.28129816, 0.46773458, 0)
+shape = SubResource("BoxShape3D_veq21")
 
 [node name="Box10" type="StaticBody3D" parent="." unique_id=1854712107]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.4612198, 1, -5)

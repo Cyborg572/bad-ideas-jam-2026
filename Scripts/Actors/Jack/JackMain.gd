@@ -5,6 +5,8 @@ enum Attachment { Free, Boxed, Carry }
 enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 
 @export var state_config : Dictionary[State, JackStateConfiguration]
+@export var attached_to : bool = false
+@export var box : TheBox
 
 @onready var model := $Model
 @onready var indicator := $InteractionIndicator
@@ -12,9 +14,12 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var ledge_hook: RayCast3D = $LedgeHook
 @onready var wall_detect: RayCast3D = $WallDetect
+@onready var box_collider: CollisionShape3D = $BoxCollider
 
 var state : State = State.Grounded
 var attachment : Attachment = Attachment.Free
+var attachment_points : Dictionary[String, Node3D] = {}
+
 var can_flip : bool = false
 var falling : bool = false
 var aiming : bool = false
@@ -26,6 +31,10 @@ var active_camera : CameraRig
 func _ready() -> void:
 	set_active_camera(GameManager.main_camera)
 	GameManager.change_camera.connect(set_active_camera)
+	GameManager.interaction.connect(_on_global_interaction)
+	attachment_points['head'] = $AttachmentPoints/Head
+	attachment_points['hand'] = $AttachmentPoints/Hand
+	attachment_points['foot'] = $AttachmentPoints/Foot
 
 
 #region State value accessors
@@ -47,6 +56,41 @@ func get_max_move_speed() -> float:
 
 func get_max_speed() -> float:
 	return state_config[state].get_max_speed(attachment)
+#endregion
+
+#region Attachment management
+func change_attachment(to : Attachment) -> void:
+	var from : Attachment = attachment
+	_leave_attachment(from, to)
+	attachment = to
+	_enter_attachment(from, to)
+
+
+func _leave_attachment(from : Attachment, to : Attachment) -> void:
+	if from == to: return
+	#print_debug("leaving attachment ", State.keys()[from])
+	match from:
+		Attachment.Free:
+			#add_collision_exception_with(box)
+			box_collider.disabled = false
+		_:
+			pass
+
+
+func _enter_attachment(from : Attachment, to : Attachment) -> void:
+	if from == to: return
+	#print_debug("entering attachment", State.keys()[to])
+	match to:
+		Attachment.Free:
+			#remove_collision_exception_with(box)
+			box_collider.position = model.position
+			box_collider.disabled = true
+			box.slam()
+		Attachment.Boxed:
+			box_collider.position = attachment_points['foot'].position - box.attachment_point.position
+			box.pop()
+		_:
+			pass
 #endregion
 
 #region State management
@@ -106,7 +150,7 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 	
 	if current_speed < max_move_speed:
 		ground_speed += movement
-	else:
+	elif max_move_speed > 0:
 		ground_speed += movement.slide(ground_speed.normalized())
 
 	ground_speed = ground_speed.move_toward(direction * ground_speed.length(), friction * delta)
@@ -170,6 +214,22 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("camera_reset"):
 		active_camera.align(rotation.y, 10)
+
+	if Input.is_action_just_pressed("Pop"):
+		match attachment:
+			Attachment.Boxed:
+				box.detach()
+				change_attachment(Attachment.Free)
+				velocity.y = get_jump_strength()
+			Attachment.Carry:
+				box.attach(attachment_points['foot'])
+				change_attachment(Attachment.Boxed)
+			Attachment.Free when box:
+				position = box.position
+				box.attach(attachment_points['foot'])
+				change_attachment(Attachment.Boxed)
+			_:
+				print("No pop!")
 
 	match state:
 		State.Grounded:
@@ -319,3 +379,15 @@ func _physics_process(delta: float) -> void:
 			print("Armed!")
 
 	move_and_slide()
+
+
+func _on_global_interaction(interaction_point : InteractionPoint):
+	var types := InteractionPoint.InteractionType
+	match interaction_point.type:
+		types.attachable:
+			box = interaction_point.get_parent_node_3d()
+			box.attach(attachment_points['hand'])
+			change_attachment(Attachment.Carry)
+			print("Attached to ", box)
+		_:
+			print("New interaction. Type: ", types.keys()[interaction_point.type])

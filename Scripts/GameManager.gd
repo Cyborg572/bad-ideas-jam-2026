@@ -1,6 +1,7 @@
 extends Node
 
 signal change_camera(camera: CameraRig)
+signal interaction(interaction_point : InteractionPoint)
 
 var main_camera : CameraRig = null:
 	set(camera):
@@ -13,7 +14,6 @@ var active_interaction_point : InteractionPoint
 
 
 func set_active_interaction_point(point : InteractionPoint) -> void:
-	print ("registering interaction point: ", point)
 	if active_interaction_point == point:
 		return
 
@@ -49,3 +49,4 @@ func _process(_delta: float) -> void:
 	if Input.is_action_just_pressed("Interact"):
 		if active_interaction_point:
 			active_interaction_point.interact()
+			interaction.emit(active_interaction_point)

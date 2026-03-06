@@ -6,6 +6,9 @@
 
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
+boxed_move_speed = 4.0
+boxed_jump_strength = 2.0
+boxed_max_move_speed = 4.0
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
 [sub_resource type="Resource" id="Resource_58ja8"]
@@ -30,13 +33,20 @@ move_speed = 2.0
 jump_strength = 0.0
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
+[sub_resource type="SphereMesh" id="SphereMesh_yu5vu"]
+radius = 0.075
+height = 0.125
+
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_06umm"]
 radius = 0.25
 height = 0.75
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_yu5vu"]
+size = Vector3(0.25, 0.25, 0.25)
+
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_dwnvf"]
 radius = 0.125
-height = 0.75
+height = 0.375
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_06umm"]
 albedo_color = Color(1, 0.029999971, 0.029999971, 1)
@@ -62,6 +72,24 @@ material = SubResource("StandardMaterial3D_yu5vu")
 radius = 0.05
 height = 0.1
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_58ja8"]
+albedo_color = Color(0.16470589, 0.16470589, 0.39215687, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_58ja8"]
+material = SubResource("StandardMaterial3D_58ja8")
+top_radius = 0.025
+bottom_radius = 0.05
+height = 0.25
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_di1ys"]
+albedo_color = Color(0.16470589, 0.16470589, 0.39215687, 1)
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_5g1ux"]
+material = SubResource("StandardMaterial3D_di1ys")
+top_radius = 0.05
+bottom_radius = 0.1
+height = 0.25
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2hb5s"]
 shading_mode = 0
 disable_ambient_light = true
@@ -80,19 +108,19 @@ resource_name = "Fall"
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Model/Node3D/Hat:position")
+tracks/0/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
 "times": PackedFloat32Array(0, 1),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658), Vector3(-0.03408611, 0.4584607, -0.05356658)]
+"values": [Vector3(-0.034, 0.217, -0.054), Vector3(-0.034, 0.27, -0.054)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/1/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -108,7 +136,7 @@ loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
-tracks/0/path = NodePath("Model/Node3D/Hat:position")
+tracks/0/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
@@ -120,7 +148,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/1/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -183,19 +211,19 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D/Hat:position")
+tracks/2/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658)]
+"values": [Vector3(-0.034, 0.217, -0.054)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/3/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -224,7 +252,7 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/1/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
@@ -236,14 +264,14 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D/Hat:position")
+tracks/2/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658)]
+"values": [Vector3(-0.034, 0.217, -0.054)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -288,7 +316,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/2/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -300,14 +328,14 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Model/Node3D/Hat:position")
+tracks/3/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0, 0.2),
 "transitions": PackedFloat32Array(0.5, 1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658), Vector3(-0.03408611, 0.35339165, -0.13795091)]
+"values": [Vector3(-0.034, 0.217, -0.054), Vector3(-0.034, 0.165, -0.138)]
 }
 
 [sub_resource type="Animation" id="Animation_yu5vu"]
@@ -339,7 +367,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/2/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -351,14 +379,14 @@ tracks/2/keys = {
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Model/Node3D/Hat:position")
+tracks/3/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658)]
+"values": [Vector3(-0.034, 0.217, -0.054)]
 }
 
 [sub_resource type="Animation" id="Animation_pci0a"]
@@ -391,19 +419,19 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D/Hat:position")
+tracks/2/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658)]
+"values": [Vector3(-0.034, 0.217, -0.054)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/3/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -431,19 +459,19 @@ tracks/0/keys = {
 tracks/1/type = "value"
 tracks/1/imported = false
 tracks/1/enabled = true
-tracks/1/path = NodePath("Model/Node3D/Hat:position")
+tracks/1/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
 "times": PackedFloat32Array(0, 0.25),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658), Vector3(-0.03408611, 0.41588074, 0.06841718)]
+"values": [Vector3(-0.034, 0.217, -0.054), Vector3(-0.034, 0.228, 0.068)]
 }
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/2/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -496,19 +524,19 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("Model/Node3D/Hat:position")
+tracks/2/path = NodePath("Model/Node3D/Torso/Hat:position")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4053204, -0.05356658)]
+"values": [Vector3(-0.034, 0.217, -0.054)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
 tracks/3/enabled = true
-tracks/3/path = NodePath("Model/Node3D/Hat:rotation")
+tracks/3/path = NodePath("Model/Node3D/Torso/Hat:rotation")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
@@ -542,9 +570,26 @@ state_config = Dictionary[int, ExtResource("2_kyi2e")]({
 4: SubResource("Resource_5g1ux")
 })
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=2146561547]
+[node name="AttachmentPoints" type="Node3D" parent="." unique_id=1862122857]
+
+[node name="Head" type="Node3D" parent="AttachmentPoints" unique_id=317700511]
+transform = Transform3D(1.3113416e-07, 1, 0, -1, 1.3113416e-07, 0, 0, 0, 1, 0, 0.625, 0)
+
+[node name="Hand" type="Node3D" parent="AttachmentPoints" unique_id=1028626978]
+transform = Transform3D(0.5334078, -0.8458582, 0, 0.8458582, 0.5334078, 0, 0, 0, 1, -0.16076256, 0.41118115, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="AttachmentPoints/Hand" unique_id=1934733003]
+mesh = SubResource("SphereMesh_yu5vu")
+
+[node name="Foot" type="Node3D" parent="AttachmentPoints" unique_id=994837239]
+
+[node name="BodyCollider" type="CollisionShape3D" parent="." unique_id=2146561547]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 shape = SubResource("CapsuleShape3D_06umm")
+
+[node name="BoxCollider" type="CollisionShape3D" parent="." unique_id=1266541093]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
+shape = SubResource("BoxShape3D_yu5vu")
 
 [node name="WallDetect" type="RayCast3D" parent="." unique_id=775194730]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
@@ -560,23 +605,31 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 [node name="Node3D" type="Node3D" parent="Model" unique_id=572634374]
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0)
 
-[node name="Body" type="MeshInstance3D" parent="Model/Node3D" unique_id=1900325849]
+[node name="Torso" type="MeshInstance3D" parent="Model/Node3D" unique_id=1900325849]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.188, 0)
 mesh = SubResource("CapsuleMesh_dwnvf")
 
-[node name="Nose" type="MeshInstance3D" parent="Model/Node3D" unique_id=703829523]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1783824, 0.14784649)
+[node name="Nose" type="MeshInstance3D" parent="Model/Node3D/Torso" unique_id=703829523]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.009617567, 0.14784649)
 mesh = SubResource("SphereMesh_06umm")
 
-[node name="Hat" type="MeshInstance3D" parent="Model/Node3D" unique_id=427783462]
-transform = Transform3D(0.9056425, -0.16658506, 0.38994944, 0, 0.91960263, 0.39285085, -0.4240412, -0.35578266, 0.83283126, -0.03408611, 0.4053204, -0.05356658)
+[node name="Hat" type="MeshInstance3D" parent="Model/Node3D/Torso" unique_id=427783462]
+transform = Transform3D(0.9056425, -0.16658506, 0.38994944, 0, 0.91960263, 0.39285085, -0.4240412, -0.35578266, 0.83283126, -0.034, 0.217, -0.054)
 mesh = SubResource("CylinderMesh_kyi2e")
 
-[node name="Pom" type="MeshInstance3D" parent="Model/Node3D/Hat" unique_id=12454894]
+[node name="Pom" type="MeshInstance3D" parent="Model/Node3D/Torso/Hat" unique_id=12454894]
 transform = Transform3D(0.90564287, 1.4901163e-08, -0.4240414, -0.166585, 0.91960233, -0.3557825, 0.3899494, 0.3928508, 0.8328312, -0.004484944, 0.10951209, -0.0015540421)
 mesh = SubResource("SphereMesh_58ja8")
 
+[node name="Legs" type="MeshInstance3D" parent="Model/Node3D" unique_id=17034041]
+mesh = SubResource("CylinderMesh_58ja8")
+
+[node name="Feet" type="MeshInstance3D" parent="Model/Node3D/Legs" unique_id=1658534652]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+mesh = SubResource("CylinderMesh_5g1ux")
+
 [node name="InteractionIndicator" type="Node3D" parent="." unique_id=1743642341]
-top_level = true
+visible = false
 script = ExtResource("3_yu5vu")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="InteractionIndicator" unique_id=323824407]
