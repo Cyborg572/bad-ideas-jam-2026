@@ -165,6 +165,9 @@ func _physics_process(delta: float) -> void:
 	elif state == State.Airborn:
 		change_state(State.Grounded)
 
+	# Count off cooldowns
+	hanging_cooldown -= delta
+
 	if Input.is_action_just_pressed("camera_reset"):
 		active_camera.align(rotation.y, 10)
 
@@ -272,8 +275,6 @@ func _physics_process(delta: float) -> void:
 				hanging = true
 				hanging_cooldown = 1
 				velocity = Vector3.ZERO
-			else:
-				hanging_cooldown -= delta
 
 			if is_falling() && wall_detect.is_colliding():
 				direction = direction.slide(wall_normal)
