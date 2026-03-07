@@ -100,6 +100,7 @@ func _enter_attachment(from : Attachment, to : Attachment) -> void:
 			box_collider.disabled = true
 			box.slam()
 		Attachment.Boxed:
+			box.attach(self)
 			box_collider.position = attachment_points['foot'].position - box.attachment_point.position
 			#box.pop()
 		_:
@@ -126,6 +127,14 @@ func _enter_state(from : State, to : State) -> void:
 	if from == to: return
 	#print_debug("entering ", State.keys()[to])
 	match to:
+		State.Grounded:
+			if (
+				attachment == Attachment.Free
+				&& box.is_open
+				&& distance_to_box < 0.25 
+				&& position.y > box.attachment_point.position.y
+			):
+				change_attachment(Attachment.Boxed)
 		State.Airborn:
 			falling = false
 			hanging = false
@@ -220,7 +229,6 @@ func get_best_side_view(normal: Vector3) -> float:
 
 func popToBox() -> void:
 	position = box.position
-	box.attach(self)
 	change_attachment(Attachment.Boxed)
 	visible = false
 	model.scale.y = 0.1
@@ -326,7 +334,7 @@ func _physics_process(delta: float) -> void:
 
 			if sharp:
 				if can_flip == false:
-					anim.play("Skid", 0.25)
+					anim.play("Free/Skid", 0.25)
 				can_flip = true
 			else:
 				if can_flip == true:
@@ -345,7 +353,7 @@ func _physics_process(delta: float) -> void:
 					anim.play("Free/Idle", 0.5)
 
 			# Handle jump.
-			if Input.is_action_just_pressed("Free/Jump"):
+			if Input.is_action_just_pressed("Jump"):
 				if (can_flip):
 					anim.play("Free/Flip")
 					velocity = Vector3.UP * (get_jump_strength() * 1.5)
