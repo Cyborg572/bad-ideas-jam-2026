@@ -342,7 +342,7 @@ func _physics_process(delta: float) -> void:
 
 			if is_on_wall():
 				wall_normal = get_wall_normal()
-				ledge_hook.target_position = wall_normal * -0.5
+				ledge_hook.target_position = wall_normal * -0.3
 				wall_detect.target_position = wall_normal * 2
 			else:
 				# If the wall's gone, we can work out what the normal was
@@ -364,6 +364,7 @@ func _physics_process(delta: float) -> void:
 			# Left the ledge or hit crouch
 			if !ledge_hook.is_colliding() || Input.is_action_just_pressed("Crouch"):
 				active_camera.align(best_side_view, 10)
+				hanging_cooldown = 1
 				hanging = false
 
 			# Handle jump.
@@ -389,8 +390,8 @@ func _physics_process(delta: float) -> void:
 			var gravity := get_gravity()
 
 			# Ledge Logic
-			ledge_hook.target_position = wall_normal * -0.5
-			wall_detect.target_position = wall_normal * -1
+			ledge_hook.target_position = wall_normal * -0.3
+			wall_detect.target_position = wall_normal * -0.5
 
 			if (
 				hanging_cooldown <= 0
@@ -421,6 +422,24 @@ func _physics_process(delta: float) -> void:
 		State.Airborn:
 			# Apply gravity
 			velocity += get_gravity() * delta
+
+			# Ledge Logic
+			var ledge_direction := Vector3.MODEL_FRONT.rotated(Vector3.UP, rotation.y).normalized()
+			ledge_hook.target_position = ledge_direction * 0.3
+			wall_detect.target_position = ledge_direction * 0.5
+
+			if (
+				hanging_cooldown <= 0
+				&& is_falling()
+				&& ledge_hook.is_colliding()
+				&& not wall_detect.is_colliding()
+			):
+				hanging = true
+				hanging_cooldown = 1
+				velocity = Vector3.ZERO
+
+			if is_falling() && wall_detect.is_colliding():
+				velocity += ledge_direction * 0.5
 
 			var flipping = anim.current_animation == "Flip"
 
