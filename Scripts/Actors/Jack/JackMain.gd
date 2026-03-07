@@ -130,8 +130,8 @@ func _enter_state(from : State, to : State) -> void:
 			falling = false
 			hanging = false
 			hanging_cooldown = 0.0
-			if (anim.current_animation != "Flip"):
-				anim.play("Jump", 0.1)
+			if (anim.current_animation != "Free/Flip"):
+				anim.play("Free/Jump", 0.1)
 		_:
 			pass
 
@@ -303,7 +303,7 @@ func _physics_process(delta: float) -> void:
 
 	match state:
 		State.Grounded when attachment == Attachment.Boxed:
-			anim.play("Idle")
+			anim.play("Free/Idle")
 			apply_movement(Vector3.ZERO, delta)
 
 			if (direction):
@@ -330,7 +330,7 @@ func _physics_process(delta: float) -> void:
 				can_flip = true
 			else:
 				if can_flip == true:
-					anim.play_backwards("Skid")
+					anim.play_backwards("Free/Skid")
 
 				can_flip = false
 
@@ -338,16 +338,16 @@ func _physics_process(delta: float) -> void:
 					follow_motion(direction, delta * 6)
 
 				if speed > get_max_move_speed() / 2:
-					anim.play("Run", 0.5)
+					anim.play("Free/Run", 0.5)
 				elif speed > 0:
-					anim.play("Walk", 0.5)
+					anim.play("Free/Walk", 0.5)
 				else:
-					anim.play("Idle", 0.5)
+					anim.play("Free/Idle", 0.5)
 
 			# Handle jump.
-			if Input.is_action_just_pressed("Jump"):
+			if Input.is_action_just_pressed("Free/Jump"):
 				if (can_flip):
-					anim.play("Flip")
+					anim.play("Free/Flip")
 					velocity = Vector3.UP * (get_jump_strength() * 1.5)
 				else:
 					velocity.y = get_jump_strength()
@@ -385,8 +385,13 @@ func _physics_process(delta: float) -> void:
 			# Handle jump.
 			elif Input.is_action_just_pressed("Jump"):
 				active_camera.align(best_side_view, 10)
+				hanging_cooldown = 1
+				
+				
 				hanging = false
-				if wall_dot > 0.8:
+				if attachment == Attachment.Boxed:
+					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * -0.5)
+				elif wall_dot > 0.8:
 					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 					follow_motion(wall_normal, 60 * delta)
 				else:
@@ -431,8 +436,11 @@ func _physics_process(delta: float) -> void:
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
 				active_camera.align(get_best_side_view(wall_normal), 10)
-				velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
-				follow_motion(wall_normal, 60 * delta)
+				if attachment == Attachment.Boxed:
+					velocity = wall_normal
+				else:
+					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
+					follow_motion(wall_normal, 60 * delta)
 
 		State.Airborn:
 			# Apply gravity
@@ -456,7 +464,7 @@ func _physics_process(delta: float) -> void:
 			if is_falling() && wall_detect.is_colliding():
 				velocity += ledge_direction * 0.5
 
-			var flipping = anim.current_animation == "Flip"
+			var flipping = anim.current_animation == "Free/Flip"
 
 			apply_movement(direction, delta, 1.5 if flipping else 1.0)
 			if flipping:
@@ -464,8 +472,8 @@ func _physics_process(delta: float) -> void:
 			
 			if !falling && is_falling():
 				falling = true
-				anim.play("Fall", 1)
-				anim.queue("Falling")
+				anim.play("Free/Fall", 1)
+				anim.queue("Free/Falling")
 
 		State.Crouched:
 			print("Crouching")

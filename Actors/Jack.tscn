@@ -6,7 +6,7 @@
 
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
-boxed_move_speed = 4.0
+boxed_move_speed = 3.0
 boxed_friction = 20.0
 boxed_jump_strength = 3.5
 boxed_max_move_speed = 4.0
@@ -18,6 +18,8 @@ move_speed = 2.5
 friction = 0.5
 boxed_move_speed = 1.0
 boxed_friction = 0.5
+boxed_jump_strength = 8.0
+boxed_max_move_speed = 3.0
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
 [sub_resource type="Resource" id="Resource_di1ys"]
@@ -647,7 +649,7 @@ mesh = SubResource("CylinderMesh_yu5vu")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=391140173]
-libraries/ = SubResource("AnimationLibrary_yu5vu")
+libraries/Free = SubResource("AnimationLibrary_yu5vu")
 
 [node name="Timers" type="Node" parent="." unique_id=1500651055]
 
