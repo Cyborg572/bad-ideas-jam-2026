@@ -2,7 +2,9 @@ class_name TheBox
 extends Attachable
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
-@onready var interaction_point: InteractionPoint = $InteractionPoint
+@onready var collisions_enabled : bool = true
+@onready var closed_collider: CollisionShape3D = $ClosedCollider
+@onready var open_collider: CollisionShape3D = $OpenCollider
 
 var is_open : bool = false
 
@@ -12,39 +14,67 @@ func _ready() -> void:
 
 
 func pop() -> void:
+	open(true)
+
+
+func toggle_open(fast : bool = false) -> void:
+	if is_open:
+		close(fast)
+	else:
+		open(fast)
+
+
+func open(fast : bool = false) -> void:
 	if is_open: return
 
 	is_open = true
-	anim.play("Pop")
+	switch_collider()
+	if fast:
+		anim.play("Pop")
+	else:
+		anim.play("Open")
 
-func open() -> void:
-	if is_open: return
-
-	is_open = true
-	anim.play("Open")
-
-func close() -> void:
+func close(fast : bool = false) -> void:
 	if not is_open: return
 	
 	is_open = false
+	switch_collider()
+	if fast:
+		anim.speed_scale = 10
 	anim.play_backwards("Open")
 
 
 func slam() -> void:
-	if not is_open: return
+	close(true)
 
-	is_open = false
-	anim.speed_scale = 2
-	anim.play_backwards("Open")
+
+## If collisions are enabled, set the appropriate collider (open vs. closed).
+func switch_collider() -> void:
+	if collisions_enabled: enable_collisions()
+
+
+func enable_collisions() -> void:
+	collisions_enabled = true
+	if is_open:
+		open_collider.disabled = false
+		closed_collider.disabled = true
+	else:
+		open_collider.disabled = true
+		closed_collider.disabled = false
+
+
+func disable_collisions() -> void:
+	collisions_enabled = false
+	open_collider.disabled = true
+	closed_collider.disabled = true
+
 
 func _attach(_target : Node3D) -> void:
-	interaction_point.disable()
-	$CollisionShape3D.disabled = true
+	disable_collisions()
 
 
 func _detach(_target : Node3D) -> void:
-	interaction_point.enable()
-	$CollisionShape3D.disabled = false
+	enable_collisions()
 
 
 func _on_interaction_point_interaction(_interaction_point: InteractionPoint) -> void:

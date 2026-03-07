@@ -8,6 +8,7 @@ signal detached(attachable: Attachable, target : Node3D)
 @export var attachment : Node3D
 
 var attachment_point : Node3D = Node3D.new()
+var interaction_point : InteractionPoint
 
 #region Attach
 ## Override in a child class to do stuff before attachments.
@@ -33,6 +34,8 @@ func attach(target : Node3D):
 
 	has_attachment = true
 	attachment = target
+	interaction_point.disable()
+	set_collision_layer_value(1, false)
 	_attach(target)
 
 	attached.emit(self, target)
@@ -63,6 +66,8 @@ func detach():
 	_before_detach(attachment)
 
 	has_attachment = false
+	interaction_point.enable()
+	#set_collision_layer_value(1, true)
 	_detach(attachment)
 
 	detached.emit(self, attachment)
@@ -70,14 +75,64 @@ func detach():
 #endregion
 
 
+func be_held(delta : float) -> void:
+	if attachment.has_method("hold_item"):
+		attachment.hold_item(self, delta)
+	else:
+		track(0, attachment)
+
+
+func reposition(speed : float, target_position: Vector3 = attachment.global_position):
+	var offset_position := target_position - attachment_point.position
+	if speed == 0:
+		position = target_position
+		position = offset_position
+	else:
+		position = position.move_toward(offset_position, speed)
+
+
+func reorient(speed : float, orientation: Vector3 = Vector3(0, rotation.y, 0)):
+	if speed == 0:
+		rotation = orientation
+		return
+
+	var current_rotation = Quaternion.from_euler(rotation)
+	var target_rotation = Quaternion.from_euler(orientation)
+	rotation = current_rotation.slerp(target_rotation, speed).get_euler()
+
+
+func track(speed: float, target: Node3D = attachment):
+	reposition(speed, target.global_position)
+	reorient(speed, target.global_rotation)
+
+
 func _ready() -> void:
+	var maybe_interaction = get_node_or_null("InteractionPoint")
+	if maybe_interaction is InteractionPoint:
+		interaction_point = maybe_interaction
+	else:
+		print("Creating an interaction point.")
+		var default_point : PackedScene = load("res://Actors/Areas/InteractionPoint.tscn")
+		interaction_point = default_point.instantiate()
+		interaction_point.type = InteractionPoint.InteractionType.attachable
+		add_child(interaction_point)
 	var custom_attachment = get_node_or_null("AttachmentPoint")
-	print("Using custom attach ", self, " ", custom_attachment)
 	if custom_attachment:
 		attachment_point = custom_attachment
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if has_attachment:
-		print("Following ", attachment)
-		self.global_position = attachment.global_position - attachment_point.position
-		self.global_rotation = attachment.global_rotation - attachment_point.rotation
+		be_held(delta)
+	else:
+		if not is_on_floor():
+			velocity += get_gravity() * delta
+			velocity.x = move_toward(velocity.x, 0.0, 0.5 * delta)
+			velocity.z = move_toward(velocity.z, 0.0, 0.5 * delta)
+		else:
+			velocity.x = move_toward(velocity.x, 0.0, 6 * delta)
+			velocity.z = move_toward(velocity.z, 0.0, 6 * delta)
+			set_collision_layer_value(1, true)
+
+		
+		reorient(10 * delta)
+		move_and_slide();

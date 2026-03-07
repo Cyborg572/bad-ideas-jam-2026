@@ -583,6 +583,9 @@ mesh = SubResource("SphereMesh_yu5vu")
 
 [node name="Foot" type="Node3D" parent="AttachmentPoints" unique_id=994837239]
 
+[node name="Throw" type="Node3D" parent="AttachmentPoints" unique_id=2113787547]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0.25)
+
 [node name="BodyCollider" type="CollisionShape3D" parent="." unique_id=2146561547]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 shape = SubResource("CapsuleShape3D_06umm")
@@ -642,3 +645,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=391140173]
 libraries/ = SubResource("AnimationLibrary_yu5vu")
+
+[node name="Timers" type="Node" parent="." unique_id=1500651055]
+
+[node name="PopTimer" type="Timer" parent="Timers" unique_id=2066583994]
+one_shot = true
+
+[node name="PopButtonTimer" type="Timer" parent="Timers" unique_id=1209321431]
+one_shot = true

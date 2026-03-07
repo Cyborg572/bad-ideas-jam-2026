@@ -28,8 +28,6 @@ func get_move_speed(attachment: Jack.Attachment):
 			return move_speed
 		Jack.Attachment.Boxed:
 			return boxed_move_speed
-		Jack.Attachment.Carry:
-			return carry_move_speed
 
 
 func get_friction(attachment: Jack.Attachment):
@@ -38,8 +36,6 @@ func get_friction(attachment: Jack.Attachment):
 			return friction
 		Jack.Attachment.Boxed:
 			return boxed_friction
-		Jack.Attachment.Carry:
-			return carry_friction
 
 
 func get_jump_strength(attachment: Jack.Attachment):
@@ -48,8 +44,6 @@ func get_jump_strength(attachment: Jack.Attachment):
 			return jump_strength
 		Jack.Attachment.Boxed:
 			return boxed_jump_strength
-		Jack.Attachment.Carry:
-			return carry_jump_strength
 
 
 func get_max_move_speed(attachment: Jack.Attachment):
@@ -58,8 +52,6 @@ func get_max_move_speed(attachment: Jack.Attachment):
 			return max_move_speed
 		Jack.Attachment.Boxed:
 			return boxed_max_move_speed
-		Jack.Attachment.Carry:
-			return carry_max_move_speed
 
 
 func get_max_speed(attachment: Jack.Attachment):
@@ -68,5 +60,3 @@ func get_max_speed(attachment: Jack.Attachment):
 			return max_speed
 		Jack.Attachment.Boxed:
 			return boxed_max_speed
-		Jack.Attachment.Carry:
-			return carry_max_speed

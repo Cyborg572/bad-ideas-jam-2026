@@ -1,11 +1,15 @@
 class_name Jack
 extends CharacterBody3D
 
-enum Attachment { Free, Boxed, Carry }
+signal popped(box: TheBox)
+
+enum Attachment { Free, Boxed }
 enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 
 @export var state_config : Dictionary[State, JackStateConfiguration]
-@export var attached_to : bool = false
+@export var is_carrying : bool = false
+@export var carried_item : Attachable
+@export var attachment : Attachment = Attachment.Free
 @export var box : TheBox
 
 @onready var model := $Model
@@ -15,18 +19,21 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @onready var ledge_hook: RayCast3D = $LedgeHook
 @onready var wall_detect: RayCast3D = $WallDetect
 @onready var box_collider: CollisionShape3D = $BoxCollider
+@onready var pop_timer: Timer = $Timers/PopTimer
+@onready var pop_button_timer: Timer = $Timers/PopButtonTimer
 
 var state : State = State.Grounded
-var attachment : Attachment = Attachment.Free
 var attachment_points : Dictionary[String, Node3D] = {}
 
 var can_flip : bool = false
 var falling : bool = false
+var throwing : bool = false
 var aiming : bool = false
 var hanging : bool = false
 var hanging_cooldown : float = 0.0
 
 var active_camera : CameraRig
+var distance_to_box : float = 0
 
 func _ready() -> void:
 	set_active_camera(GameManager.main_camera)
@@ -35,6 +42,9 @@ func _ready() -> void:
 	attachment_points['head'] = $AttachmentPoints/Head
 	attachment_points['hand'] = $AttachmentPoints/Hand
 	attachment_points['foot'] = $AttachmentPoints/Foot
+	attachment_points['throw'] = $AttachmentPoints/Throw
+	pop_timer.timeout.connect(popToBox)
+	pop_button_timer.timeout.connect(popToBox)
 
 
 #region State value accessors
@@ -88,7 +98,7 @@ func _enter_attachment(from : Attachment, to : Attachment) -> void:
 			box.slam()
 		Attachment.Boxed:
 			box_collider.position = attachment_points['foot'].position - box.attachment_point.position
-			box.pop()
+			#box.pop()
 		_:
 			pass
 #endregion
@@ -133,6 +143,11 @@ func set_active_camera(camera: CameraRig):
 func get_ground_speed(vector: Vector3) -> Vector3:
 	return vector * Vector3(1, 0, 1)
 
+
+func get_angle_to_box() -> float:
+	var box_direction = (box.position - position).normalized()
+	var look_angle = Vector2(box_direction.z, box_direction.x).angle()
+	return look_angle
 #endregion
 
 #region Process helpers
@@ -200,8 +215,43 @@ func get_best_side_view(normal: Vector3) -> float:
 
 #endregion
 
+func popToBox() -> void:
+	position = box.position
+	box.attach(self)
+	change_attachment(Attachment.Boxed)
+	visible = false
+	model.scale.y = 0.1
+	active_camera.start_chase()
+	await active_camera.chase_ended
+	box.pop()
+	visible = true
+	model.scale.y = 1
+	popped.emit(box)
+
+
+func hold_item(item : Attachable, delta) -> void:
+	match item:
+		carried_item when is_carrying:
+			print("Holding ", item)
+			item.track(10 * delta, attachment_points['hand'])
+		box:
+			print("Doing the box, actually.")
+			item.reposition(0, attachment_points['foot'].global_position)
+			item.reorient(0)
+		_:
+			pass
+
+func drop_carried_item() -> void:
+	if not is_carrying: return
+	is_carrying = false
+	carried_item.reposition(0, attachment_points['throw'].global_position)
+	carried_item.velocity = Vector3.MODEL_FRONT.rotated(Vector3.UP, rotation.y).normalized() * 2
+	carried_item.detach()
 
 func _physics_process(delta: float) -> void:
+	var direction = get_direction()
+	distance_to_box = (box.position - position).length()
+	#print("distance from box: ", (position - box.position).length())
 	# Toggle Airborn state automatically
 	if not is_on_floor():
 		if state != State.Airborn:
@@ -215,25 +265,42 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("camera_reset"):
 		active_camera.align(rotation.y, 10)
 
+	if Input.is_action_just_pressed("Interact"):
+		if GameManager.active_interaction_point: return
+		drop_carried_item()
+		#if not is_carrying: return
+		#is_carrying = false
+		#carried_item.detach()
+
 	if Input.is_action_just_pressed("Pop"):
+		print("Distance: ", distance_to_box)
 		match attachment:
 			Attachment.Boxed:
 				box.detach()
 				change_attachment(Attachment.Free)
 				velocity.y = get_jump_strength()
-			Attachment.Carry:
-				box.attach(attachment_points['foot'])
-				change_attachment(Attachment.Boxed)
+			Attachment.Free when is_carrying && carried_item == box:
+				is_carrying = false
+				velocity.y = get_jump_strength()
+				popToBox()
 			Attachment.Free when box:
-				position = box.position
-				box.attach(attachment_points['foot'])
-				change_attachment(Attachment.Boxed)
+				if distance_to_box < 1:
+					box.toggle_open()
+				else:
+					box.close()
+				if not box.is_open:
+					pop_button_timer.start()
 			_:
 				print("No pop!")
 
+	if Input.is_action_just_released("Pop"):
+		if pop_button_timer.time_left > pop_button_timer.wait_time / 3 && distance_to_box > 3:
+			active_camera.align(get_angle_to_box(), 10)
+		if not pop_button_timer.is_stopped():
+			pop_button_timer.stop()
+
 	match state:
 		State.Grounded:
-			var direction := get_direction()
 			apply_movement(direction, delta)
 
 			var speed := get_ground_speed(velocity).length()
@@ -282,7 +349,6 @@ func _physics_process(delta: float) -> void:
 				wall_normal = ledge_hook.target_position.normalized() * -1
 
 			var back_to_wall := wall_detect.is_colliding()
-			var direction := get_direction()
 			var wall_dot := direction.normalized().dot(wall_normal)
 			var best_side_view = rotation.y if not back_to_wall else get_best_side_view(wall_normal);
 
@@ -320,7 +386,6 @@ func _physics_process(delta: float) -> void:
 
 		State.Airborn when is_on_wall_only():
 			var wall_normal := get_wall_normal()
-			var direction := get_direction()
 			var gravity := get_gravity()
 
 			# Ledge Logic
@@ -357,7 +422,6 @@ func _physics_process(delta: float) -> void:
 			# Apply gravity
 			velocity += get_gravity() * delta
 
-			var direction = get_direction()
 			var flipping = anim.current_animation == "Flip"
 
 			apply_movement(direction, delta, 1.5 if flipping else 1.0)
@@ -385,9 +449,11 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 	var types := InteractionPoint.InteractionType
 	match interaction_point.type:
 		types.attachable:
-			box = interaction_point.get_parent_node_3d()
-			box.attach(attachment_points['hand'])
-			change_attachment(Attachment.Carry)
-			print("Attached to ", box)
+			carried_item = interaction_point.get_parent_node_3d()
+			carried_item.attach(self)
+			is_carrying = true
+			print("Carrying ", box)
+			if carried_item == box:
+				carried_item.close()
 		_:
 			print("New interaction. Type: ", types.keys()[interaction_point.type])

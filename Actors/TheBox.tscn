@@ -1,10 +1,13 @@
 [gd_scene format=3 uid="uid://cu1llcu6fuf5h"]
 
-[ext_resource type="PackedScene" uid="uid://dx1tfso30q1uh" path="res://Actors/Areas/InteractionPoint.tscn" id="1_7oreh"]
 [ext_resource type="Script" uid="uid://ckri8w1p4x2dx" path="res://Scripts/Actors/TheBox.gd" id="1_wbnku"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="2_wbnku"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n05s6"]
 size = Vector3(0.25, 0.25, 0.25)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wbnku"]
+size = Vector3(0.25, 0.2, 0.25)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n05s6"]
 diffuse_mode = 3
@@ -98,13 +101,21 @@ _data = {
 &"RESET": SubResource("Animation_wbnku")
 }
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_ltv4v"]
+height = 0.25
+radius = 0.25
+
 [node name="TheBox" type="CharacterBody3D" unique_id=2010327691]
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_wbnku")
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=1480961779]
+[node name="ClosedCollider" type="CollisionShape3D" parent="." unique_id=1480961779]
 shape = SubResource("BoxShape3D_n05s6")
+
+[node name="OpenCollider" type="CollisionShape3D" parent="." unique_id=1625938283]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.025, 0)
+shape = SubResource("BoxShape3D_wbnku")
 
 [node name="Model" type="Node3D" parent="." unique_id=204800911]
 
@@ -136,9 +147,13 @@ libraries/ = SubResource("AnimationLibrary_ltv4v")
 [node name="AttachmentPoint" type="Node3D" parent="." unique_id=1107156217]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
 
-[node name="InteractionPoint" parent="." unique_id=697791151 instance=ExtResource("1_7oreh")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0)
+[node name="InteractionPoint" type="Area3D" parent="." unique_id=502210270]
+collision_layer = 3
+collision_mask = 4
+script = ExtResource("2_wbnku")
 type = 0
-show_pointer_reference = false
+pointer_position = Vector3(0, 0.25, 0)
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
 
-[connection signal="interaction" from="InteractionPoint" to="." method="_on_interaction_point_interaction"]
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" unique_id=958876922]
+shape = SubResource("CylinderShape3D_ltv4v")

@@ -1,6 +1,9 @@
 class_name CameraRig
 extends Node3D
 
+signal chase_started(target: Node3D)
+signal chase_ended(target: Node3D)
+
 @export var is_main_camera : bool = false
 @export var target:Node3D;
 @export var camera_sensitivity: float = 2.5
@@ -17,6 +20,8 @@ var aligning : bool = false
 var alignment_target : Vector3 = default_alignment
 var alignment_speed : float = 0.0
 var alignment_one_time : bool = false
+var chasing = false
+var chase_speed = 10
 
 func get_target_position() -> Vector3:
 	var target_position : Vector3 = target.position
@@ -29,6 +34,21 @@ func get_target_position() -> Vector3:
 
 func rotate_relative_to_view(direction: Vector3) -> Vector3:
 	return direction.rotated(Vector3.UP, camera.global_rotation.y)
+
+
+func start_chase(speed: float = 10, force = false):
+	if force || chase_speed < speed:
+		chase_speed = speed
+	if not chasing:
+		chasing = true
+		chase_started.emit(target)
+
+
+func end_chase():
+	if chasing:
+		chasing = false
+		chase_speed = 10
+		chase_ended.emit(target)
 
 
 func align(target_angle = default_alignment, speed: float = 0.0, one_time = false) -> void:
@@ -103,7 +123,18 @@ func _process(delta: float) -> void:
 	if !target:
 		return
 
-	position = position.move_toward(get_target_position(), 10 * delta)
+	var target_position = get_target_position()
+	var distance = (target_position - position).length()
+
+	if distance > 5:
+		start_chase(20)
+	elif distance > 2:
+		start_chase(10)
+	
+	if distance < 0.5:
+		end_chase()
+
+	position = position.move_toward(get_target_position(), chase_speed * delta)
 	
 	camera.position = lerp(camera.position, camera_position.position, delta*camera_speed)
 	camera.global_rotation.z = 0
