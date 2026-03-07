@@ -9,7 +9,7 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @export var state_config : Dictionary[State, JackStateConfiguration]
 @export var is_carrying : bool = false
 @export var carried_item : Attachable
-@export var attachment : Attachment = Attachment.Free
+@export var starting_attachment : Attachment = Attachment.Free
 @export var box : TheBox
 
 @onready var model := $Model
@@ -23,6 +23,7 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @onready var pop_button_timer: Timer = $Timers/PopButtonTimer
 
 var state : State = State.Grounded
+var attachment : Attachment = Attachment.Free
 var attachment_points : Dictionary[String, Node3D] = {}
 
 var can_flip : bool = false
@@ -45,6 +46,8 @@ func _ready() -> void:
 	attachment_points['throw'] = $AttachmentPoints/Throw
 	pop_timer.timeout.connect(popToBox)
 	pop_button_timer.timeout.connect(popToBox)
+	if starting_attachment == Attachment.Boxed:
+		popToBox.call_deferred()
 
 
 #region State value accessors
@@ -232,12 +235,14 @@ func popToBox() -> void:
 func hold_item(item : Attachable, delta) -> void:
 	match item:
 		carried_item when is_carrying:
-			print("Holding ", item)
 			item.track(10 * delta, attachment_points['hand'])
 		box:
-			print("Doing the box, actually.")
 			item.reposition(0, attachment_points['foot'].global_position)
-			item.reorient(0)
+			match state:
+				State.Airborn:
+					item.reorient(10 * delta, global_rotation)
+				_:
+					item.reorient(0)
 		_:
 			pass
 
@@ -268,9 +273,6 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Interact"):
 		if GameManager.active_interaction_point: return
 		drop_carried_item()
-		#if not is_carrying: return
-		#is_carrying = false
-		#carried_item.detach()
 
 	if Input.is_action_just_pressed("Pop"):
 		print("Distance: ", distance_to_box)
@@ -300,6 +302,19 @@ func _physics_process(delta: float) -> void:
 			pop_button_timer.stop()
 
 	match state:
+		State.Grounded when attachment == Attachment.Boxed:
+			anim.play("Idle")
+			apply_movement(Vector3.ZERO, delta)
+
+			if (direction):
+				follow_motion(direction, delta * 6)
+
+			# Handle jump.
+			if Input.is_action_just_released("Jump"):
+				var launch_height = Vector3.UP * get_jump_strength()
+				var launch_direction = direction * get_move_speed()
+				velocity = launch_direction + launch_height
+
 		State.Grounded:
 			apply_movement(direction, delta)
 

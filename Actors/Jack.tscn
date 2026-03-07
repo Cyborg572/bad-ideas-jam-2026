@@ -7,7 +7,8 @@
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
 boxed_move_speed = 4.0
-boxed_jump_strength = 2.0
+boxed_friction = 20.0
+boxed_jump_strength = 3.5
 boxed_max_move_speed = 4.0
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
@@ -15,6 +16,8 @@ metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 script = ExtResource("2_kyi2e")
 move_speed = 2.5
 friction = 0.5
+boxed_move_speed = 1.0
+boxed_friction = 0.5
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
 [sub_resource type="Resource" id="Resource_di1ys"]
@@ -143,7 +146,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector3(-0.03408611, 0.4584607, -0.05356658)]
+"values": [Vector3(-0.034, 0.27, -0.054)]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
