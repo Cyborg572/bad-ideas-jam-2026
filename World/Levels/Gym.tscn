@@ -11,10 +11,15 @@
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
 [ext_resource type="Texture2D" uid="uid://bl7bk1piuj0xx" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_nor_gl_1k.jpg" id="8_veq21"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
+[ext_resource type="AudioStream" uid="uid://e7ubrd33ctp1" path="res://Music/pop_goes_weasel_1.ogg" id="12_wfd2y"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3yyff"]
-sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
-ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+sky_top_color = Color(0.3, 0.4516667, 1, 1)
+sky_horizon_color = Color(0.5621, 0.6180667, 0.73, 1)
+sky_curve = 0.34460932
+ground_bottom_color = Color(0.14543694, 0.19277301, 0.08920316, 1)
+ground_horizon_color = Color(0.5970826, 0.70362407, 0.61071444, 1)
+ground_curve = 0.019318745
 
 [sub_resource type="Sky" id="Sky_v1x4i"]
 sky_material = SubResource("ProceduralSkyMaterial_3yyff")
@@ -22,6 +27,9 @@ sky_material = SubResource("ProceduralSkyMaterial_3yyff")
 [sub_resource type="Environment" id="Environment_skitp"]
 background_mode = 2
 sky = SubResource("Sky_v1x4i")
+ambient_light_source = 3
+ambient_light_color = Color(1, 1, 1, 1)
+ambient_light_sky_contribution = 0.34
 tonemap_mode = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_v1x4i"]
@@ -85,9 +93,17 @@ script = ExtResource("1_3yyff")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=207703888]
 environment = SubResource("Environment_skitp")
 
+[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1162447976]
+transform = Transform3D(0.8660254, -2.1855694e-08, 0.5, -0.5, -3.7855173e-08, 0.8660254, 0, -1, -4.371139e-08, 5.6384954, 4.591539, -2.1853912)
+visible = false
+light_energy = 2.0
+
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=190034660]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 3.2663388, 0)
+transform = Transform3D(0.79505026, -2.6512863e-08, 0.6065436, -0.6065436, -3.4752752e-08, 0.79505026, 0, -1, -4.3711392e-08, 8.059591, 3.2663388, 0)
+light_color = Color(0.81, 0.9113333, 1, 1)
+light_energy = 0.5
 shadow_enabled = true
+shadow_opacity = 0.25
 
 [node name="CameraRig" parent="." unique_id=296487055 node_paths=PackedStringArray("target") instance=ExtResource("2_skitp")]
 is_main_camera = true
@@ -118,6 +134,28 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 mesh = SubResource("CylinderMesh_gkq5e")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Pillar" unique_id=1022082794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("CylinderShape3D_8txj2")
+
+[node name="Pillar2" type="StaticBody3D" parent="." unique_id=1595034733]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.211, 1.5, -14.043)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pillar2" unique_id=1841095883]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("CylinderMesh_gkq5e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pillar2" unique_id=878540155]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+shape = SubResource("CylinderShape3D_8txj2")
+
+[node name="Pillar3" type="StaticBody3D" parent="." unique_id=1300453740]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.211, 1.5, -5.043)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pillar3" unique_id=627171799]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
+mesh = SubResource("CylinderMesh_gkq5e")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Pillar3" unique_id=52655126]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 shape = SubResource("CylinderShape3D_8txj2")
 
@@ -211,6 +249,17 @@ mesh = SubResource("BoxMesh_wfd2y")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_lqj5n")
 
+[node name="Box11" type="StaticBody3D" parent="Obstacles" unique_id=646745996]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.46122, 1, -5)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Obstacles/Box11" unique_id=244614883]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+mesh = SubResource("BoxMesh_wfd2y")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Box11" unique_id=245438978]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("BoxShape3D_lqj5n")
+
 [node name="Box5" type="StaticBody3D" parent="Obstacles" unique_id=2106568164]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -5.53878, 4, 1)
 
@@ -254,3 +303,8 @@ mesh = SubResource("SphereMesh_lqj5n")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Attachable" unique_id=1283974407]
 shape = SubResource("SphereShape3D_enqkj")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=426143705]
+stream = ExtResource("12_wfd2y")
+volume_db = 4.132
+parameters/looping = true

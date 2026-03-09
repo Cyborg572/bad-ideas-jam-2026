@@ -100,6 +100,7 @@ func _enter_attachment(from : Attachment, to : Attachment) -> void:
 			box_collider.disabled = true
 			box.slam()
 		Attachment.Boxed:
+			velocity += box.velocity
 			box.attach(self)
 			box_collider.position = attachment_points['foot'].position - box.attachment_point.position
 			#box.pop()
@@ -128,13 +129,9 @@ func _enter_state(from : State, to : State) -> void:
 	#print_debug("entering ", State.keys()[to])
 	match to:
 		State.Grounded:
-			if (
-				attachment == Attachment.Free
-				&& box.is_open
-				&& distance_to_box < 0.25 
-				&& position.y > box.attachment_point.position.y
-			):
+			if is_standing_on_box() && box.is_open:
 				change_attachment(Attachment.Boxed)
+
 		State.Airborn:
 			falling = false
 			hanging = false
@@ -181,7 +178,7 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 		ground_speed += movement.slide(ground_speed.normalized())
 
 	ground_speed = ground_speed.move_toward(direction * ground_speed.length(), friction * delta)
-	ground_speed.limit_length(max_speed)
+	ground_speed = ground_speed.limit_length(max_speed)
 	
 	velocity = ground_speed + vertical_speed
 
@@ -196,6 +193,14 @@ func is_falling() -> bool:
 func is_freefall() -> bool:
 	return !is_on_floor() && !is_on_wall() && velocity.y < 0
 
+
+func is_standing_on_box() -> bool:
+	return (
+		is_on_floor()
+		&& attachment == Attachment.Free
+		&& distance_to_box < 0.25 
+		&& position.y > box.attachment_point.position.y
+	)
 
 func get_direction() -> Vector3:
 	# Get the input direction and handle the movement/deceleration.
@@ -294,7 +299,10 @@ func _physics_process(delta: float) -> void:
 				velocity.y = get_jump_strength()
 				popToBox()
 			Attachment.Free when box:
-				if distance_to_box < 1:
+				if is_standing_on_box() && not box.is_open:
+					velocity = Vector3.UP * get_jump_strength() * 2
+					box.pop()
+				elif distance_to_box < 1:
 					box.toggle_open()
 				else:
 					box.close()
@@ -319,6 +327,7 @@ func _physics_process(delta: float) -> void:
 
 			# Handle jump.
 			if Input.is_action_just_released("Jump"):
+				anim.play("Free/Jump", 0.5)
 				var launch_height = Vector3.UP * get_jump_strength()
 				var launch_direction = direction * get_move_speed()
 				velocity = launch_direction + launch_height
@@ -354,11 +363,20 @@ func _physics_process(delta: float) -> void:
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
-				if (can_flip):
+				if Input.is_action_pressed("Crouch"):
+					if speed > 1.5:
+						velocity += (Vector3.UP + (velocity.normalized() * 0.5)) * get_jump_strength()
+					else:
+						anim.play("Free/Flip")
+						velocity = Vector3.UP  * (get_jump_strength() * 1.5)
+				elif (can_flip):
 					anim.play("Free/Flip")
 					velocity = Vector3.UP * (get_jump_strength() * 1.5)
 				else:
 					velocity.y = get_jump_strength()
+
+			if Input.is_action_just_pressed("Attack"):
+				box.velocity += (Vector3.UP + (box.position - position).normalized()) * 2 * get_jump_strength()
 
 		State.Airborn when hanging:
 			var wall_normal : Vector3

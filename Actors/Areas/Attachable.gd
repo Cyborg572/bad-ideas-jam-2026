@@ -34,6 +34,7 @@ func attach(target : Node3D):
 
 	has_attachment = true
 	attachment = target
+	velocity = Vector3.ZERO
 	interaction_point.disable()
 	set_collision_layer_value(1, false)
 	_attach(target)
