@@ -10,9 +10,10 @@ config_version=5
 
 [application]
 
-config/name="Bad Ideas 2026"
+config/name="Bouncing Back"
 run/main_scene="uid://bdgb2e8xn3ry4"
 config/features=PackedStringArray("4.6", "GL Compatibility")
+boot_splash/bg_color=Color(0.19923878, 0.09553314, 0.20392117, 1)
 config/icon="res://icon.svg"
 
 [autoload]

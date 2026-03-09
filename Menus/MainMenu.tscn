@@ -50,7 +50,7 @@ theme_override_fonts/bold_font = ExtResource("5_5ncg0")
 theme_override_font_sizes/normal_font_size = 72
 theme_override_font_sizes/bold_font_size = 72
 bbcode_enabled = true
-text = "[b]Game Title Here[/b]"
+text = "[b]Bouncing Back[/b]"
 fit_content = true
 
 [node name="Start Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=777100360]
