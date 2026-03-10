@@ -5,25 +5,57 @@ extends Area3D
 signal interaction(interaction_point: InteractionPoint)
 
 enum InteractionType {
-	attachable,
-	sign,
-	switch,
-	custom
+	## The object will define the interaction type dynamically.
+	custom = 0,
+
+	## The object can be picked up.
+	attachable = 1,
+
+	## The object is a sign (or speaking NPC)
+	sign = 2,
+
+	## The object is switch
+	switch = 4,
+
+	## The object can be given an attachable object to hold
+	carrier = 8,
 }
 
+## What kind of interaction's are triggerd by this interaction point.
+@export var type := InteractionType.custom
 
+## Prevent interactions entirely
 @export var disabled : bool = false
-@export var type := InteractionType.sign
+
+@export_subgroup("Options")
+
+## Only activates when the player is close and roughly facing the interaction center
+@export var require_focus : bool = false
+
+## This object takes priority over other interactable objects
 @export var sticky : bool = false
+
+@export_subgroup("Indicator", "pointer_")
+## Show the interaction indicator's position in the editor.
+@export var pointer_show_reference : bool = true
+
+## Where should the player interaction indicator appear?
 @export var pointer_position : Vector3 = Vector3.UP
-@export var show_pointer_reference : bool = true
+
 
 ## Indicates this is the current focused interactable.
 var active : bool = false
+
+## Bodies to monitor (when focus is required)
+var monitored_bodies : Array[CharacterBody3D] = []
+
+## The indictor reference (appears only in the editor, and only when enabled)
 var pointer_refence : MeshInstance3D
+
 
 func get_global_pointer_position() -> Vector3:
 	return global_position + pointer_position
+
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -48,7 +80,10 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		pointer_refence.position = pointer_position
-		pointer_refence.visible = show_pointer_reference
+		pointer_refence.visible = pointer_show_reference
+
+	if require_focus and not disabled:
+		check_for_focus()
 
 
 func interact() -> void:
@@ -59,6 +94,7 @@ func interact() -> void:
 func disable() -> void:
 	disabled = true
 	visible = false
+	monitored_bodies = []
 	GameManager.clear_active_interaction_point(self)
 
 
@@ -66,6 +102,11 @@ func disable() -> void:
 func enable() -> void:
 	visible = true
 	disabled = false
+
+	# Pretend any bodies that are already in the Area just entered.
+	if has_overlapping_bodies():
+		for body in get_overlapping_bodies():
+			_on_body_entered.call_deferred(body)
 
 
 ## Mark this interaction point as the currently focused point
@@ -78,11 +119,33 @@ func deactivate() -> void:
 	active = false
 
 
-func _on_body_entered(_body: Node3D) -> void:
-	if not disabled:
+## Checks if a body that could trigger the interaction is looking at this point.
+func check_for_focus() -> void:
+	if monitored_bodies.is_empty(): return
+
+	for body in monitored_bodies:
+		var offset = (global_position - body.global_position).normalized()
+		var facing = Vector3.MODEL_FRONT.rotated(Vector3.UP, body.rotation.y).normalized()
+		if (offset.dot(facing) > 0.6):
+			GameManager.set_active_interaction_point(self)
+		else:
+			GameManager.clear_active_interaction_point(self)
+
+
+func _on_body_entered(body: Node3D) -> void:
+	if disabled: return
+
+	if not require_focus:
 		GameManager.set_active_interaction_point(self)
+		return
+
+	if body in monitored_bodies || not body is CharacterBody3D:
+		return
+
+	monitored_bodies.push_back(body)
 
 
-func _on_body_exited(_body: Node3D) -> void:
+func _on_body_exited(body: Node3D) -> void:
 	if not disabled:
 		GameManager.clear_active_interaction_point(self)
+		monitored_bodies.erase(body)

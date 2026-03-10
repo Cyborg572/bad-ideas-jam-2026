@@ -115,7 +115,9 @@ func _ready() -> void:
 		var default_point : PackedScene = load("res://Actors/Areas/InteractionPoint.tscn")
 		interaction_point = default_point.instantiate()
 		interaction_point.type = InteractionPoint.InteractionType.attachable
+		interaction_point.require_focus = true
 		add_child(interaction_point)
+
 	var custom_attachment = get_node_or_null("AttachmentPoint")
 	if custom_attachment:
 		attachment_point = custom_attachment

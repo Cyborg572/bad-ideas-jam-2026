@@ -1,7 +1,7 @@
 class_name InteractionIndicator
 extends Node3D
 
-@onready var parent : Node3D = $".."
+@onready var parent : Jack = $".."
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
@@ -12,8 +12,19 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	var should_indicate : bool = false
+	var interaction_point := GameManager.active_interaction_point
+	
 	if GameManager.active_interaction_point:
-		var interaction_point := GameManager.active_interaction_point
+		var types := InteractionPoint.InteractionType
+
+		match interaction_point.type:
+			types.attachable:
+				should_indicate = not parent.is_carrying
+			_:
+				should_indicate = true
+
+	if should_indicate:
 		var pointer_position = interaction_point.get_global_pointer_position()
 		position = position.move_toward(pointer_position, 10 * delta)
 		scale = scale.move_toward(Vector3(1, 1, 1), 10 * delta)
