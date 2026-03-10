@@ -259,11 +259,19 @@ func hold_item(item : Attachable, delta) -> void:
 		_:
 			pass
 
-func drop_carried_item() -> void:
+func drop_carried_item(force : float = 0.0, pitch : float = 0.0) -> void:
 	if not is_carrying: return
 	is_carrying = false
 	carried_item.reposition(0, attachment_points['throw'].global_position)
-	carried_item.velocity = Vector3.MODEL_FRONT.rotated(Vector3.UP, rotation.y).normalized() * 2
+	if force > 0:
+		var launch_dir = Vector3.MODEL_FRONT
+		if pitch > 0:
+			launch_dir = launch_dir.rotated(Vector3.MODEL_RIGHT, pitch)
+		launch_dir = launch_dir.rotated(Vector3.UP, rotation.y)
+		
+		carried_item.velocity = velocity + (launch_dir.normalized() * force)
+	else:
+		carried_item.velocity = velocity
 	carried_item.detach()
 
 func _physics_process(delta: float) -> void:
@@ -284,8 +292,16 @@ func _physics_process(delta: float) -> void:
 		active_camera.align(rotation.y, 10)
 
 	if Input.is_action_just_pressed("Interact"):
-		if GameManager.active_interaction_point: return
-		drop_carried_item()
+		var can_interact : bool = false
+		var is_pickup : bool = false
+		var types := InteractionPoint.InteractionType
+		if GameManager.active_interaction_point:
+			can_interact = true
+			is_pickup = GameManager.active_interaction_point.type == types.attachable
+		if can_interact && not (is_carrying && is_pickup) :
+			GameManager.trigger_interaction()
+		else:
+			drop_carried_item()
 
 	if Input.is_action_just_pressed("Pop"):
 		print("Distance: ", distance_to_box)
@@ -376,7 +392,9 @@ func _physics_process(delta: float) -> void:
 					velocity.y = get_jump_strength()
 
 			if Input.is_action_just_pressed("Attack"):
-				box.velocity += (Vector3.UP + (box.position - position).normalized()) * 2 * get_jump_strength()
+				if is_carrying: # && carried_item == box:
+					print("chucking ", carried_item)
+					drop_carried_item(3, PI/4)
 
 		State.Airborn when hanging:
 			var wall_normal : Vector3
@@ -515,12 +533,16 @@ func _physics_process(delta: float) -> void:
 
 func _on_global_interaction(interaction_point : InteractionPoint):
 	var types := InteractionPoint.InteractionType
+
 	match interaction_point.type:
 		types.attachable:
+			if is_carrying:
+				return
 			carried_item = interaction_point.get_parent_node_3d()
 			carried_item.attach(self)
 			is_carrying = true
-			print("Carrying ", box)
+			print("Carrying ", carried_item)
+			add_collision_exception_with(carried_item)
 			if carried_item == box:
 				carried_item.close()
 		_:

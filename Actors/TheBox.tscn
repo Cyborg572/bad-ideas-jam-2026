@@ -157,3 +157,5 @@ metadata/_custom_type_script = "uid://bq67yvae5bmfy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" unique_id=958876922]
 shape = SubResource("CylinderShape3D_ltv4v")
+
+[connection signal="interaction" from="InteractionPoint" to="." method="_on_interaction_point_interaction"]

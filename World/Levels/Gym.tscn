@@ -232,6 +232,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56202793, -0.9677346, 0)
 collision_layer = 3
 collision_mask = 4
 script = ExtResource("7_veq21")
+type = 2
 metadata/_custom_type_script = "uid://bq67yvae5bmfy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Obstacles/Box3/InteractionPoint" unique_id=616263316]

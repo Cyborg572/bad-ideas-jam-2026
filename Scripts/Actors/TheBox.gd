@@ -77,8 +77,10 @@ func _detach(_target : Node3D) -> void:
 	enable_collisions()
 
 
-func _on_interaction_point_interaction(_interaction_point: InteractionPoint) -> void:
-	close()
+func _on_interaction_point_interaction(point: InteractionPoint) -> void:
+	if point != interaction_point: return
+
+	point.type = InteractionPoint.InteractionType.attachable
 
 
 func _on_anim_complete(_animation: String):

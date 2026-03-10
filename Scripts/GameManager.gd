@@ -45,8 +45,10 @@ func clear_active_interaction_point(point : InteractionPoint) -> void:
 		interaction_points.erase(point)
 
 
-func _process(_delta: float) -> void:
-	if Input.is_action_just_pressed("Interact"):
-		if active_interaction_point:
-			active_interaction_point.interact()
-			interaction.emit(active_interaction_point)
+func trigger_interaction() -> void:
+	if active_interaction_point:
+		# First the interaction point gets to react.
+		active_interaction_point.interact()
+
+		# Then everything else.
+		interaction.emit(active_interaction_point)
