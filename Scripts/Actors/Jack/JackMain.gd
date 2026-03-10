@@ -125,6 +125,12 @@ func _leave_state(from : State, to : State) -> void:
 	if from == to: return
 	#print_debug("leaving ", State.keys()[from])
 	match from:
+		State.Crouched:
+			other_model.visible = true
+			if attachment == Attachment.Boxed:
+				box.pop()
+			else:
+				other_model.scale.y = 1
 		_:
 			pass
 
@@ -145,6 +151,13 @@ func _enter_state(from : State, to : State) -> void:
 			hanging_cooldown = 0.0
 			if (anim.current_animation != "Free/Flip"):
 				anim.play("Free/Jump", 0.1)
+
+		State.Crouched:
+			if attachment == Attachment.Boxed:
+				other_model.visible = false
+				box.slam()
+			else:
+				other_model.scale.y = .25
 		_:
 			pass
 
@@ -352,7 +365,11 @@ func _physics_process(delta: float) -> void:
 			Attachment.Boxed:
 				box.detach()
 				change_attachment(Attachment.Free)
-				velocity.y = get_jump_strength()
+				if state == State.Crouched:
+					box.pop()
+					velocity.y = get_jump_strength() * 2
+				else:
+					velocity.y = get_jump_strength()
 			Attachment.Free when is_carrying && carried_item == box:
 				is_carrying = false
 				velocity.y = get_jump_strength()
@@ -381,6 +398,9 @@ func _physics_process(delta: float) -> void:
 
 			if (direction):
 				follow_motion(direction, delta * 6)
+
+			if Input.is_action_just_pressed("Crouch"):
+				change_state(State.Crouched)
 
 			if Input.is_action_just_pressed("Jump"):
 				start_charing_jump()
@@ -426,15 +446,12 @@ func _physics_process(delta: float) -> void:
 				else:
 					anim.play("Free/Idle", 0.5)
 
+			if Input.is_action_just_pressed("Crouch"):
+				change_state(State.Crouched)
+
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
-				if Input.is_action_pressed("Crouch"):
-					if speed > 1.5:
-						velocity += (Vector3.UP + (velocity.normalized() * 0.5)) * get_jump_strength()
-					else:
-						anim.play("Free/Flip")
-						velocity = Vector3.UP  * (get_jump_strength() * 1.5)
-				elif (can_flip):
+				if (can_flip):
 					anim.play("Free/Flip")
 					velocity = Vector3.UP * (get_jump_strength() * 1.5)
 				else:
@@ -601,8 +618,40 @@ func _physics_process(delta: float) -> void:
 				drop_carried_item(3, PI/4)
 				velocity = Vector3.UP * 2
 
+		State.Crouched when attachment == Attachment.Boxed:
+			if Input.is_action_just_released("Crouch"):
+				change_state(State.Grounded)
+
+			if Input.is_action_just_pressed("Jump"):
+				start_charing_jump()
+
+			if Input.is_action_pressed("Jump"):
+				charge_jump(delta)
+
+			# Handle jump.
+			if Input.is_action_just_released("Jump"):
+				anim.play("Free/Jump", 0.5)
+				var jump_multiplier := finish_charge_jump()
+				var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+				var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
+				velocity = launch_direction + launch_height
+
 		State.Crouched:
-			print("Crouching")
+			apply_movement(direction, delta)
+			var speed := get_ground_speed(velocity).length()
+	
+			if get_max_move_speed() - speed < 0.2:
+				active_camera.align(rotation.y, 1, true)
+
+			if Input.is_action_just_released("Crouch"):
+				change_state(State.Grounded)
+
+			if Input.is_action_pressed("Jump"):
+				if speed > 1.5:
+					velocity += (Vector3.UP + (velocity.normalized() * 0.5)) * get_jump_strength()
+				else:
+					anim.play("Free/Flip")
+					velocity = Vector3.UP  * (get_jump_strength() * 1.5)
 
 		State.Armed when aiming:
 			print("Aiming!")
