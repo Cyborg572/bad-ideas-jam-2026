@@ -290,16 +290,21 @@ func hold_item(item : Attachable, delta) -> void:
 func drop_carried_item(force : float = 0.0, pitch : float = 0.0) -> void:
 	if not is_carrying: return
 	is_carrying = false
-	carried_item.reposition(0, attachment_points['throw'].global_position)
+	var throw_origin : Vector3 = attachment_points["throw"].global_position
+	var throw_force : Vector3 = velocity
+	
 	if force > 0:
 		var launch_dir = Vector3.MODEL_FRONT
 		if pitch > 0:
 			launch_dir = launch_dir.rotated(Vector3.MODEL_RIGHT, pitch)
 		launch_dir = launch_dir.rotated(Vector3.UP, rotation.y)
 		
-		carried_item.velocity = velocity + (launch_dir.normalized() * force)
-	else:
-		carried_item.velocity = velocity
+		throw_force += launch_dir.normalized() * force
+	elif velocity.length() > get_max_move_speed() / 2:
+		throw_origin = attachment_points["hand"].global_position
+
+	carried_item.reposition(0, throw_origin)
+	carried_item.velocity = throw_force
 	carried_item.detach()
 
 
