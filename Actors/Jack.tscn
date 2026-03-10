@@ -978,8 +978,11 @@ libraries/Free = SubResource("AnimationLibrary_yu5vu")
 [node name="Timers" type="Node" parent="." unique_id=1500651055]
 
 [node name="PopTimer" type="Timer" parent="Timers" unique_id=2066583994]
+editor_description = "Automatically Pop the player after a set time."
+wait_time = 15.0
 one_shot = true
 
 [node name="PopButtonTimer" type="Timer" parent="Timers" unique_id=1209321431]
+editor_description = "Pop the player if the button is held long enough"
 wait_time = 0.25
 one_shot = true
