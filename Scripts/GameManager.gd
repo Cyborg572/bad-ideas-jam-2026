@@ -9,6 +9,8 @@ var main_camera : CameraRig = null:
 		main_camera = camera
 		change_camera.emit(main_camera)
 
+var jack : Jack = null
+
 var interaction_points : Array[InteractionPoint] = []
 var active_interaction_point : InteractionPoint
 

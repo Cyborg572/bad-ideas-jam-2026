@@ -123,6 +123,7 @@ Attack={
 3d_physics/layer_1="Default"
 3d_physics/layer_2="Player Interaction"
 3d_physics/layer_3="The Player"
+3d_physics/layer_4="Pickups"
 
 [physics]
 

@@ -37,6 +37,7 @@ var active_camera : CameraRig
 var distance_to_box : float = 0
 
 func _ready() -> void:
+	GameManager.jack = self
 	set_active_camera(GameManager.main_camera)
 	GameManager.change_camera.connect(set_active_camera)
 	GameManager.interaction.connect(_on_global_interaction)
@@ -230,9 +231,10 @@ func get_best_side_view(normal: Vector3) -> float:
 	else:
 		return Vector2(-cw.z, -cw.x).angle()
 
-#endregion
 
 func popToBox() -> void:
+	if is_carrying:
+		drop_carried_item(2, PI/2)
 	position = box.position
 	change_attachment(Attachment.Boxed)
 	visible = false
@@ -315,17 +317,14 @@ func _physics_process(delta: float) -> void:
 				velocity.y = get_jump_strength()
 				popToBox()
 			Attachment.Free when box:
-				if is_standing_on_box() && not box.is_open:
-					velocity = Vector3.UP * get_jump_strength() * 2
-					box.pop()
-				elif distance_to_box < 1:
+				if distance_to_box < 1:
 					box.toggle_open()
 				else:
 					box.close()
 				if not box.is_open:
 					pop_button_timer.start()
 			_:
-				print("No pop!")
+				pass
 
 	if Input.is_action_just_released("Pop"):
 		if pop_button_timer.time_left > pop_button_timer.wait_time / 3 && distance_to_box > 3:
@@ -391,10 +390,8 @@ func _physics_process(delta: float) -> void:
 				else:
 					velocity.y = get_jump_strength()
 
-			if Input.is_action_just_pressed("Attack"):
-				if is_carrying: # && carried_item == box:
-					print("chucking ", carried_item)
-					drop_carried_item(3, PI/4)
+			if Input.is_action_just_pressed("Attack") && is_carrying:
+				drop_carried_item(3, PI/4)
 
 		State.Airborn when hanging:
 			var wall_normal : Vector3
@@ -533,12 +530,21 @@ func _physics_process(delta: float) -> void:
 
 func _on_global_interaction(interaction_point : InteractionPoint):
 	var types := InteractionPoint.InteractionType
+	var target := interaction_point.get_parent_node_3d()
 
 	match interaction_point.type:
+		types.carrier when is_carrying:
+			if carried_item.can_attach(target):
+				is_carrying = false
+				if target.has_method("recieve_item"):
+					target.recieve_item(carried_item)
+			else:
+				drop_carried_item()
+						
 		types.attachable:
 			if is_carrying:
 				return
-			carried_item = interaction_point.get_parent_node_3d()
+			carried_item = target
 			carried_item.attach(self)
 			is_carrying = true
 			print("Carrying ", carried_item)

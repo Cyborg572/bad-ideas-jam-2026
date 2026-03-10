@@ -877,8 +877,8 @@ _data = {
 }
 
 [node name="Jack" type="CharacterBody3D" unique_id=1250745410]
-collision_layer = 5
-collision_mask = 3
+collision_layer = 13
+collision_mask = 11
 script = ExtResource("1_06umm")
 state_config = Dictionary[int, ExtResource("2_kyi2e")]({
 0: SubResource("Resource_yu5vu"),

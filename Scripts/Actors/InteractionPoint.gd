@@ -6,19 +6,19 @@ signal interaction(interaction_point: InteractionPoint)
 
 enum InteractionType {
 	## The object will define the interaction type dynamically.
-	custom = 0,
+	custom,
 
 	## The object can be picked up.
-	attachable = 1,
+	attachable,
 
 	## The object is a sign (or speaking NPC)
-	sign = 2,
+	sign,
 
 	## The object is switch
-	switch = 4,
+	switch,
 
 	## The object can be given an attachable object to hold
-	carrier = 8,
+	carrier,
 }
 
 ## What kind of interaction's are triggerd by this interaction point.
@@ -126,7 +126,7 @@ func check_for_focus() -> void:
 	for body in monitored_bodies:
 		var offset = (global_position - body.global_position).normalized()
 		var facing = Vector3.MODEL_FRONT.rotated(Vector3.UP, body.rotation.y).normalized()
-		if (offset.dot(facing) > 0.6):
+		if (offset.dot(facing) > 0.5):
 			GameManager.set_active_interaction_point(self)
 		else:
 			GameManager.clear_active_interaction_point(self)

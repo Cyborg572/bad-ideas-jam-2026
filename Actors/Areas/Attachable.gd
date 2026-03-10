@@ -37,6 +37,7 @@ func attach(target : Node3D):
 	velocity = Vector3.ZERO
 	interaction_point.disable()
 	attachment.add_collision_exception_with(self)
+	add_collision_exception_with(attachment)
 	_attach(target)
 
 	attached.emit(self, target)
@@ -67,7 +68,6 @@ func detach():
 	_before_detach(attachment)
 
 	has_attachment = false
-	interaction_point.enable()
 	_detach(attachment)
 
 	detached.emit(self, attachment)
@@ -106,17 +106,26 @@ func track(speed: float, target: Node3D = attachment):
 	reorient(speed, target.global_rotation)
 
 
+func can_attach(target: Node3D) -> bool:
+	if target.has_method("would_recieve_item"):
+		return target.would_recieve_item(self)
+
+	return true
+
+
 func _ready() -> void:
 	var maybe_interaction = get_node_or_null("InteractionPoint")
 	if maybe_interaction is InteractionPoint:
 		interaction_point = maybe_interaction
 	else:
-		print("Creating an interaction point.")
 		var default_point : PackedScene = load("res://Actors/Areas/InteractionPoint.tscn")
 		interaction_point = default_point.instantiate()
 		interaction_point.type = InteractionPoint.InteractionType.attachable
 		interaction_point.require_focus = true
 		add_child(interaction_point)
+
+	collision_layer = 8 # Layer 4(bit 3, value 8)
+	set_collision_mask_value(4, true)
 
 	var custom_attachment = get_node_or_null("AttachmentPoint")
 	if custom_attachment:
@@ -133,8 +142,11 @@ func _physics_process(delta: float) -> void:
 		else:
 			velocity.x = move_toward(velocity.x, 0.0, 6 * delta)
 			velocity.z = move_toward(velocity.z, 0.0, 6 * delta)
-			if attachment:
-				attachment.remove_collision_exception_with(self)
+			if interaction_point.disabled:
+				interaction_point.enable()
+				if attachment:
+					attachment.remove_collision_exception_with(self)
+					remove_collision_exception_with(attachment)
 
 		reorient(10 * delta)
-		move_and_slide();
+	move_and_slide();

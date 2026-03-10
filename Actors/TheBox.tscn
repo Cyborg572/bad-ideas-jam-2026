@@ -152,10 +152,16 @@ collision_layer = 3
 collision_mask = 4
 script = ExtResource("2_wbnku")
 require_focus = true
+pointer_show_reference = false
 pointer_position = Vector3(0, 0.25, 0)
 metadata/_custom_type_script = "uid://bq67yvae5bmfy"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" unique_id=958876922]
 shape = SubResource("CylinderShape3D_ltv4v")
+
+[node name="TopPoint" type="RayCast3D" parent="." unique_id=28751571]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.125, 0)
+target_position = Vector3(0, 0.1, 0)
+collision_mask = 12
 
 [connection signal="interaction" from="InteractionPoint" to="." method="_on_interaction_point_interaction"]
