@@ -267,6 +267,10 @@ func popToBox() -> void:
 	popped.emit(box)
 
 
+func would_recieve_item(_item: Attachable) -> bool:
+	return not is_carrying
+
+
 func hold_item(item : Attachable, delta) -> void:
 	match item:
 		carried_item when is_carrying:
@@ -282,6 +286,7 @@ func hold_item(item : Attachable, delta) -> void:
 		_:
 			pass
 
+
 func drop_carried_item(force : float = 0.0, pitch : float = 0.0) -> void:
 	if not is_carrying: return
 	is_carrying = false
@@ -296,6 +301,16 @@ func drop_carried_item(force : float = 0.0, pitch : float = 0.0) -> void:
 	else:
 		carried_item.velocity = velocity
 	carried_item.detach()
+
+
+func recieve_item(item: Attachable):
+	carried_item = item
+	carried_item.attach(self)
+	is_carrying = true
+	print("Carrying ", carried_item)
+	if carried_item == box:
+		carried_item.close()
+
 
 func start_charing_jump() -> void:
 	other_model.scale.y = 1
@@ -671,19 +686,18 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 			if carried_item.can_attach(target):
 				is_carrying = false
 				if target.has_method("recieve_item"):
+					carried_item.detach()
 					target.recieve_item(carried_item)
 			else:
 				drop_carried_item()
 						
 		types.attachable:
-			if is_carrying:
-				return
-			carried_item = target
-			carried_item.attach(self)
-			is_carrying = true
-			print("Carrying ", carried_item)
-			add_collision_exception_with(carried_item)
-			if carried_item == box:
-				carried_item.close()
+			if would_recieve_item(target):
+				recieve_item(target)
+		types.dispenser:
+			if would_recieve_item(target.get_offered_item()):
+				target.give_item(self)
+		types.custom:
+			print("Do some kind of custom interaction???")
 		_:
 			print("New interaction. Type: ", types.keys()[interaction_point.type])

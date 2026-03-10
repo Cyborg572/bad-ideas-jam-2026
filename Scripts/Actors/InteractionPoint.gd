@@ -19,10 +19,20 @@ enum InteractionType {
 
 	## The object can be given an attachable object to hold
 	carrier,
+
+	## The object provides an attachable object to hold
+	dispenser,
 }
 
 ## What kind of interaction's are triggerd by this interaction point.
-@export var type := InteractionType.custom
+@export var type := InteractionType.custom:
+	get():
+		if Engine.is_editor_hint() || type != InteractionType.custom:
+			return type
+		var parent = get_parent_node_3d()
+		if parent && parent.has_method("get_interaction_type"):
+			return parent.get_interaction_type(self)
+		return type
 
 ## Prevent interactions entirely
 @export var disabled : bool = false

@@ -89,6 +89,7 @@ func would_recieve_item(_item: Attachable) -> bool:
 
 
 func recieve_item(item: Attachable) -> bool:
+	print("Recieving ", item)
 	if is_open:
 		item.attach(self)
 		inventory.push_back(item)
@@ -97,14 +98,24 @@ func recieve_item(item: Attachable) -> bool:
 		return false
 
 
+func give_item(to : CharacterBody3D) -> void:
+	var item = inventory.pop_back()
+	print("Giving ", item)
+	if item.can_attach(to):
+		print("Passing to ", to)
+		item.detach()
+		item.give_to(to)
+	else:
+		print("Jack didn't want it")
+
+
+func get_offered_item() -> Attachable:
+	return inventory.back()
+
+
 func hold_item(item: Attachable, delta) -> void:
 	if item in inventory:
-		if item.scale.y > 0.2:
-			item.track(10 * delta, top_point)
-			item.scale *= 0.5
-		else:
-			item.scale = Vector3(1, 1, 1)
-			item.get_parent_node_3d().remove_child(item)
+		item.track(10 * delta, self, 0.2)
 
 
 func _attach(_target : Node3D) -> void:
@@ -115,15 +126,31 @@ func _detach(_target : Node3D) -> void:
 	enable_collisions()
 
 
-func _on_interaction_point_interaction(point: InteractionPoint) -> void:
-	if point != interaction_point: return
+func get_interaction_type(point: InteractionPoint) -> InteractionPoint.InteractionType:
+	if point != interaction_point: return InteractionPoint.InteractionType.custom
 	var jack : Jack = GameManager.jack
-	if jack.is_carrying:
-		point.type = InteractionPoint.InteractionType.carrier
-	elif is_open:
-		point.type = InteractionPoint.InteractionType.custom
-	else:
-		point.type = InteractionPoint.InteractionType.attachable
+	
+	match is_open:
+		true when jack.is_carrying != inventory.is_empty():
+			return InteractionPoint.InteractionType.sign
+		true when jack.is_carrying:
+			return InteractionPoint.InteractionType.carrier
+		true:
+			return InteractionPoint.InteractionType.dispenser
+		_:
+			return InteractionPoint.InteractionType.attachable
+
+
+func _on_interaction_point_interaction(point: InteractionPoint) -> void:
+	var jack : Jack = GameManager.jack
+	if point.type != InteractionPoint.InteractionType.custom:
+		print(jack.is_carrying, inventory.is_empty())
+		return
+	
+	if jack.is_carrying || inventory.is_empty():
+		return
+
+	give_item(jack)
 
 
 func _on_anim_complete(_animation: String):

@@ -305,6 +305,17 @@ mesh = SubResource("SphereMesh_lqj5n")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Attachable" unique_id=1283974407]
 shape = SubResource("SphereShape3D_enqkj")
 
+[node name="Attachable2" type="CharacterBody3D" parent="." unique_id=1642322686]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.4303207, 3.125, -5.1669765)
+script = ExtResource("11_farb7")
+metadata/_custom_type_script = "uid://bctfng6rb7gfp"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Attachable2" unique_id=1949300445]
+mesh = SubResource("SphereMesh_lqj5n")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Attachable2" unique_id=825337406]
+shape = SubResource("SphereShape3D_enqkj")
+
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=426143705]
 stream = ExtResource("12_wfd2y")
 volume_db = 4.132
