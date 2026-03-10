@@ -11,6 +11,7 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @export var carried_item : Attachable
 @export var starting_attachment : Attachment = Attachment.Free
 @export var box : TheBox
+@export var boxed_jump_power: Curve
 
 @onready var model := $Model
 @onready var other_model: Node3D = $Model/Jack
@@ -33,6 +34,8 @@ var throwing : bool = false
 var aiming : bool = false
 var hanging : bool = false
 var hanging_cooldown : float = 0.0
+var jump_charge: float = 1.0
+var jump_charge_rate : float = 5
 
 var active_camera : CameraRig
 var distance_to_box : float = 0
@@ -131,6 +134,8 @@ func _enter_state(from : State, to : State) -> void:
 	#print_debug("entering ", State.keys()[to])
 	match to:
 		State.Grounded:
+			if not Input.is_action_pressed("Jump"):
+				finish_charge_jump()
 			if is_standing_on_box() && box.is_open:
 				change_attachment(Attachment.Boxed)
 
@@ -277,9 +282,41 @@ func drop_carried_item(force : float = 0.0, pitch : float = 0.0) -> void:
 		carried_item.velocity = velocity
 	carried_item.detach()
 
+func start_charing_jump() -> void:
+	other_model.scale.y = 1
+	jump_charge = 0.0
+
+
+func charge_jump(delta) -> void:
+	if (jump_charge <= 1.0):
+		jump_charge += jump_charge_rate * delta
+	else:
+		jump_charge_rate = 1
+	var jump_multiplier = boxed_jump_power.sample(jump_charge)
+
+	if hanging:
+		other_model.scale.y = 1 + (0.5 * jump_multiplier)
+		var offset = -0.375 * jump_multiplier
+		attachment_points["foot"].position.y = offset
+		model.position.y = 0.375 + offset
+	else:
+		other_model.scale.y = 1 - (0.5 * jump_multiplier)
+
+func finish_charge_jump() -> float:
+	var jump_multiplier : float = boxed_jump_power.sample(jump_charge)
+	jump_charge = 0.0
+
+	other_model.scale.y = 1
+	if hanging:
+		attachment_points["foot"].position.y = 0
+		model.position.y = 0.375
+	return jump_multiplier
+#endregion
+
 func _physics_process(delta: float) -> void:
 	var direction = get_direction()
 	distance_to_box = (box.position - position).length()
+
 	#print("distance from box: ", (position - box.position).length())
 	# Toggle Airborn state automatically
 	if not is_on_floor():
@@ -342,11 +379,18 @@ func _physics_process(delta: float) -> void:
 			if (direction):
 				follow_motion(direction, delta * 6)
 
+			if Input.is_action_just_pressed("Jump"):
+				start_charing_jump()
+
+			if Input.is_action_pressed("Jump"):
+				charge_jump(delta)
+
 			# Handle jump.
 			if Input.is_action_just_released("Jump"):
 				anim.play("Free/Jump", 0.5)
-				var launch_height = Vector3.UP * get_jump_strength()
-				var launch_direction = direction * get_move_speed()
+				var jump_multiplier := finish_charge_jump()
+				var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+				var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
 				velocity = launch_direction + launch_height
 
 		State.Grounded:
@@ -420,14 +464,22 @@ func _physics_process(delta: float) -> void:
 			else:
 				active_camera.cancel_align()
 
+			if attachment == Attachment.Boxed:
+				if Input.is_action_just_pressed("Jump"):
+					start_charing_jump()
+
+				if Input.is_action_pressed("Jump"):
+					charge_jump(delta)
+
 			# Left the ledge or hit crouch
 			if !ledge_hook.is_colliding() || Input.is_action_just_pressed("Crouch"):
+				finish_charge_jump()
 				active_camera.align(best_side_view, 10)
 				hanging_cooldown = 1
 				hanging = false
 
-			# Handle jump.
-			elif Input.is_action_just_pressed("Jump"):
+			# Handle normal jump.
+			elif Input.is_action_just_pressed("Jump") and attachment != Attachment.Boxed:
 				active_camera.align(best_side_view, 10)
 				hanging_cooldown = 1
 				
@@ -440,6 +492,17 @@ func _physics_process(delta: float) -> void:
 					follow_motion(wall_normal, 60 * delta)
 				else:
 					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * -0.5)
+
+			# Handle boxed jump
+			elif Input.is_action_just_released("Jump") && attachment == Attachment.Boxed:
+				var jump_multiplier := finish_charge_jump()
+				var launch_height := (Vector3.UP * get_jump_strength() * jump_multiplier)
+				var launch_direction :=  + (wall_normal * -0.5)
+
+				hanging_cooldown = 1
+				hanging = false
+				anim.play("Free/Jump", 0.5)
+				velocity = launch_direction + launch_height
 
 			# Move along ledge
 			else:
@@ -516,8 +579,21 @@ func _physics_process(delta: float) -> void:
 			
 			if !falling && is_falling():
 				falling = true
+				if not attachment == Attachment.Boxed:
+					other_model.anim.play("FallingOff")
 				anim.play("Free/Fall", 1)
 				anim.queue("Free/Falling")
+				
+			if attachment == Attachment.Boxed:
+				if Input.is_action_just_pressed("Jump"):
+					start_charing_jump()
+
+				if Input.is_action_pressed("Jump"):
+					charge_jump(delta)
+
+			if Input.is_action_just_pressed("Attack") && is_carrying:
+				drop_carried_item(3, PI/4)
+				velocity = Vector3.UP * 2
 
 		State.Crouched:
 			print("Crouching")

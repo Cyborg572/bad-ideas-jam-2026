@@ -39,6 +39,10 @@ move_speed = 2.0
 jump_strength = 0.0
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
+[sub_resource type="Curve" id="Curve_58ja8"]
+_data = [Vector2(0, 0), 0.0, 0.0, 0, 0, Vector2(0.11999999, 0.68674695), 0.5093005, 0.5093005, 0, 0, Vector2(0.7272727, 0.8433734), 0.0, 0.0, 0, 0, Vector2(1, 1), 0.0, 0.0, 0, 0]
+point_count = 4
+
 [sub_resource type="SphereMesh" id="SphereMesh_yu5vu"]
 radius = 0.075
 height = 0.125
@@ -887,6 +891,7 @@ state_config = Dictionary[int, ExtResource("2_kyi2e")]({
 2: SubResource("Resource_di1ys"),
 4: SubResource("Resource_5g1ux")
 })
+boxed_jump_power = SubResource("Curve_58ja8")
 
 [node name="AttachmentPoints" type="Node3D" parent="." unique_id=1862122857]
 
