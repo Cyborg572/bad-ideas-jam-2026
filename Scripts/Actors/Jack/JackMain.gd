@@ -182,7 +182,8 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 	if current_speed < max_move_speed:
 		ground_speed += movement
 	elif max_move_speed > 0:
-		ground_speed += movement.slide(ground_speed.normalized())
+		var heading = ground_speed.normalized()
+		ground_speed += movement.slide(heading) - (heading * friction * delta)
 
 	ground_speed = ground_speed.move_toward(direction * ground_speed.length(), friction * delta)
 	ground_speed = ground_speed.limit_length(max_speed)
@@ -264,6 +265,7 @@ func hold_item(item : Attachable, delta) -> void:
 					item.reorient(10 * delta, global_rotation)
 				_:
 					item.reorient(0)
+			box_collider.global_rotation = box.global_rotation
 		_:
 			pass
 
@@ -317,6 +319,7 @@ func _physics_process(delta: float) -> void:
 	var direction = get_direction()
 	distance_to_box = (box.position - position).length()
 
+	#print("Speed ", get_ground_speed(velocity).length())
 	#print("distance from box: ", (position - box.position).length())
 	# Toggle Airborn state automatically
 	if not is_on_floor():
@@ -445,7 +448,7 @@ func _physics_process(delta: float) -> void:
 
 			if is_on_wall():
 				wall_normal = get_wall_normal()
-				ledge_hook.target_position = wall_normal * -0.3
+				ledge_hook.target_position = wall_normal * -0.25
 				wall_detect.target_position = wall_normal * 2
 			else:
 				# If the wall's gone, we can work out what the normal was
@@ -517,7 +520,7 @@ func _physics_process(delta: float) -> void:
 			var gravity := get_gravity()
 
 			# Ledge Logic
-			ledge_hook.target_position = wall_normal * -0.3
+			ledge_hook.target_position = wall_normal * -0.25
 			wall_detect.target_position = wall_normal * -0.5
 
 			if (
@@ -555,7 +558,7 @@ func _physics_process(delta: float) -> void:
 
 			# Ledge Logic
 			var ledge_direction := Vector3.MODEL_FRONT.rotated(Vector3.UP, rotation.y).normalized()
-			ledge_hook.target_position = ledge_direction * 0.3
+			ledge_hook.target_position = ledge_direction * 0.25
 			wall_detect.target_position = ledge_direction * 0.5
 
 			if (
@@ -569,7 +572,10 @@ func _physics_process(delta: float) -> void:
 				velocity = Vector3.ZERO
 
 			if is_falling() && wall_detect.is_colliding():
-				velocity += ledge_direction * 0.5
+				var distance_to_wall = wall_detect.get_collision_point() - position
+				distance_to_wall.y = 0
+				if distance_to_wall.length() < .2:
+					velocity += ledge_direction * 0.1
 
 			var flipping = anim.current_animation == "Free/Flip"
 

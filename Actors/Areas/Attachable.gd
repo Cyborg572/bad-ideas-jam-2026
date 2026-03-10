@@ -144,9 +144,9 @@ func _physics_process(delta: float) -> void:
 			velocity.z = move_toward(velocity.z, 0.0, 6 * delta)
 			if interaction_point.disabled:
 				interaction_point.enable()
-				if attachment:
-					attachment.remove_collision_exception_with(self)
-					remove_collision_exception_with(attachment)
+			if attachment:
+				attachment.remove_collision_exception_with(self)
+				remove_collision_exception_with(attachment)
 
 		reorient(10 * delta)
 	move_and_slide();
