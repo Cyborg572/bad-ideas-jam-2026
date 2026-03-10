@@ -13,6 +13,7 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @export var box : TheBox
 
 @onready var model := $Model
+@onready var other_model: Node3D = $Model/Jack
 @onready var indicator := $InteractionIndicator
 @onready var camera_target := $CameraTarget
 @onready var anim: AnimationPlayer = $AnimationPlayer
@@ -335,6 +336,7 @@ func _physics_process(delta: float) -> void:
 	match state:
 		State.Grounded when attachment == Attachment.Boxed:
 			anim.play("Free/Idle")
+			other_model.anim.play("Yay")
 			apply_movement(Vector3.ZERO, delta)
 
 			if (direction):
@@ -369,6 +371,7 @@ func _physics_process(delta: float) -> void:
 				if (direction):
 					follow_motion(direction, delta * 6)
 
+				other_model.anim.play("BeYouMan")
 				if speed > get_max_move_speed() / 2:
 					anim.play("Free/Run", 0.5)
 				elif speed > 0:

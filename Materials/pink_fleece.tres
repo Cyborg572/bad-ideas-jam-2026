@@ -1,0 +1,19 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://b5c588aa4hac3"]
+
+[ext_resource type="Texture2D" uid="uid://cph3qbdqyseps" path="res://Materials/PolarFleece/textures/polar_fleece_diff_1k.jpg" id="1_o6buo"]
+[ext_resource type="Texture2D" uid="uid://bsxbqcl7bsnvk" path="res://Materials/PolarFleece/textures/polar_fleece_arm_1k.jpg" id="2_lmqmw"]
+[ext_resource type="Texture2D" uid="uid://dtqc8vs0vvkdv" path="res://Materials/PolarFleece/textures/polar_fleece_nor_gl_1k.jpg" id="3_jhd3n"]
+
+[resource]
+resource_name = "polar_fleece"
+cull_mode = 2
+albedo_color = Color(1, 0.7292633, 0.866295, 1)
+albedo_texture = ExtResource("1_o6buo")
+metallic = 1.0
+metallic_texture = ExtResource("2_lmqmw")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_lmqmw")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_jhd3n")
+uv1_scale = Vector3(3, 3, 3)

@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://bu2rf6sg2q7v2"]
+
+[ext_resource type="PackedScene" uid="uid://dxltg0v30kcwd" path="res://Models/original/Jack.glb" id="1_4cpdq"]
+
+[sub_resource type="GDScript" id="GDScript_4cpdq"]
+script/source = "extends Node3D
+
+@onready var anim: AnimationPlayer = $AnimationPlayer
+"
+
+[node name="Jack" unique_id=858848395 instance=ExtResource("1_4cpdq")]
+script = SubResource("GDScript_4cpdq")
+
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(916904284) index="0" unique_id=2132781403]
+bones/1/rotation = Quaternion(-3.4527837e-08, 0.7071068, 0.7071068, -3.0908623e-08)
+bones/3/rotation = Quaternion(0.5169316, 0.49971333, 0.4997134, -0.48306826)
+bones/4/rotation = Quaternion(-0.48176205, 0.3782535, 0.014083318, 0.7903362)
+bones/5/rotation = Quaternion(-0.029213086, 0.000763851, -0.4382382, 0.8983838)
+bones/6/rotation = Quaternion(0.0028678675, -0.0010171453, 0.051283974, 0.9986796)
+bones/7/position = Vector3(-0.0065008546, 0.15257615, -0.16129963)
+bones/10/position = Vector3(8.1441556e-19, 0.09791434, -7.3298525e-18)
+bones/11/rotation = Quaternion(0.5169316, -0.4997133, -0.49971333, -0.48306823)
+bones/12/rotation = Quaternion(-0.48176217, -0.37825346, -0.014083327, 0.7903362)
+bones/13/rotation = Quaternion(-0.029213078, -0.000763898, 0.438238, 0.89838386)
+bones/14/rotation = Quaternion(0.0028678768, 0.0010171371, -0.05128395, 0.9986796)
+bones/15/position = Vector3(0.0065008593, 0.15257612, -0.16129962)
+bones/17/rotation = Quaternion(0.5025551, 0.5014421, -0.49905068, -0.49693325)
+bones/18/rotation = Quaternion(0.0026136562, -1.1562789e-07, 3.080114e-10, 0.99999666)
+bones/19/rotation = Quaternion(-0.7302462, -1.11255304e-07, 1.1891394e-07, 0.68318415)
+bones/21/rotation = Quaternion(0.5188198, -0.51881987, 0.48044354, -0.4804435)
+bones/22/rotation = Quaternion(0.07160852, 1.1800885e-07, -3.6657033e-09, 0.9974328)
+bones/23/rotation = Quaternion(-0.7302462, 1.1130484e-07, -1.1897221e-07, 0.68318415)
+bones/28/position = Vector3(0.07908647, -0.27936563, 0.0014740576)

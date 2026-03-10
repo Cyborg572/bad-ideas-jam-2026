@@ -10,7 +10,7 @@ script = ExtResource("1_0in8y")
 
 [node name="SpringArm3D" type="SpringArm3D" parent="." unique_id=669697772]
 shape = SubResource("SphereShape3D_0in8y")
-spring_length = 2.0
+spring_length = 1.5
 
 [node name="CameraPosition" type="Node3D" parent="SpringArm3D" unique_id=1352357342]
 

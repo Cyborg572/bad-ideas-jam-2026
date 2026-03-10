@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://b27e4ibvcwjpa" path="res://Scripts/Actors/Jack/JackMain.gd" id="1_06umm"]
 [ext_resource type="Script" uid="uid://6l81ycqfgjqh" path="res://Scripts/Actors/Jack/JackStateConfiguration.gd" id="2_kyi2e"]
 [ext_resource type="Script" uid="uid://b1ntf8csr8ow4" path="res://Scripts/Actors/Jack/InteractionIndicator.gd" id="3_yu5vu"]
+[ext_resource type="PackedScene" uid="uid://bu2rf6sg2q7v2" path="res://Models/jack.tscn" id="4_58ja8"]
 
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
@@ -925,10 +926,10 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 
 [node name="Jack" parent="Model" unique_id=2077182911 instance=ExtResource("4_58ja8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.375, 0)
-visible = false
 
 [node name="Node3D" type="Node3D" parent="Model" unique_id=572634374]
 transform = Transform3D(1, 0, 0, 0, 0.9999999, 0, 0, 0, 0.9999999, 0, 0, 0)
+visible = false
 
 [node name="Torso" type="MeshInstance3D" parent="Model/Node3D" unique_id=1900325849]
 transform = Transform3D(1.0000001, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.188, 0)
