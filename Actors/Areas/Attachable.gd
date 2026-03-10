@@ -78,10 +78,10 @@ func detach():
 #endregion
 
 
-func clear_extra_collision_exceptions() -> void:
+func clear_extra_collision_exceptions(all : bool = false) -> void:
 	#print("Should clear ", get_collision_exceptions())
 	for body in get_collision_exceptions():
-		if body != attachment:
+		if body != attachment || all:
 			body.remove_collision_exception_with(self)
 			remove_collision_exception_with(body)
 
@@ -177,7 +177,7 @@ func _physics_process(delta: float) -> void:
 				if attachment:
 					attachment.remove_collision_exception_with(self)
 					remove_collision_exception_with(attachment)
-					clear_extra_collision_exceptions()
+					clear_extra_collision_exceptions(true)
 				passing = false
 
 		reorient(10 * delta)

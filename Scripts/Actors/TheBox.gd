@@ -79,9 +79,10 @@ func enable_collisions() -> void:
 
 
 func disable_collisions() -> void:
-	collisions_enabled = false
-	open_collider.disabled = true
-	closed_collider.disabled = true
+	pass
+	#collisions_enabled = false
+	#open_collider.disabled = true
+	#closed_collider.disabled = true
 
 
 func would_recieve_item(_item: Attachable) -> bool:

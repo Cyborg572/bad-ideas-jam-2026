@@ -20,6 +20,7 @@ enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var ledge_hook: RayCast3D = $LedgeHook
 @onready var wall_detect: RayCast3D = $WallDetect
+@onready var body_collider: CollisionShape3D = $BodyCollider
 @onready var box_collider: CollisionShape3D = $BoxCollider
 @onready var pop_timer: Timer = $Timers/PopTimer
 @onready var pop_button_timer: Timer = $Timers/PopButtonTimer
@@ -108,7 +109,8 @@ func _enter_attachment(from : Attachment, to : Attachment) -> void:
 			velocity += box.velocity
 			box.attach(self)
 			box_collider.position = attachment_points['foot'].position - box.attachment_point.position
-			#box.pop()
+			if not box.inventory.is_empty() && would_recieve_item(box.get_offered_item()):
+				box.give_item(self)
 		_:
 			pass
 #endregion
@@ -127,6 +129,7 @@ func _leave_state(from : State, to : State) -> void:
 	match from:
 		State.Crouched:
 			other_model.visible = true
+			body_collider.disabled = false
 			if attachment == Attachment.Boxed:
 				box.pop()
 			else:
@@ -155,6 +158,7 @@ func _enter_state(from : State, to : State) -> void:
 		State.Crouched:
 			if attachment == Attachment.Boxed:
 				other_model.visible = false
+				body_collider.disabled = true
 				box.slam()
 			else:
 				other_model.scale.y = .25
@@ -287,7 +291,7 @@ func hold_item(item : Attachable, delta) -> void:
 			pass
 
 
-func drop_carried_item(force : float = 0.0, pitch : float = 0.0) -> void:
+func drop_carried_item(force : float = 0.0, pitch : float = 0.0, from: String = "auto") -> void:
 	if not is_carrying: return
 	is_carrying = false
 	var throw_origin : Vector3 = attachment_points["throw"].global_position
@@ -302,6 +306,9 @@ func drop_carried_item(force : float = 0.0, pitch : float = 0.0) -> void:
 		throw_force += launch_dir.normalized() * force
 	elif velocity.length() > get_max_move_speed() / 2:
 		throw_origin = attachment_points["hand"].global_position
+
+	if from != "auto":
+		throw_origin = attachment_points[from].global_position
 
 	carried_item.reposition(0, throw_origin)
 	carried_item.velocity = throw_force
@@ -420,6 +427,8 @@ func _physics_process(delta: float) -> void:
 				follow_motion(direction, delta * 6)
 
 			if Input.is_action_just_pressed("Crouch"):
+				if is_carrying:
+					drop_carried_item(0, PI/2, "head")
 				change_state(State.Crouched)
 
 			if Input.is_action_just_pressed("Jump"):
@@ -427,6 +436,9 @@ func _physics_process(delta: float) -> void:
 
 			if Input.is_action_pressed("Jump"):
 				charge_jump(delta)
+
+			if Input.is_action_just_pressed("Attack") && is_carrying:
+				drop_carried_item(3, PI/4)
 
 			# Handle jump.
 			if Input.is_action_just_released("Jump"):
@@ -467,6 +479,12 @@ func _physics_process(delta: float) -> void:
 					anim.play("Free/Idle", 0.5)
 
 			if Input.is_action_just_pressed("Crouch"):
+				if is_carrying:
+					if carried_item == box:
+						is_carrying = false
+						change_attachment(Attachment.Boxed)
+					else:
+						drop_carried_item()
 				change_state(State.Crouched)
 
 			# Handle jump.
@@ -639,6 +657,7 @@ func _physics_process(delta: float) -> void:
 				velocity = Vector3.UP * 2
 
 		State.Crouched when attachment == Attachment.Boxed:
+			apply_movement(direction, delta)
 			if Input.is_action_just_released("Crouch"):
 				change_state(State.Grounded)
 
@@ -696,10 +715,10 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 			else:
 				drop_carried_item()
 						
-		types.attachable:
+		types.attachable when state != State.Crouched:
 			if would_recieve_item(target):
 				recieve_item(target)
-		types.dispenser:
+		types.dispenser when state != State.Crouched:
 			if would_recieve_item(target.get_offered_item()):
 				target.give_item(self)
 		types.custom:

@@ -19,8 +19,9 @@ func _process(delta: float) -> void:
 		var types := InteractionPoint.InteractionType
 
 		match interaction_point.type:
-			types.attachable:
-				should_indicate = not parent.is_carrying
+			types.attachable, types.dispenser:
+				print("Still go heare")
+				should_indicate = not parent.is_carrying && not parent.state == Jack.State.Crouched
 			_:
 				should_indicate = true
 
