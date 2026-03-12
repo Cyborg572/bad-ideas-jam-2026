@@ -3,7 +3,7 @@
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="1_js22f"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_bel44"]
-bg_color = Color(0.5934, 0.69, 0.66102, 1)
+bg_color = Color(0.43529412, 0.78039217, 0.24705882, 1)
 
 [resource]
 Button/fonts/font = ExtResource("1_js22f")

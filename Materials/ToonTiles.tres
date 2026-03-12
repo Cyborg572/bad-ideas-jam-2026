@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d1y52u70tki6c"]
+
+[ext_resource type="Texture2D" uid="uid://dhblmrg7e7rnh" path="res://Materials/GraniteTile/textures/granite_tile_diff_1k_colorless.jpg" id="1_sa3ih"]
+[ext_resource type="Texture2D" uid="uid://o4qyte6molru" path="res://Materials/GraniteTile/textures/granite_tile_arm_1k.jpg" id="2_gt45x"]
+[ext_resource type="Texture2D" uid="uid://ctkmmfklyfi3f" path="res://Materials/GraniteTile/textures/granite_tile_nor_gl_1k.jpg" id="3_61cs6"]
+
+[resource]
+resource_name = "granite_tile"
+cull_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.15294118, 0.4392157, 0, 1)
+albedo_texture = ExtResource("1_sa3ih")
+metallic_texture = ExtResource("2_gt45x")
+metallic_texture_channel = 2
+roughness_texture = ExtResource("2_gt45x")
+roughness_texture_channel = 1
+normal_enabled = true
+normal_texture = ExtResource("3_61cs6")
+uv1_scale = Vector3(15, 15, 15)

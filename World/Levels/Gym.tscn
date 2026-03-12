@@ -4,21 +4,30 @@
 [ext_resource type="PackedScene" uid="uid://duykwhism24sd" path="res://Actors/CameraRig.tscn" id="2_skitp"]
 [ext_resource type="PackedScene" uid="uid://wkiytlqj20xh" path="res://Actors/Jack.tscn" id="2_v1x4i"]
 [ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_8txj2"]
-[ext_resource type="Material" uid="uid://dpmtiyul7jbtp" path="res://Materials/granite_tile.tres" id="4_fd7au"]
-[ext_resource type="Material" uid="uid://dr2k52yf2c45l" path="res://Materials/mixed_brick_wall.tres" id="5_xyqiw"]
-[ext_resource type="Texture2D" uid="uid://b21wlmmjysj6d" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_diff_1k.jpg" id="6_gkq5e"]
-[ext_resource type="Texture2D" uid="uid://bf1t57mika40s" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_arm_1k.jpg" id="7_8txj2"]
+[ext_resource type="Material" uid="uid://d1y52u70tki6c" path="res://Materials/ToonTiles.tres" id="5_wfd2y"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
-[ext_resource type="Texture2D" uid="uid://bl7bk1piuj0xx" path="res://Materials/MixedBrickWall/textures/mixed_brick_wall_nor_gl_1k.jpg" id="8_veq21"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
 [ext_resource type="AudioStream" uid="uid://e7ubrd33ctp1" path="res://Music/pop_goes_weasel_1.ogg" id="12_wfd2y"]
 
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_wfd2y"]
+noise_type = 0
+seed = 4
+frequency = 0.0151
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_lqj5n"]
+noise = SubResource("FastNoiseLite_wfd2y")
+seamless = true
+in_3d_space = true
+
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_3yyff"]
-sky_top_color = Color(0.3, 0.4516667, 1, 1)
-sky_horizon_color = Color(0.5621, 0.6180667, 0.73, 1)
+sky_top_color = Color(0.29000002, 0.44383335, 1, 1)
+sky_horizon_color = Color(0.57, 0.71333337, 1, 1)
 sky_curve = 0.34460932
-ground_bottom_color = Color(0.14543694, 0.19277301, 0.08920316, 1)
-ground_horizon_color = Color(0.5970826, 0.70362407, 0.61071444, 1)
+sky_cover = SubResource("NoiseTexture2D_lqj5n")
+sky_cover_modulate = Color(1, 1, 1, 0.14117648)
+ground_bottom_color = Color(0.23137255, 0.45490196, 0, 1)
+ground_horizon_color = Color(0.6666667, 0.90588236, 0.42745098, 1)
 ground_curve = 0.019318745
 
 [sub_resource type="Sky" id="Sky_v1x4i"]
@@ -33,13 +42,16 @@ ambient_light_sky_contribution = 0.34
 tonemap_mode = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_v1x4i"]
-material = ExtResource("4_fd7au")
+material = ExtResource("5_wfd2y")
 size = Vector2(50, 50)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_skitp"]
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gkq5e"]
+albedo_color = Color(0.5058824, 0.21960784, 0, 1)
+
 [sub_resource type="CylinderMesh" id="CylinderMesh_gkq5e"]
-material = ExtResource("5_xyqiw")
+material = SubResource("StandardMaterial3D_gkq5e")
 top_radius = 2.0
 bottom_radius = 2.0
 height = 1.5
@@ -48,24 +60,32 @@ height = 1.5
 height = 1.5
 radius = 2.0
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8txj2"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(1, 0.7019608, 0.47058824, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_tn2j0"]
-material = ExtResource("5_xyqiw")
+material = SubResource("StandardMaterial3D_8txj2")
 size = Vector3(1, 0.5, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g1s66"]
 size = Vector3(1, 0.5, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_veq21"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.43529412, 0.78039217, 0.24705882, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_lqj5n"]
+material = SubResource("StandardMaterial3D_veq21")
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_enqkj"]
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_farb7"]
-resource_name = "mixed_brick_wall"
-cull_mode = 2
-albedo_texture = ExtResource("6_gkq5e")
-metallic_texture = ExtResource("7_8txj2")
-metallic_texture_channel = 2
-roughness_texture = ExtResource("7_8txj2")
-roughness_texture_channel = 1
-normal_enabled = true
-normal_texture = ExtResource("8_veq21")
-uv1_scale = Vector3(2, 3, 2)
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.15294118, 0.4392157, 0, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_wfd2y"]
 material = SubResource("StandardMaterial3D_farb7")
@@ -77,7 +97,7 @@ size = Vector3(1, 3, 1)
 [sub_resource type="BoxShape3D" id="BoxShape3D_veq21"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_wfd2y"]
-albedo_color = Color(0.45490196, 0.36862746, 1, 1)
+albedo_color = Color(0.6392157, 0.32156864, 0.67058825, 1)
 
 [sub_resource type="SphereMesh" id="SphereMesh_lqj5n"]
 material = SubResource("StandardMaterial3D_wfd2y")
@@ -103,7 +123,6 @@ transform = Transform3D(0.79505026, -2.6512863e-08, 0.6065436, -0.6065436, -3.47
 light_color = Color(0.81, 0.9113333, 1, 1)
 light_energy = 0.5
 shadow_enabled = true
-shadow_opacity = 0.25
 
 [node name="CameraRig" parent="." unique_id=296487055 node_paths=PackedStringArray("target") instance=ExtResource("2_skitp")]
 is_main_camera = true

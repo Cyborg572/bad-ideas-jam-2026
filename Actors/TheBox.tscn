@@ -12,7 +12,7 @@ size = Vector3(0.25, 0.2, 0.25)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_n05s6"]
 diffuse_mode = 3
 specular_mode = 1
-albedo_color = Color(0.4807483, 0, 0.018277556, 1)
+albedo_color = Color(0.44313726, 0, 0.15686275, 1)
 roughness = 0.2
 
 [sub_resource type="BoxMesh" id="BoxMesh_7oreh"]

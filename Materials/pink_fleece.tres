@@ -7,11 +7,14 @@
 [resource]
 resource_name = "polar_fleece"
 cull_mode = 2
-albedo_color = Color(1, 0.7292633, 0.866295, 1)
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(0.88, 0.6424, 0.72555995, 1)
 albedo_texture = ExtResource("1_o6buo")
 metallic = 1.0
 metallic_texture = ExtResource("2_lmqmw")
 metallic_texture_channel = 2
+roughness = 0.25
 roughness_texture = ExtResource("2_lmqmw")
 roughness_texture_channel = 1
 normal_enabled = true

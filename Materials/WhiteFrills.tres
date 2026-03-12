@@ -3,4 +3,6 @@
 [resource]
 resource_name = "WhiteFrills"
 cull_mode = 2
-roughness = 0.5
+diffuse_mode = 3
+specular_mode = 2
+roughness = 0.0
