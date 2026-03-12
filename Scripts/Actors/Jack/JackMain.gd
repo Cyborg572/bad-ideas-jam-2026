@@ -208,6 +208,13 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 	velocity = ground_speed + vertical_speed
 
 
+func cap_speed() -> void:
+	var ground_speed := get_ground_speed(velocity)
+	var vertical_speed : Vector3 = velocity * Vector3.UP
+	ground_speed = ground_speed.limit_length(get_max_speed())
+	velocity = ground_speed + vertical_speed
+
+
 func is_sharp_turn(direction : Vector3, current_speed : Vector3) -> bool:
 	var dot = current_speed.normalized().dot(direction.normalized())
 	return dot < 0
@@ -446,7 +453,8 @@ func _physics_process(delta: float) -> void:
 				var jump_multiplier := finish_charge_jump()
 				var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
 				var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
-				velocity = launch_direction + launch_height
+				velocity += launch_direction + launch_height
+				cap_speed()
 
 		State.Grounded:
 			apply_movement(direction, delta)
@@ -625,6 +633,10 @@ func _physics_process(delta: float) -> void:
 				hanging = true
 				hanging_cooldown = 1
 				velocity = Vector3.ZERO
+
+			# Chase camera when boxed
+			if attachment == Attachment.Boxed && get_ground_speed(velocity).length() > 2:
+				active_camera.align(rotation.y, 1, true)
 
 			if is_falling() && wall_detect.is_colliding():
 				var distance_to_wall = wall_detect.get_collision_point() - position

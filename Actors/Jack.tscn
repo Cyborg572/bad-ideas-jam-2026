@@ -8,8 +8,8 @@
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
 boxed_move_speed = 2.0
-boxed_friction = 20.0
-boxed_jump_strength = 4.0
+boxed_friction = 6.0
+boxed_jump_strength = 4.5
 boxed_max_move_speed = 4.0
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
@@ -20,7 +20,7 @@ friction = 0.5
 boxed_move_speed = 1.0
 boxed_friction = 0.5
 boxed_jump_strength = 8.0
-boxed_max_move_speed = 3.0
+boxed_max_move_speed = 10.0
 metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
 [sub_resource type="Resource" id="Resource_di1ys"]
