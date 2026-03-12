@@ -137,7 +137,9 @@ func _enter_attachment(from : Attachment, to : Attachment) -> void:
 			box_collider.position = model.position
 			box_collider.disabled = true
 			box.slam()
+			active_camera.arm.spring_length = 3
 		Attachment.Boxed:
+			active_camera.arm.spring_length = 1.5
 			velocity += box.velocity
 			box.attach(self)
 			box_collider.position = attachment_points['foot'].position - box.attachment_point.position

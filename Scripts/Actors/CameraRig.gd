@@ -10,6 +10,7 @@ signal chase_ended(target: Node3D)
 @export var mouse_sensitivity: float = 5
 @export var camera_speed:float = 5
 
+@onready var arm: SpringArm3D = $SpringArm3D
 @onready var camera_position: Node3D = $SpringArm3D/CameraPosition
 @onready var camera: Camera3D = $Camera3D
 
