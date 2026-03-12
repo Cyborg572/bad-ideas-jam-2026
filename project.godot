@@ -13,12 +13,17 @@ config_version=5
 config/name="Bouncing Back"
 run/main_scene="uid://bdgb2e8xn3ry4"
 config/features=PackedStringArray("4.6", "GL Compatibility")
-boot_splash/bg_color=Color(0.19923878, 0.09553314, 0.20392117, 1)
+run/max_fps=30
+boot_splash/bg_color=Color(0.3019608, 0.003921569, 0.32941177, 1)
 config/icon="res://icon.svg"
 
 [autoload]
 
 GameManager="*uid://baq5832jfc16d"
+
+[display]
+
+window/stretch/mode="canvas_items"
 
 [input]
 
