@@ -15,13 +15,6 @@ extends Resource
 @export var boxed_max_move_speed : float = 0
 @export var boxed_max_speed : float = 6.0
 
-@export_subgroup("Carry", "carry_")
-@export var carry_move_speed : float = 3.0
-@export var carry_friction : float = 6.0
-@export var carry_jump_strength : float = 1.0
-@export var carry_max_move_speed : float = 3.0
-@export var carry_max_speed : float = 3.0
-
 func get_move_speed(is_boxed: bool):
 	match is_boxed:
 		false:
