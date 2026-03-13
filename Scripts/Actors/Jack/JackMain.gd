@@ -3,8 +3,8 @@ extends CharacterBody3D
 
 signal popped(box: TheBox)
 
-enum Attachment { Free, Boxed }
 enum State { Grounded, Airborn, Crouched, Aiming, Armed }
+
 enum JumpType {
 	## Not a Jump
 	None,
@@ -39,7 +39,7 @@ enum JumpType {
 @export var state_config : Dictionary[State, JackStateConfiguration]
 @export var is_carrying : bool = false
 @export var carried_item : Attachable
-@export var starting_attachment : Attachment = Attachment.Free
+@export var start_with_box : bool = false
 @export var box : TheBox
 @export var boxed_jump_power: Curve
 
@@ -56,7 +56,7 @@ enum JumpType {
 @onready var pop_button_timer: Timer = $Timers/PopButtonTimer
 
 var state : State = State.Grounded
-var attachment : Attachment = Attachment.Free
+var is_boxed : bool = false
 var attachment_points : Dictionary[String, Node3D] = {}
 
 var can_flip : bool = false
@@ -84,69 +84,53 @@ func _ready() -> void:
 	attachment_points['throw'] = $AttachmentPoints/Throw
 	pop_timer.timeout.connect(popToBox)
 	pop_button_timer.timeout.connect(popToBox)
-	if starting_attachment == Attachment.Boxed:
+	if start_with_box:
 		popToBox.call_deferred()
 
 
 #region State value accessors
 func get_move_speed() -> float:
-	return state_config[state].get_move_speed(attachment)
+	return state_config[state].get_move_speed(is_boxed)
 
 
 func get_friction() -> float:
-	return state_config[state].get_friction(attachment)
+	return state_config[state].get_friction(is_boxed)
 
 
 func get_jump_strength() -> float:
-	return state_config[state].get_jump_strength(attachment)
+	return state_config[state].get_jump_strength(is_boxed)
 
 
 func get_max_move_speed() -> float:
-	return state_config[state].get_max_move_speed(attachment)
+	return state_config[state].get_max_move_speed(is_boxed)
 
 
 func get_max_speed() -> float:
-	return state_config[state].get_max_speed(attachment)
+	return state_config[state].get_max_speed(is_boxed)
 #endregion
 
-#region Attachment management
-func change_attachment(to : Attachment) -> void:
-	var from : Attachment = attachment
-	_leave_attachment(from, to)
-	attachment = to
-	_enter_attachment(from, to)
+#region Box management
 
+func leave_box() -> void:
+	is_boxed = false
+	#pop_timer.start()
+	#remove_collision_exception_with(box)
+	box_collider.position = model.position
+	box_collider.disabled = true
+	box.slam()
+	active_camera.arm.spring_length = 3
 
-func _leave_attachment(from : Attachment, to : Attachment) -> void:
-	if from == to: return
-	#print_debug("leaving attachment ", State.keys()[from])
-	match from:
-		Attachment.Free:
-			#add_collision_exception_with(box)
-			box_collider.disabled = false
-		_:
-			pass
+func enter_box() -> void:
+	is_boxed = true
+	box_collider.disabled = false
+	active_camera.arm.spring_length = 1.5
+	pop_timer.stop()
+	velocity += box.velocity
+	box.attach(self)
+	box_collider.position = attachment_points['foot'].position - box.attachment_point.position
+	if not box.inventory.is_empty() && would_recieve_item(box.get_offered_item()):
+		box.give_item(self)
 
-
-func _enter_attachment(from : Attachment, to : Attachment) -> void:
-	if from == to: return
-	#print_debug("entering attachment", State.keys()[to])
-	match to:
-		Attachment.Free:
-			#remove_collision_exception_with(box)
-			box_collider.position = model.position
-			box_collider.disabled = true
-			box.slam()
-			active_camera.arm.spring_length = 3
-		Attachment.Boxed:
-			active_camera.arm.spring_length = 1.5
-			velocity += box.velocity
-			box.attach(self)
-			box_collider.position = attachment_points['foot'].position - box.attachment_point.position
-			if not box.inventory.is_empty() && would_recieve_item(box.get_offered_item()):
-				box.give_item(self)
-		_:
-			pass
 #endregion
 
 #region State management
@@ -164,7 +148,7 @@ func _leave_state(from : State, to : State) -> void:
 		State.Crouched:
 			other_model.visible = true
 			body_collider.disabled = false
-			if attachment == Attachment.Boxed:
+			if is_boxed:
 				box.pop()
 			else:
 				other_model.scale.y = 1
@@ -182,7 +166,7 @@ func _enter_state(from : State, to : State) -> void:
 			if not Input.is_action_pressed("Jump"):
 				finish_charge_jump()
 			if is_standing_on_box() && box.is_open:
-				change_attachment(Attachment.Boxed)
+				enter_box()
 
 		State.Airborn:
 			falling = false
@@ -192,7 +176,7 @@ func _enter_state(from : State, to : State) -> void:
 				anim.play("Free/Jump", 0.1)
 
 		State.Crouched:
-			if attachment == Attachment.Boxed:
+			if is_boxed:
 				other_model.visible = false
 				body_collider.disabled = true
 				box.slam()
@@ -265,7 +249,7 @@ func is_freefall() -> bool:
 func is_standing_on_box() -> bool:
 	return (
 		is_on_floor()
-		&& attachment == Attachment.Free
+		&& !is_boxed
 		&& distance_to_box < 0.25 
 		&& position.y > box.attachment_point.position.y
 	)
@@ -303,7 +287,7 @@ func popToBox() -> void:
 	if is_carrying:
 		drop_carried_item(2, PI/2)
 	position = box.position
-	change_attachment(Attachment.Boxed)
+	enter_box()
 	visible = false
 	model.scale.y = 0.1
 	active_camera.start_chase()
@@ -433,10 +417,10 @@ func _physics_process(delta: float) -> void:
 
 	if Input.is_action_just_pressed("Pop"):
 		print("Distance: ", distance_to_box)
-		match attachment:
-			Attachment.Boxed:
+		match is_boxed:
+			true:
 				box.detach()
-				change_attachment(Attachment.Free)
+				leave_box()
 				if state == State.Crouched:
 					box.pop()
 					jump_type = JumpType.Launch
@@ -444,12 +428,12 @@ func _physics_process(delta: float) -> void:
 				else:
 					jump_type = JumpType.PopOut
 					velocity.y = get_jump_strength()
-			Attachment.Free when is_carrying && carried_item == box:
+			false when is_carrying && carried_item == box:
 				is_carrying = false
 				jump_type = JumpType.PopIn
 				velocity.y = get_jump_strength()
 				popToBox()
-			Attachment.Free when box:
+			false when box:
 				if distance_to_box < 1:
 					box.toggle_open()
 				else:
@@ -466,7 +450,7 @@ func _physics_process(delta: float) -> void:
 			pop_button_timer.stop()
 
 	match state:
-		State.Grounded when attachment == Attachment.Boxed:
+		State.Grounded when is_boxed:
 			anim.play("Free/Idle")
 			other_model.anim.play("Yay")
 			apply_movement(Vector3.ZERO, delta)
@@ -532,7 +516,7 @@ func _physics_process(delta: float) -> void:
 				if is_carrying:
 					if carried_item == box:
 						is_carrying = false
-						change_attachment(Attachment.Boxed)
+						enter_box()
 					else:
 						drop_carried_item()
 				change_state(State.Crouched)
@@ -575,7 +559,7 @@ func _physics_process(delta: float) -> void:
 			else:
 				active_camera.cancel_align()
 
-			if attachment == Attachment.Boxed:
+			if is_boxed:
 				if Input.is_action_just_pressed("Jump"):
 					start_charing_jump()
 
@@ -590,7 +574,7 @@ func _physics_process(delta: float) -> void:
 				hanging = false
 
 			# Handle normal jump.
-			elif Input.is_action_just_pressed("Jump") and attachment != Attachment.Boxed:
+			elif Input.is_action_just_pressed("Jump") and !is_boxed:
 				active_camera.align(best_side_view, 10)
 				hanging_cooldown = 1
 				
@@ -605,7 +589,7 @@ func _physics_process(delta: float) -> void:
 					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * -0.5)
 
 			# Handle boxed jump
-			elif Input.is_action_just_released("Jump") && attachment == Attachment.Boxed:
+			elif Input.is_action_just_released("Jump") && is_boxed:
 				var jump_multiplier := finish_charge_jump()
 				var launch_height := (Vector3.UP * get_jump_strength() * jump_multiplier)
 				var launch_direction :=  + (wall_normal * -0.5)
@@ -655,7 +639,7 @@ func _physics_process(delta: float) -> void:
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
 				active_camera.align(get_best_side_view(wall_normal), 10)
-				if attachment == Attachment.Boxed:
+				if is_boxed:
 					jump_type = JumpType.Wall
 					velocity = wall_normal
 				else:
@@ -683,7 +667,7 @@ func _physics_process(delta: float) -> void:
 				velocity = Vector3.ZERO
 
 			# Chase camera when boxed
-			if attachment == Attachment.Boxed && get_ground_speed(velocity).length() > 2:
+			if is_boxed && get_ground_speed(velocity).length() > 2:
 				active_camera.align(rotation.y, 1, true)
 
 			# Trigger jump cancelling
@@ -708,7 +692,7 @@ func _physics_process(delta: float) -> void:
 				# Animation Logic
 				if !falling:
 					falling = true
-					if not attachment == Attachment.Boxed:
+					if !is_boxed:
 						other_model.anim.play("FallingOff")
 					anim.play("Free/Fall", 1)
 					anim.queue("Free/Falling")
@@ -724,7 +708,7 @@ func _physics_process(delta: float) -> void:
 			if flipping:
 				follow_motion(direction, 6 * delta)
 
-			if attachment == Attachment.Boxed:
+			if is_boxed:
 				if Input.is_action_just_pressed("Jump"):
 					start_charing_jump()
 
@@ -737,7 +721,7 @@ func _physics_process(delta: float) -> void:
 			
 			velocity.y = clamp(velocity.y, -10.0, 10.0)
 
-		State.Crouched when attachment == Attachment.Boxed:
+		State.Crouched when is_boxed:
 			apply_movement(direction, delta)
 			if Input.is_action_just_released("Crouch"):
 				change_state(State.Grounded)
