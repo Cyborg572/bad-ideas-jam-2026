@@ -36,12 +36,17 @@ enum JumpType {
 	PopIn
 }
 
+
+#region Export Vars
 @export var state_config : Dictionary[State, JackStateConfiguration]
 @export var is_carrying : bool = false
 @export var carried_item : Attachable
 @export var start_with_box : bool = false
 @export var box : TheBox
 @export var boxed_jump_power: Curve
+#endregion
+
+#region OnReady Vars
 
 @onready var model := $Model
 @onready var other_model: Node3D = $Model/Jack
@@ -54,6 +59,7 @@ enum JumpType {
 @onready var box_collider: CollisionShape3D = $BoxCollider
 @onready var pop_timer: Timer = $Timers/PopTimer
 @onready var pop_button_timer: Timer = $Timers/PopButtonTimer
+#endregion
 
 var state : State = State.Grounded
 var is_boxed : bool = false
@@ -193,21 +199,15 @@ func set_active_camera(camera: CameraRig):
 	active_camera = camera
 
 
-func get_ground_speed(vector: Vector3) -> Vector3:
-	return vector * Vector3(1, 0, 1)
-
-
 func get_angle_to_box() -> float:
-	var box_direction = (box.position - position).normalized()
-	var look_angle = Vector2(box_direction.z, box_direction.x).angle()
-	return look_angle
+	return Utils.direction_to_y_angle(box.position, position)
 #endregion
 
 #region Process helpers
 
 func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1.0 ) -> void:
 	var movement = acceleration * delta * (get_move_speed() * multiplier)
-	var ground_speed := get_ground_speed(velocity)
+	var ground_speed := Utils.get_ground_speed(velocity)
 	var vertical_speed : Vector3 = velocity * Vector3.UP
 	var max_move_speed : float = get_max_move_speed()
 	var max_speed : float = get_max_speed()
@@ -229,21 +229,11 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 
 
 func cap_speed() -> void:
-	var ground_speed := get_ground_speed(velocity)
-	var vertical_speed : Vector3 = velocity * Vector3.UP
-	ground_speed = ground_speed.limit_length(get_max_speed())
-	velocity = ground_speed + vertical_speed
+	Utils.cap_ground_speed(velocity, get_max_speed())
 
-
-func is_sharp_turn(direction : Vector3, current_speed : Vector3) -> bool:
-	var dot = current_speed.normalized().dot(direction.normalized())
-	return dot < 0
 
 func is_falling() -> bool:
 	return velocity.y < 0
-
-func is_freefall() -> bool:
-	return !is_on_floor() && !is_on_wall() && velocity.y < 0
 
 
 func is_standing_on_box() -> bool:
@@ -265,10 +255,7 @@ func get_direction() -> Vector3:
 	return direction
 
 func follow_motion(direction: Vector3, rate: float) -> void:
-	var look_angle = Vector2(direction.z, direction.x).angle()
-	var q1 = Quaternion(Vector3.UP, look_angle)
-	var q2 = Quaternion.from_euler(rotation).normalized()
-	rotation = q2.slerp(q1, rate).get_euler()
+	rotation = Utils.rotate_toward_motion(rotation, direction, rate)
 	ledge_hook.rotation.y = -rotation.y
 	wall_detect.rotation.y = -rotation.y
 
@@ -485,8 +472,8 @@ func _physics_process(delta: float) -> void:
 		State.Grounded:
 			apply_movement(direction, delta)
 
-			var speed := get_ground_speed(velocity).length()
-			var sharp := is_sharp_turn(velocity, direction)
+			var speed := Utils.get_ground_speed(velocity).length()
+			var sharp := Utils.is_sharp_turn(velocity, direction)
 
 			if get_max_move_speed() - speed < 0.2:
 				active_camera.align(rotation.y, 1, true)
@@ -667,7 +654,7 @@ func _physics_process(delta: float) -> void:
 				velocity = Vector3.ZERO
 
 			# Chase camera when boxed
-			if is_boxed && get_ground_speed(velocity).length() > 2:
+			if is_boxed && Utils.get_ground_speed(velocity).length() > 2:
 				active_camera.align(rotation.y, 1, true)
 
 			# Trigger jump cancelling
@@ -743,7 +730,7 @@ func _physics_process(delta: float) -> void:
 
 		State.Crouched:
 			apply_movement(direction, delta)
-			var speed := get_ground_speed(velocity).length()
+			var speed := Utils.get_ground_speed(velocity).length()
 	
 			if get_max_move_speed() - speed < 0.2:
 				active_camera.align(rotation.y, 1, true)
