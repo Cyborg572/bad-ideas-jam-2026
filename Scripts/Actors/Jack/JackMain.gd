@@ -124,12 +124,12 @@ func leave_box() -> void:
 	box_collider.position = model.position
 	box_collider.disabled = true
 	box.slam()
-	active_camera.arm.spring_length = 3
+	active_camera.set_shot_type(CameraRig.Shot.Wide)
 
 func enter_box() -> void:
 	is_boxed = true
 	box_collider.disabled = false
-	active_camera.arm.spring_length = 1.5
+	active_camera.set_shot_type(CameraRig.Shot.Normal)
 	pop_timer.stop()
 	velocity += box.velocity
 	box.attach(self)

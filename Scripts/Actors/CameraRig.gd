@@ -4,11 +4,27 @@ extends Node3D
 signal chase_started(target: Node3D)
 signal chase_ended(target: Node3D)
 
+enum Shot {
+	Closeup,
+	Normal,
+	Wide
+}
+
+
 @export var is_main_camera : bool = false
 @export var target:Node3D;
 @export var camera_sensitivity: float = 2.5
 @export var mouse_sensitivity: float = 5
 @export var camera_speed:float = 5
+@export var default_shot_type : Shot = Shot.Normal
+
+@export_subgroup("Distance", "distance_")
+## How far away is the camera for closeups
+@export var distance_closeup : float = 0.5
+## How far away is the camera for normal tracking
+@export var distance_normal : float = 1.5
+## How far way is the camera for wide tracking
+@export var distance_wide : float = 3
 
 @onready var arm: SpringArm3D = $SpringArm3D
 @onready var camera_position: Node3D = $SpringArm3D/CameraPosition
@@ -21,6 +37,7 @@ var aligning : bool = false
 var alignment_target : Vector3 = default_alignment
 var alignment_speed : float = 0.0
 var alignment_one_time : bool = false
+var shot_type : Shot = Shot.Normal
 var chasing = false
 var chase_speed = 10
 
@@ -50,6 +67,37 @@ func end_chase():
 		chasing = false
 		chase_speed = 10
 		chase_ended.emit(target)
+
+
+func set_shot_type(new_shot_type: Shot) -> void:
+	match new_shot_type:
+		Shot.Closeup:
+			arm.spring_length = distance_closeup
+		Shot.Normal:
+			arm.spring_length = distance_normal
+		Shot.Wide:
+			arm.spring_length = distance_wide
+	shot_type = new_shot_type
+
+
+func push_in() -> void:
+	match shot_type:
+		Shot.Closeup:
+			pass
+		Shot.Normal:
+			set_shot_type(Shot.Closeup)
+		Shot.Wide:
+			set_shot_type(Shot.Normal)
+
+
+func pull_out() -> void:
+	match shot_type:
+		Shot.Closeup:
+			set_shot_type(Shot.Normal)
+		Shot.Normal:
+			set_shot_type(Shot.Wide)
+		Shot.Wide:
+			pass
 
 
 func align(target_angle = default_alignment, speed: float = 0.0, one_time = false) -> void:
@@ -84,6 +132,7 @@ func _ready() -> void:
 	position = get_target_position()
 	rotation.x = -PI/8
 	camera.position = camera_position.position
+	set_shot_type(default_shot_type)
 
 
 func _unhandled_input(event: InputEvent) -> void:
