@@ -418,15 +418,17 @@ func _physics_process(delta: float) -> void:
 		print("Distance: ", distance_to_box)
 		match is_boxed:
 			true:
-				if hiding:
+				var was_hiding : bool = hiding
+				box.detach()
+				leave_box()
+				if was_hiding:
 					box.pop()
 					jump_type = JumpType.Launch
 					velocity.y = get_jump_strength() * 2
 				else:
 					jump_type = JumpType.PopOut
 					velocity.y = get_jump_strength()
-				box.detach()
-				leave_box()
+
 			false when is_carrying && carried_item == box:
 				is_carrying = false
 				jump_type = JumpType.PopIn
