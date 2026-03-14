@@ -274,17 +274,17 @@ func follow_motion(direction: Vector3, rate: float) -> void:
 
 
 func popToBox() -> void:
+	var stored_velocity : Vector3 = velocity
 	if is_carrying:
 		drop_carried_item(2, PI/2)
+	velocity = Vector3.ZERO
 	position = box.position
 	enter_box()
-	visible = false
-	model.scale.y = 0.1
+	hide_in_box()
 	active_camera.start_chase()
 	await active_camera.chase_ended
-	box.pop()
-	visible = true
-	model.scale.y = 1
+	pop_out()
+	velocity = stored_velocity / 2
 	popped.emit(box)
 
 
@@ -378,6 +378,8 @@ func finish_charge_jump() -> float:
 		model.position.y = 0.375
 
 	return jump_multiplier
+
+
 #endregion
 
 func _physics_process(delta: float) -> void:
