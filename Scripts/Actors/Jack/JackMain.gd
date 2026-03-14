@@ -125,7 +125,7 @@ func leave_box() -> void:
 	is_boxed = false
 	box_collider.position = model.position
 	box_collider.disabled = true
-	
+
 	# Clean up from hiding in box
 	hiding = false
 	other_model.visible = true
@@ -226,9 +226,9 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 	var max_speed : float = get_max_speed()
 	var current_speed : float = ground_speed.length()
 	var friction : float = get_friction()
-	
+
 	var direction : Vector3 = movement.normalized()
-	
+
 	if current_speed < max_move_speed:
 		ground_speed += movement
 	elif max_move_speed > 0:
@@ -237,7 +237,7 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 
 	ground_speed = ground_speed.move_toward(direction * ground_speed.length(), friction * delta)
 	ground_speed = ground_speed.limit_length(max_speed)
-	
+
 	velocity = ground_speed + vertical_speed
 
 
@@ -253,7 +253,7 @@ func is_standing_on_box() -> bool:
 	return (
 		is_on_floor()
 		&& !is_boxed
-		&& distance_to_box < 0.25 
+		&& distance_to_box < 0.25
 		&& position.y > box.attachment_point.position.y
 	)
 
@@ -261,7 +261,7 @@ func get_direction() -> Vector3:
 	# Get the input direction and handle the movement/deceleration.
 	var input_dir := Input.get_vector("Left", "Right", "Forward", "Back")
 	var direction := Vector3(input_dir.x, 0, input_dir.y)
-	
+
 	if active_camera:
 		direction = active_camera.rotate_relative_to_view(direction)
 
@@ -313,13 +313,13 @@ func drop_carried_item(force : float = 0.0, pitch : float = 0.0, from: String = 
 	is_carrying = false
 	var throw_origin : Vector3 = attachment_points["throw"].global_position
 	var throw_force : Vector3 = velocity
-	
+
 	if force > 0:
 		var launch_dir = Vector3.MODEL_FRONT
 		if pitch > 0:
 			launch_dir = launch_dir.rotated(Vector3.MODEL_RIGHT, pitch)
 		launch_dir = launch_dir.rotated(Vector3.UP, rotation.y)
-		
+
 		throw_force += launch_dir.normalized() * force
 	elif velocity.length() > get_max_move_speed() / 2:
 		throw_origin = attachment_points["hand"].global_position
@@ -365,10 +365,11 @@ func charge_jump(delta) -> void:
 	else:
 		other_model.scale.y = 1 - (0.5 * jump_multiplier)
 
+
 func finish_charge_jump() -> float:
 	var jump_multiplier : float = boxed_jump_power.sample(jump_charge)
 	jump_charge = 0.0
-	
+
 	other_model.scale.y = 1
 	box.model.scale = Vector3(1, 1, 1)
 
@@ -451,7 +452,7 @@ func _physics_process(delta: float) -> void:
 		if is_carrying:
 				drop_carried_item(0, PI/2, "head")
 		hide_in_box()
-	
+
 	if Input.is_action_just_released("Crouch") && is_boxed:
 		pop_out()
 
@@ -590,8 +591,8 @@ func _physics_process(delta: float) -> void:
 			elif Input.is_action_just_pressed("Jump") and !is_boxed:
 				active_camera.align(best_side_view, 10)
 				hanging_cooldown = 1
-				
-				
+
+
 				hanging = false
 				if wall_dot > 0.8:
 					jump_type = JumpType.LedgeAway
@@ -715,7 +716,7 @@ func _physics_process(delta: float) -> void:
 
 			# Apply gravity
 			velocity += gravity * delta
-			
+
 			var flipping = anim.current_animation == "Free/Flip"
 			apply_movement(direction, delta, 1.5 if flipping else 1.0)
 			if flipping:
@@ -731,7 +732,7 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_just_pressed("Attack") && is_carrying:
 				drop_carried_item(3, PI/4)
 				velocity = Vector3.UP * 2
-			
+
 			velocity.y = clamp(velocity.y, -10.0, 10.0)
 
 		#State.Crouched when is_boxed:
@@ -757,7 +758,7 @@ func _physics_process(delta: float) -> void:
 		State.Crouched:
 			apply_movement(direction, delta)
 			var speed := Utils.get_ground_speed(velocity).length()
-	
+
 			if get_max_move_speed() - speed < 0.2:
 				active_camera.align(rotation.y, 1, true)
 
@@ -795,7 +796,7 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 					target.recieve_item(carried_item)
 			else:
 				drop_carried_item()
-						
+
 		types.attachable when state != State.Crouched:
 			if would_recieve_item(target):
 				recieve_item(target)

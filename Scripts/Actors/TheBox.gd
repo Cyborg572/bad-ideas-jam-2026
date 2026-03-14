@@ -48,7 +48,7 @@ func open(fast : bool = false) -> void:
 
 func close(fast : bool = false) -> void:
 	if not is_open: return
-	
+
 	is_open = false
 	switch_collider()
 	if fast:
@@ -132,7 +132,7 @@ func _detach(_target : Node3D) -> void:
 func get_interaction_type(point: InteractionPoint) -> InteractionPoint.InteractionType:
 	if point != interaction_point: return InteractionPoint.InteractionType.custom
 	var jack : Jack = GameManager.jack
-	
+
 	match is_open:
 		true when jack.is_carrying != inventory.is_empty():
 			return InteractionPoint.InteractionType.sign
@@ -149,7 +149,7 @@ func _on_interaction_point_interaction(point: InteractionPoint) -> void:
 	if point.type != InteractionPoint.InteractionType.custom:
 		print(jack.is_carrying, inventory.is_empty())
 		return
-	
+
 	if jack.is_carrying || inventory.is_empty():
 		return
 

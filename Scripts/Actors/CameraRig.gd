@@ -110,7 +110,7 @@ func align(target_angle = default_alignment, speed: float = 0.0, one_time = fals
 		alignment_target = Vector3(default_pitch, target_angle, 0)
 	else:
 		alignment_target = default_alignment
-	
+
 	# The camera looks in the opposite of the direction you'd expect.
 	alignment_target.y = wrapf(alignment_target.y + PI, 0.0, TAU)
 	alignment_target.z = 0
@@ -126,7 +126,7 @@ func cancel_align() -> void:
 func _ready() -> void:
 	if is_main_camera:
 		GameManager.main_camera = self
-	
+
 	if !target: return
 
 	position = get_target_position()
@@ -180,11 +180,11 @@ func _process(delta: float) -> void:
 		start_chase(20)
 	elif distance > 2:
 		start_chase(10)
-	
+
 	if distance < 0.5:
 		end_chase()
 
 	position = position.move_toward(get_target_position(), chase_speed * delta)
-	
+
 	camera.position = lerp(camera.position, camera_position.position, delta*camera_speed)
 	camera.global_rotation.z = 0

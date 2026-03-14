@@ -74,14 +74,14 @@ func _ready() -> void:
 		pointer_refence.mesh = BoxMesh.new()
 		pointer_refence.mesh.size = Vector3(0.1, 0.1, 0.1)
 		self.add_child(pointer_refence, false, Node.INTERNAL_MODE_FRONT)
-		
+
 
 	# Connect the signals
 	body_entered.connect(_on_body_entered)
 	body_exited.connect(_on_body_exited)
 
 	# Configure the collision mask and layers
-	collision_layer = 3 # Layers 1(1) and 2(2) 
+	collision_layer = 3 # Layers 1(1) and 2(2)
 	collision_mask = 4 # Layer 3(4)
 
 	if disabled:

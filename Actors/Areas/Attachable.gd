@@ -115,7 +115,7 @@ func match_scale(speed: float, target_scale: Vector3 = Vector3(1, 1, 1)):
 	if speed == 0:
 		scale = target_scale
 		return
-	
+
 	scale = scale.move_toward(target_scale, speed)
 
 
