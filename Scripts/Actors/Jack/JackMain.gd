@@ -259,16 +259,6 @@ func follow_motion(direction: Vector3, rate: float) -> void:
 	ledge_hook.rotation.y = -rotation.y
 	wall_detect.rotation.y = -rotation.y
 
-func get_best_side_view(normal: Vector3) -> float:
-	var ccw = normal.rotated(Vector3.UP, PI/2).normalized()
-	var cw = normal.rotated(Vector3.UP, -PI/2).normalized()
-	var cam_direction = Vector3.FORWARD.rotated(Vector3.UP, active_camera.rotation.y)
-
-	if ((ccw - cam_direction).length_squared() > (cw - cam_direction).length_squared()):
-		return Vector2(-ccw.z, -ccw.x).angle()
-	else:
-		return Vector2(-cw.z, -cw.x).angle()
-
 
 func popToBox() -> void:
 	if is_carrying:
@@ -535,7 +525,7 @@ func _physics_process(delta: float) -> void:
 
 			var back_to_wall := wall_detect.is_colliding()
 			var wall_dot := direction.normalized().dot(wall_normal)
-			var best_side_view = rotation.y if not back_to_wall else get_best_side_view(wall_normal);
+			var best_side_view = rotation.y if not back_to_wall else Utils.get_best_side_view(wall_normal, active_camera);
 
 			if direction:
 				# Explicit check here, because the else is "rotation" no "rotation.y"
@@ -625,7 +615,7 @@ func _physics_process(delta: float) -> void:
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
-				active_camera.align(get_best_side_view(wall_normal), 10)
+				active_camera.align(Utils.get_best_side_view(wall_normal, active_camera), 10)
 				if is_boxed:
 					jump_type = JumpType.Wall
 					velocity = wall_normal

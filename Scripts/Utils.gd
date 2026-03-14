@@ -40,3 +40,15 @@ static func rotate_toward_motion(current_rotation: Vector3, direction: Vector3, 
 	var q1 = quaternion_from_direction(direction)
 	var q2 = Quaternion.from_euler(current_rotation).normalized()
 	return q2.slerp(q1, rate).get_euler()
+
+
+## Figures out the best side to view an action from, based on the camera's current position
+static func get_best_side_view(normal: Vector3, camera_rig: CameraRig) -> float:
+	var ccw = normal.rotated(Vector3.UP, PI/2).normalized()
+	var cw = normal.rotated(Vector3.UP, -PI/2).normalized()
+	var cam_direction = Vector3.FORWARD.rotated(Vector3.UP, camera_rig.rotation.y)
+
+	if ((ccw - cam_direction).length_squared() > (cw - cam_direction).length_squared()):
+		return Vector2(-ccw.z, -ccw.x).angle()
+	else:
+		return Vector2(-cw.z, -cw.x).angle()
