@@ -71,6 +71,7 @@ var throwing : bool = false
 var aiming : bool = false
 var hanging : bool = false
 var hanging_cooldown : float = 0.0
+var hiding : bool = false
 var jump_charge: float = 1.0
 var jump_charge_rate : float = 5
 var jump_type : JumpType = JumpType.None
@@ -84,12 +85,15 @@ func _ready() -> void:
 	set_active_camera(GameManager.main_camera)
 	GameManager.change_camera.connect(set_active_camera)
 	GameManager.interaction.connect(_on_global_interaction)
+
 	attachment_points['head'] = $AttachmentPoints/Head
 	attachment_points['hand'] = $AttachmentPoints/Hand
 	attachment_points['foot'] = $AttachmentPoints/Foot
 	attachment_points['throw'] = $AttachmentPoints/Throw
+
 	pop_timer.timeout.connect(popToBox)
 	pop_button_timer.timeout.connect(popToBox)
+
 	if start_with_box:
 		popToBox.call_deferred()
 
@@ -119,11 +123,16 @@ func get_max_speed() -> float:
 
 func leave_box() -> void:
 	is_boxed = false
-	#pop_timer.start()
-	#remove_collision_exception_with(box)
 	box_collider.position = model.position
 	box_collider.disabled = true
-	box.slam()
+	
+	# Clean up from hiding in box
+	hiding = false
+	other_model.visible = true
+	body_collider.disabled = false
+
+	# Cinema!
+	# box.slam()
 	active_camera.set_shot_type(CameraRig.Shot.Wide)
 
 func enter_box() -> void:
@@ -136,6 +145,18 @@ func enter_box() -> void:
 	box_collider.position = attachment_points['foot'].position - box.attachment_point.position
 	if not box.inventory.is_empty() && would_recieve_item(box.get_offered_item()):
 		box.give_item(self)
+
+func hide_in_box() -> void:
+	hiding = true
+	other_model.visible = false
+	body_collider.disabled = true
+	box.slam()
+
+func pop_out() -> void:
+	hiding = false
+	box.pop()
+	other_model.visible = true
+	body_collider.disabled = false
 
 #endregion
 
@@ -152,12 +173,7 @@ func _leave_state(from : State, to : State) -> void:
 	#print_debug("leaving ", State.keys()[from])
 	match from:
 		State.Crouched:
-			other_model.visible = true
-			body_collider.disabled = false
-			if is_boxed:
-				box.pop()
-			else:
-				other_model.scale.y = 1
+			other_model.scale.y = 1
 		_:
 			pass
 
@@ -173,6 +189,8 @@ func _enter_state(from : State, to : State) -> void:
 				finish_charge_jump()
 			if is_standing_on_box() && box.is_open:
 				enter_box()
+				if Input.is_action_pressed("Crouch"):
+					hide_in_box()
 
 		State.Airborn:
 			falling = false
@@ -182,12 +200,7 @@ func _enter_state(from : State, to : State) -> void:
 				anim.play("Free/Jump", 0.1)
 
 		State.Crouched:
-			if is_boxed:
-				other_model.visible = false
-				body_collider.disabled = true
-				box.slam()
-			else:
-				other_model.scale.y = .25
+			other_model.scale.y = .25
 		_:
 			pass
 
@@ -345,17 +358,24 @@ func charge_jump(delta) -> void:
 		var offset = -0.375 * jump_multiplier
 		attachment_points["foot"].position.y = offset
 		model.position.y = 0.375 + offset
+	elif hiding:
+		box.model.scale.y = 1 - (0.25 * jump_multiplier)
+		box.model.scale.x = 1 + (0.25 * jump_multiplier)
+		box.model.scale.z = 1 + (0.25 * jump_multiplier)
 	else:
 		other_model.scale.y = 1 - (0.5 * jump_multiplier)
 
 func finish_charge_jump() -> float:
 	var jump_multiplier : float = boxed_jump_power.sample(jump_charge)
 	jump_charge = 0.0
-
+	
 	other_model.scale.y = 1
+	box.model.scale = Vector3(1, 1, 1)
+
 	if hanging:
 		attachment_points["foot"].position.y = 0
 		model.position.y = 0.375
+
 	return jump_multiplier
 #endregion
 
@@ -367,6 +387,7 @@ func _physics_process(delta: float) -> void:
 	#print("Fall Speed ", floor(velocity.y))
 	#print("distance from box: ", (position - box.position).length())
 	#print("Jump type ", JumpType.keys()[jump_type])
+
 	# Toggle Airborn state automatically
 	if not is_on_floor():
 		if state != State.Airborn:
@@ -396,15 +417,15 @@ func _physics_process(delta: float) -> void:
 		print("Distance: ", distance_to_box)
 		match is_boxed:
 			true:
-				box.detach()
-				leave_box()
-				if state == State.Crouched:
+				if hiding:
 					box.pop()
 					jump_type = JumpType.Launch
 					velocity.y = get_jump_strength() * 2
 				else:
 					jump_type = JumpType.PopOut
 					velocity.y = get_jump_strength()
+				box.detach()
+				leave_box()
 			false when is_carrying && carried_item == box:
 				is_carrying = false
 				jump_type = JumpType.PopIn
@@ -426,6 +447,14 @@ func _physics_process(delta: float) -> void:
 		if not pop_button_timer.is_stopped():
 			pop_button_timer.stop()
 
+	if Input.is_action_just_pressed("Crouch") && is_boxed:
+		if is_carrying:
+				drop_carried_item(0, PI/2, "head")
+		hide_in_box()
+	
+	if Input.is_action_just_released("Crouch") && is_boxed:
+		pop_out()
+
 	match state:
 		State.Grounded when is_boxed:
 			anim.play("Free/Idle")
@@ -434,11 +463,6 @@ func _physics_process(delta: float) -> void:
 
 			if (direction):
 				follow_motion(direction, delta * 6)
-
-			if Input.is_action_just_pressed("Crouch"):
-				if is_carrying:
-					drop_carried_item(0, PI/2, "head")
-				change_state(State.Crouched)
 
 			if Input.is_action_just_pressed("Jump"):
 				start_charing_jump()
@@ -451,13 +475,21 @@ func _physics_process(delta: float) -> void:
 
 			# Handle jump.
 			if Input.is_action_just_released("Jump"):
-				anim.play("Free/Jump", 0.5)
-				var jump_multiplier := finish_charge_jump()
-				var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
-				var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
-				jump_type = JumpType.Spring
-				velocity += launch_direction + launch_height
-				cap_speed()
+				if hiding:
+					var jump_multiplier := finish_charge_jump()
+					var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+					var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
+					jump_type = JumpType.Hop
+					velocity += (launch_direction + launch_height) / 2
+					cap_speed()
+				else:
+					anim.play("Free/Jump", 0.5)
+					var jump_multiplier := finish_charge_jump()
+					var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+					var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
+					jump_type = JumpType.Spring
+					velocity += launch_direction + launch_height
+					cap_speed()
 
 		State.Grounded:
 			apply_movement(direction, delta)
@@ -493,10 +525,14 @@ func _physics_process(delta: float) -> void:
 				if is_carrying:
 					if carried_item == box:
 						is_carrying = false
+						position.y += box.attachment_point.position.y
 						enter_box()
+						hide_in_box()
 					else:
 						drop_carried_item()
-				change_state(State.Crouched)
+						change_state(State.Crouched)
+				else:
+					change_state(State.Crouched)
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
@@ -698,25 +734,25 @@ func _physics_process(delta: float) -> void:
 			
 			velocity.y = clamp(velocity.y, -10.0, 10.0)
 
-		State.Crouched when is_boxed:
-			apply_movement(direction, delta)
-			if Input.is_action_just_released("Crouch"):
-				change_state(State.Grounded)
-
-			if Input.is_action_just_pressed("Jump"):
-				start_charing_jump()
-
-			if Input.is_action_pressed("Jump"):
-				charge_jump(delta)
-
-			# Handle jump.
-			if Input.is_action_just_released("Jump"):
-				anim.play("Free/Jump", 0.5)
-				var jump_multiplier := finish_charge_jump()
-				var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
-				var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
-				jump_type = JumpType.Hop
-				velocity = launch_direction + launch_height
+		#State.Crouched when is_boxed:
+			#apply_movement(direction, delta)
+			#if Input.is_action_just_released("Crouch"):
+				#change_state(State.Grounded)
+#
+			#if Input.is_action_just_pressed("Jump"):
+				#start_charing_jump()
+#
+			#if Input.is_action_pressed("Jump"):
+				#charge_jump(delta)
+#
+			## Handle jump.
+			#if Input.is_action_just_released("Jump"):
+				#anim.play("Free/Jump", 0.5)
+				#var jump_multiplier := finish_charge_jump()
+				#var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+				#var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
+				#jump_type = JumpType.Hop
+				#velocity = launch_direction + launch_height
 
 		State.Crouched:
 			apply_movement(direction, delta)

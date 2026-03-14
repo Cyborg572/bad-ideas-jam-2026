@@ -8,6 +8,7 @@ extends Attachable
 @onready var closed_collider: CollisionShape3D = $ClosedCollider
 @onready var open_collider: CollisionShape3D = $OpenCollider
 @onready var top_point: RayCast3D = $TopPoint
+@onready var model: Node3D = $Model
 
 var is_open : bool = false
 var inventory : Array[Attachable] = []
