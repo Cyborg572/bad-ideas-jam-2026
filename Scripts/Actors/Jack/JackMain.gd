@@ -464,7 +464,8 @@ func _physics_process(delta: float) -> void:
 		hide_in_box()
 
 	if Input.is_action_just_released("Crouch") && is_boxed:
-		pop_out()
+		if not active_camera.chasing:
+			pop_out()
 
 	match state:
 		State.Grounded when is_boxed:
