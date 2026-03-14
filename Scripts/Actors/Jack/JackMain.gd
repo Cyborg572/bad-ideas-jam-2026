@@ -418,14 +418,11 @@ func _physics_process(delta: float) -> void:
 		print("Distance: ", distance_to_box)
 		match is_boxed:
 			true:
-				var was_hiding : bool = hiding
-				box.detach()
-				leave_box()
-				if was_hiding:
-					box.pop()
-					jump_type = JumpType.Launch
-					velocity.y = get_jump_strength() * 2
+				if hiding:
+					box.start_cranking()
 				else:
+					box.detach()
+					leave_box()
 					jump_type = JumpType.PopOut
 					velocity.y = get_jump_strength()
 
@@ -445,10 +442,19 @@ func _physics_process(delta: float) -> void:
 				pass
 
 	if Input.is_action_just_released("Pop"):
-		if pop_button_timer.time_left > pop_button_timer.wait_time / 3 && distance_to_box > 3:
-			active_camera.align(get_angle_to_box(), 10)
-		if not pop_button_timer.is_stopped():
-			pop_button_timer.stop()
+		if is_boxed:
+			var in_pop_window = box.stop_cranking()
+			if in_pop_window:
+				box.detach()
+				leave_box()
+				box.pop()
+				jump_type = JumpType.Launch
+				velocity.y = get_jump_strength() * 2
+		else:
+			if pop_button_timer.time_left > pop_button_timer.wait_time / 3 && distance_to_box > 3:
+				active_camera.align(get_angle_to_box(), 10)
+			if not pop_button_timer.is_stopped():
+				pop_button_timer.stop()
 
 	if Input.is_action_just_pressed("Crouch") && is_boxed:
 		if is_carrying:

@@ -1,22 +1,46 @@
 class_name TheBox
 extends Attachable
 
+signal stopped_in_pop()
+
 @export var launch_force : float = 6
+@export var cranking_song : AudioStream
+@export_subgroup("Cranking Pop Window", "cranking_pop_window_")
+
+## The number of seconds into the cranking tune where the "Pop" starts
+@export_range(0, 5, 0.1, "or_greater", "hide_control", "suffix:s")
+var cranking_pop_window_start :  float = 3.8
+
+## The number of seconds into the cranking tune where the "Pop" ends
+@export_range(0, 5, 0.1, "or_greater", "hide_control", "suffix:s")
+var cranking_pop_window_end : float = 4.2
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
+@onready var crank_audio: AudioStreamPlayer3D = $CrankAudio
 @onready var collisions_enabled : bool = true
 @onready var closed_collider: CollisionShape3D = $ClosedCollider
 @onready var open_collider: CollisionShape3D = $OpenCollider
 @onready var top_point: RayCast3D = $TopPoint
 @onready var model: Node3D = $Model
+@onready var crank: Node3D = $Model/Crank
 
 var is_open : bool = false
+var is_cranking : bool = false
 var inventory : Array[Attachable] = []
+
 
 func _ready() -> void:
 	super()
 	set_collision_layer_value(1, true)
+	crank_audio.stream = cranking_song
+	crank_audio.finished.connect(_on_song_finished)
 	anim.animation_finished.connect(_on_anim_complete)
+
+
+func _process(delta: float) -> void:
+	if is_cranking:
+		crank.rotation.x += PI/2 * delta
+		crank.rotation.x = wrapf(crank.rotation.x, 0, 2 * PI)
 
 
 func pop() -> void:
@@ -58,6 +82,43 @@ func close(fast : bool = false) -> void:
 
 func slam() -> void:
 	close(true)
+
+
+func start_music() -> void:
+	if crank_audio.stream_paused:
+		crank_audio.stream_paused = false
+	else:
+		crank_audio.play()
+
+
+func stop_music() -> bool:
+	var is_pop_window : bool = false
+	var stopped_position : float = crank_audio.get_playback_position()
+
+	if (
+		stopped_position >= cranking_pop_window_start
+		&& stopped_position <= cranking_pop_window_end
+	):
+		is_pop_window = true
+
+	if not is_pop_window:
+		print("Stopped at: ", crank_audio.get_playback_position())
+		crank_audio.stream_paused = true
+	else:
+		print("POP!")
+		stopped_in_pop.emit()
+
+	return is_pop_window
+
+func start_cranking() -> void:
+	is_cranking = true
+	print("Start crankin'")
+	start_music()
+
+
+func stop_cranking() -> bool:
+	is_cranking = false
+	return stop_music()
 
 
 func launch(item: Node3D):
@@ -126,6 +187,7 @@ func _attach(_target : Node3D) -> void:
 
 
 func _detach(_target : Node3D) -> void:
+	stop_cranking()
 	enable_collisions()
 
 
@@ -158,3 +220,8 @@ func _on_interaction_point_interaction(point: InteractionPoint) -> void:
 
 func _on_anim_complete(_animation: String):
 	anim.speed_scale = 1
+
+func _on_song_finished() -> void:
+	print("It finished!")
+	if is_cranking:
+		crank_audio.play()

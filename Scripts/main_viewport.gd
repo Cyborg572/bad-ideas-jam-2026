@@ -10,4 +10,3 @@ func resize_3D_display() -> void:
 func _ready() -> void:
 	resize_3D_display()
 	get_viewport().size_changed.connect(resize_3D_display)
-	
