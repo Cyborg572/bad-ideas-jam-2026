@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_8txj2"]
 [ext_resource type="Material" uid="uid://d1y52u70tki6c" path="res://Materials/ToonTiles.tres" id="5_wfd2y"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
+[ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="9_8txj2"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
 [ext_resource type="AudioStream" uid="uid://e7ubrd33ctp1" path="res://Music/pop_goes_weasel_1.ogg" id="12_wfd2y"]
 
@@ -45,7 +46,8 @@ tonemap_mode = 2
 material = ExtResource("5_wfd2y")
 size = Vector2(50, 50)
 
-[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_skitp"]
+[sub_resource type="BoxShape3D" id="BoxShape3D_gkq5e"]
+size = Vector3(50, 1, 50)
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gkq5e"]
 albedo_color = Color(0.5058824, 0.21960784, 0, 1)
@@ -182,7 +184,8 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00065135956, 0.0050611496,
 mesh = SubResource("PlaneMesh_v1x4i")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=321137014]
-shape = SubResource("WorldBoundaryShape3D_skitp")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+shape = SubResource("BoxShape3D_gkq5e")
 
 [node name="Pillar" type="StaticBody3D" parent="." unique_id=1704631383]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.211021, 0, -1.9194224)
@@ -432,3 +435,6 @@ shape = SubResource("ConcavePolygonShape3D_gkq5e")
 
 [node name="CSGBakedMeshInstance3D" type="MeshInstance3D" parent="StaticBody3D" unique_id=691925509]
 mesh = SubResource("ArrayMesh_8txj2")
+
+[node name="DeathZone" parent="." unique_id=1821243704 instance=ExtResource("9_8txj2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -30, 0)

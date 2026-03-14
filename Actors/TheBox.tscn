@@ -106,6 +106,7 @@ height = 0.25
 radius = 0.25
 
 [node name="TheBox" type="CharacterBody3D" unique_id=2010327691]
+collision_mask = 9
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_wbnku")

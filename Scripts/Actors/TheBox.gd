@@ -15,6 +15,7 @@ var inventory : Array[Attachable] = []
 
 func _ready() -> void:
 	super()
+	set_collision_layer_value(1, true)
 	anim.animation_finished.connect(_on_anim_complete)
 
 

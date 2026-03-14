@@ -54,3 +54,18 @@ func trigger_interaction() -> void:
 
 		# Then everything else.
 		interaction.emit(active_interaction_point)
+
+
+func kill_player() -> void:
+	if jack.is_boxed:
+		print("Figure this out!")
+		jack.position = Vector3(0, 20, 0)
+	else:
+		jack.velocity = Vector3.ZERO
+		jack.popToBox()
+
+
+func kill_the_box() -> void:
+	print("Figure this out too!")
+	jack.box.position = Vector3(0, 20, 0)
+	kill_player()
