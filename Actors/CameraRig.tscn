@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://dj4r2da3i3we5" path="res://Scripts/Actors/CameraRig.gd" id="1_0in8y"]
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_0in8y"]
-radius = 0.125
+radius = 0.12
 
 [node name="CameraRig" type="Node3D" unique_id=296487055]
 script = ExtResource("1_0in8y")

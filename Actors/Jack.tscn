@@ -26,7 +26,7 @@ metadata/_custom_type_script = "uid://6l81ycqfgjqh"
 
 [sub_resource type="Resource" id="Resource_di1ys"]
 script = ExtResource("2_kyi2e")
-move_speed = 0.25
+move_speed = 0.5
 max_move_speed = 0.5
 boxed_friction = 2.0
 boxed_max_move_speed = 8.0
@@ -924,7 +924,7 @@ target_position = Vector3(0, 0, 0.3)
 [node name="Model" type="Node3D" parent="." unique_id=750438055]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
 
-[node name="Jack" parent="Model" unique_id=2077182911 instance=ExtResource("4_58ja8")]
+[node name="Jack" parent="Model" unique_id=1820938000 instance=ExtResource("4_58ja8")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.375, 0)
 
 [node name="Node3D" type="Node3D" parent="Model" unique_id=572634374]
@@ -981,3 +981,7 @@ one_shot = true
 editor_description = "Pop the player if the button is held long enough"
 wait_time = 0.25
 one_shot = true
+
+[node name="Idle2Timer" type="Timer" parent="Timers" unique_id=664863890]
+editor_description = "Determines how often to play the extra idle animation"
+wait_time = 6.0
