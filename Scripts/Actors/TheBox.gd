@@ -17,6 +17,7 @@ var cranking_pop_window_end : float = 4.2
 
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var crank_audio: AudioStreamPlayer3D = $CrankAudio
+@onready var pop_sound: AudioStreamPlayer3D = $PopSound
 @onready var collisions_enabled : bool = true
 @onready var closed_collider: CollisionShape3D = $ClosedCollider
 @onready var open_collider: CollisionShape3D = $OpenCollider
@@ -66,6 +67,7 @@ func open(fast : bool = false) -> void:
 	is_open = true
 	switch_collider()
 	if fast:
+		pop_sound.play()
 		anim.play("Pop")
 	else:
 		anim.play("Open")

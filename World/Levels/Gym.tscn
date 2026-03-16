@@ -4,11 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://duykwhism24sd" path="res://Actors/CameraRig.tscn" id="2_skitp"]
 [ext_resource type="PackedScene" uid="uid://wkiytlqj20xh" path="res://Actors/Jack.tscn" id="2_v1x4i"]
 [ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_8txj2"]
+[ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="5_veq21"]
 [ext_resource type="Material" uid="uid://d1y52u70tki6c" path="res://Materials/ToonTiles.tres" id="5_wfd2y"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="9_8txj2"]
+[ext_resource type="AudioStream" uid="uid://ttryn1fabmb6" path="res://Music/melody_3_simplified.ogg" id="10_farb7"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
-[ext_resource type="AudioStream" uid="uid://e7ubrd33ctp1" path="res://Music/pop_goes_weasel_1.ogg" id="12_wfd2y"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wfd2y"]
 noise_type = 0
@@ -176,6 +177,7 @@ box = NodePath("../TheBox")
 
 [node name="TheBox" parent="." unique_id=493307402 instance=ExtResource("4_8txj2")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.6340563, 1.625, -1.957288)
+cranking_song = ExtResource("5_veq21")
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=460721603]
 
@@ -422,11 +424,6 @@ mesh = SubResource("SphereMesh_lqj5n")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Attachable2" unique_id=825337406]
 shape = SubResource("SphereShape3D_enqkj")
 
-[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=426143705]
-stream = ExtResource("12_wfd2y")
-volume_db = 4.132
-parameters/looping = true
-
 [node name="StaticBody3D" type="StaticBody3D" parent="." unique_id=1180014587]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 14.5)
 
@@ -438,3 +435,10 @@ mesh = SubResource("ArrayMesh_8txj2")
 
 [node name="DeathZone" parent="." unique_id=1821243704 instance=ExtResource("9_8txj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -30, 0)
+
+[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=626060365]
+process_mode = 3
+stream = ExtResource("10_farb7")
+autoplay = true
+bus = &"Music"
+parameters/looping = true
