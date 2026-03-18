@@ -3,6 +3,8 @@ extends Node
 signal change_camera(camera: CameraRig)
 signal interaction(interaction_point : InteractionPoint)
 signal player_health_changed(current: int, max: int)
+signal player_health_depleted
+signal player_confidence_lost
 signal player_confidence_changed(confidence: float)
 signal distance_to_box_changed(distance: float)
 
@@ -26,23 +28,22 @@ var active_interaction_point : InteractionPoint
 
 @export var player_health : int = 5:
 	set(new_health):
-		player_health = new_health
+		player_health = max(new_health, 0)
+		player_health_changed.emit(player_health, player_max_health)
 
 		print("Health updated to %d" % player_health)
 		if player_health <= 0:
-			print("Killing player")
-			kill_player()
-			print("Reset health")
-			player_health = 3
-
-		player_health_changed.emit(player_health, player_max_health)
+			player_health_depleted.emit()
 
 
 @export var player_base_confidence : float = 50.0
 @export var player_confidence : float = 50.0:
 	set(new_confidence):
-		player_confidence = new_confidence
+		player_confidence = max(new_confidence, 0)
 		player_confidence_changed.emit(player_confidence)
+
+		if player_confidence <= 0:
+			player_confidence_lost.emit()
 
 
 @export var distance_to_box : float = 0.0:
@@ -90,6 +91,10 @@ func trigger_interaction() -> void:
 
 		# Then everything else.
 		interaction.emit(active_interaction_point)
+
+
+func reset_confidence() -> void:
+	player_confidence = player_base_confidence
 
 
 func kill_player() -> void:

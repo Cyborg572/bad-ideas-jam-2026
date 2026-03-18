@@ -57,7 +57,7 @@ enum JumpType {
 @onready var wall_detect: RayCast3D = $WallDetect
 @onready var body_collider: CollisionShape3D = $BodyCollider
 @onready var box_collider: CollisionShape3D = $BoxCollider
-@onready var pop_timer: Timer = $Timers/PopTimer
+@onready var anxiety_timer: Timer = $Timers/AnxietyTimer
 @onready var pop_button_timer: Timer = $Timers/PopButtonTimer
 @onready var idle_2_timer: Timer = $Timers/Idle2Timer
 #endregion
@@ -81,18 +81,20 @@ var jump_cancelled : bool = false
 var active_camera : CameraRig
 var distance_to_box : float = 0
 
+
 func _ready() -> void:
 	GameManager.jack = self
 	set_active_camera(GameManager.main_camera)
 	GameManager.change_camera.connect(set_active_camera)
 	GameManager.interaction.connect(_on_global_interaction)
+	GameManager.player_confidence_lost.connect(popToBox)
 
 	attachment_points['head'] = $AttachmentPoints/Head
 	attachment_points['hand'] = $AttachmentPoints/Hand
 	attachment_points['foot'] = $AttachmentPoints/Foot
 	attachment_points['throw'] = $AttachmentPoints/Throw
 
-	pop_timer.timeout.connect(popToBox)
+	anxiety_timer.timeout.connect(tick_down_confidence)
 	pop_button_timer.timeout.connect(popToBox)
 	idle_2_timer.timeout.connect(do_fancy_idle)
 
@@ -135,6 +137,7 @@ func leave_box() -> void:
 
 	# Cinema!
 	# box.slam()
+	anxiety_timer.start()
 	active_camera.set_shot_type(CameraRig.Shot.Wide)
 
 func enter_box() -> void:
@@ -142,7 +145,8 @@ func enter_box() -> void:
 	is_boxed = true
 	box_collider.disabled = false
 	active_camera.set_shot_type(CameraRig.Shot.Normal)
-	pop_timer.stop()
+	anxiety_timer.stop()
+	GameManager.reset_confidence()
 	velocity += box.velocity
 	box.attach(self)
 	box_collider.position = attachment_points['foot'].position - box.attachment_point.position
@@ -390,6 +394,17 @@ func do_fancy_idle() -> void:
 	if anim.current_animation == "Idle" && !is_boxed:
 		anim.queue("Idle2")
 		anim.queue("Idle")
+
+
+func tick_down_confidence() -> void:
+	if distance_to_box < 2:
+		return
+	elif distance_to_box < 15:
+		GameManager.player_confidence -= 0.5
+	elif distance_to_box < 30:
+		GameManager.player_confidence -= 2
+	else:
+		GameManager.player_confidence -= 4
 
 
 #endregion

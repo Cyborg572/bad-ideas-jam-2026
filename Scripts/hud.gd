@@ -34,12 +34,12 @@ func format_distance(dist: float) -> String:
 		return "%dm" % dist
 
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	# Update health
 	healthbar.value = health
 
 	# Update confidence
-	confidence_meter.value = lerpf(confidence_meter.value, confidence, 0.5 * delta)
+	confidence_meter.value = move_toward(confidence_meter.value, confidence, 1)
 
 	# Update Distance
 	distance_guage.text = format_distance(distance)
@@ -57,6 +57,7 @@ func _on_health_changed(new_health: int, new_max: int) -> void:
 
 
 func _on_confidence_changed(new_value: float) -> void:
+	print("Confidence now %f", new_value)
 	confidence = new_value
 
 

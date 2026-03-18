@@ -59,6 +59,7 @@ func start_chase(speed: float = 10, force = false):
 		chase_speed = speed
 	if not chasing:
 		chasing = true
+		align(Utils.direction_to_y_angle(get_target_position() - position), chase_speed)
 		chase_started.emit(target)
 
 
@@ -184,7 +185,12 @@ func _process(delta: float) -> void:
 	if distance < 0.5:
 		end_chase()
 
-	position = position.move_toward(get_target_position(), chase_speed * delta)
+	# Once the bearing is right, jump if the distance is _really_ far
+	if distance > 10 and not aligning:
+		print("Jumping!")
+		position = position.move_toward(target_position, distance - 5)
+
+	position = position.move_toward(target_position, chase_speed * delta)
 
 	camera.position = lerp(camera.position, camera_position.position, delta*camera_speed)
 	camera.global_rotation.z = 0
