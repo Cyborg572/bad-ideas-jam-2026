@@ -25,6 +25,10 @@ GameManager="*uid://baq5832jfc16d"
 
 window/stretch/mode="canvas_items"
 
+[global_group]
+
+"Confidence Zones"="Area3Ds that affect the confidence metre"
+
 [input]
 
 ui_accept={

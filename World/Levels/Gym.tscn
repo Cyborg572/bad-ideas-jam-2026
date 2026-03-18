@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="9_8txj2"]
 [ext_resource type="AudioStream" uid="uid://ttryn1fabmb6" path="res://Music/melody_3_simplified.ogg" id="10_farb7"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
+[ext_resource type="Script" uid="uid://ba2byxdo5cmmb" path="res://Scripts/Zones/confidence_zone.gd" id="11_wfd2y"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wfd2y"]
 noise_type = 0
@@ -149,6 +150,10 @@ _surfaces = [{
 "vertex_data": PackedByteArray("AAAgQAAAAL8AAABAAAAgQAAAAL8AAHBAAABgQAAAAL8AAABAAAAgQAAAAL8AAHBAAABgQAAAAL8AABBAAABgQAAAAL8AAABAAAAgQAAAAL8AAHBAAABgQAAAAL8AAHBAAABgQAAAAL8AABBAAAAgQAAAAL8AAABAAABgQAAAAL8AAABAAAAgQAAAAD8AAABAAAAgQAAAAL8AAHBAAABgQAAAAD8AAHBAAABgQAAAAL8AAHBAAAAgQAAAAD8AAABAAABgQAAAAL8AAABAAABgQAAAgD4AAABAAAAgQAAAAL8AAHBAAAAgQAAAAD8AAHBAAABgQAAAAD8AAHBAAAAgQAAAAD8AAABAAABgQAAAgD4AAABAAABgQAAAAD8AAABAAAAgQAAAAD8AAABAAABgQAAAAD8AAABAAABgQAAAAD8AABBAAAAgQAAAAD8AAABAAABgQAAAAD8AABBAAABgQAAAAD8AAHBAAAAgQAAAAD8AAABAAABgQAAAAD8AAHBAAAAgQAAAAD8AAHBAAABgQAAAAD8AABBAAABgQAAAgD4AAABAAABgQAAAgD4AABBAAABgQAAAAD8AAABAAABgQAAAgD4AAABAAABgQAAAAD8AABBA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/38AAP//AAD/fwAA//8AAP9/AAD//wAA/////wAA/z//////AAD/P/////8AAP8//3//fwAA/z//f/9/AAD/P/9//38AAP8//////wAA/z//////AAD/P/////8AAP8//3//fwAA/z//f/9/AAD/P/9//38AAP8//////wAA/z//////AAD/P/////8AAP8//3//////AAD/f/////8AAP9//////wAA/3//////AAD/f/////8AAP9//////wAA/3//////AAD/f/////8AAP9//////wAA////f/9//n////9//3/+f////3//f/5/////f/9//n////9//3/+f////3//f/5/")
 }]
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_lqj5n"]
+height = 1.0
+radius = 2.0
+
 [node name="Gym" type="Node3D" unique_id=1956799741]
 script = ExtResource("1_3yyff")
 
@@ -220,7 +225,7 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.375, 0)
 mesh = SubResource("CylinderMesh_8txj2")
 
 [node name="Pillar3" type="StaticBody3D" parent="." unique_id=1300453740]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.211, 1.5, -5.043)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 1.5, -5)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Pillar3" unique_id=627171799]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.625, 0)
@@ -442,3 +447,11 @@ stream = ExtResource("10_farb7")
 autoplay = true
 bus = &"Music"
 parameters/looping = true
+
+[node name="ConfidenceZone" type="Area3D" parent="." unique_id=1023240059]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 3.25, -5)
+script = ExtResource("11_wfd2y")
+single_use = true
+enter_type = 3
+enter_amount = 2
+metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
