@@ -26,32 +26,24 @@ enum AdjustmentType {
 @export var single_use: bool = false
 
 @export_subgroup("Adjust on Enter", "enter_")
-
 ## The type of adjustment to apply when the player enters the zone
 @export var enter_type: AdjustmentType = AdjustmentType.NONE
-
 ## The amount to adjust by
 @export var enter_amount: int = 0
-
 ## How many seconds after leaving until the adjustment can apply again.
 @export_range(0.0, 15.0, 0.25, "or_greater", "suffix:s") var enter_cooldown: float = 0.0
 
 @export_subgroup("Adjust on Exit", "exit_")
-
 ## The type of adjustment to apply when the player leaves the zone
 @export var exit_type: AdjustmentType = AdjustmentType.NONE
-
 ## The amount to adjust by
 @export var exit_amount: int = 0
-
 ## How many seconds after leaving until the adjustment can apply again.
 @export_range(0, 15, 0.1, "or_greater", "suffix:s") var exit_cooldown: float = 0.0
 
 @export_subgroup("Constant adjustment", "constant_")
-
 ## The type of adjustment to apply while the player is in the zone
 @export var constant_type: AdjustmentType = AdjustmentType.NONE
-
 ## The amount to adjust by
 @export var constant_amount: int = 0
 
@@ -164,6 +156,6 @@ func apply_adjustment(type: AdjustmentType, amount: int) -> void:
 
 
 func apply_constant_adjustment() -> void:
-	constant_adjustment_ticks = clamp(constant_adjustment_ticks + 1, 1, constant_frequency)
-	if constant_adjustment_ticks == constant_frequency:
+	constant_adjustment_ticks = wrap(constant_adjustment_ticks + 1, 0, constant_frequency)
+	if constant_adjustment_ticks == 0:
 		apply_adjustment(constant_type, constant_amount)

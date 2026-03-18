@@ -452,8 +452,6 @@ parameters/looping = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 3.25, -5)
 script = ExtResource("11_wfd2y")
 prevent_loss = true
-constant_type = 1
-constant_amount = 5
 metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ConfidenceZone" unique_id=1007565774]
