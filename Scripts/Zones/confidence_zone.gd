@@ -57,8 +57,8 @@ enum AdjustmentType {
 
 ## How frequently to apply the adjustment, in "confidence ticks".[br]
 ## The confidence meter has a default tick frequency, higher values here "skip" some of those ticks.
-@export_range(0, 5, 1, "hide_control", "or_greater", "suffix:ticks")
-var constant_frequency: int = 0
+@export_range(1, 5, 1, "hide_control", "or_greater", "suffix:ticks")
+var constant_frequency: int = 1
 
 ## True when the enter adjustment is on a cooldown pause
 var enter_on_cooldown: bool = false
@@ -71,6 +71,7 @@ var constant_adjustment_ticks: int = 0
 
 @onready var enter_cooldown_timer: Timer = Timer.new()
 @onready var exit_cooldown_timer: Timer = Timer.new()
+
 
 func _ready() -> void:
 	# Configure the collision mask and layers

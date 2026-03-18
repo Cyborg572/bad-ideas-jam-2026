@@ -431,7 +431,16 @@ func do_fancy_idle() -> void:
 
 
 func tick_down_confidence() -> void:
-	if distance_to_box < 2:
+	var zones := get_tree().get_nodes_in_group("Confidence Zones")
+	var skip_default: bool = false
+	for zone in zones:
+		if not zone is ConfidenceZone:
+			return
+		zone = zone as ConfidenceZone
+		skip_default = skip_default or zone.prevent_loss
+		zone.apply_constant_adjustment()
+
+	if distance_to_box < 2 or skip_default:
 		return
 	elif distance_to_box < 15:
 		GameManager.player_confidence -= 0.5

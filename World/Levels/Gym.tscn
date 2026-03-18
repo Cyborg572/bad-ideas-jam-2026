@@ -451,7 +451,11 @@ parameters/looping = true
 [node name="ConfidenceZone" type="Area3D" parent="." unique_id=1023240059]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 3.25, -5)
 script = ExtResource("11_wfd2y")
-single_use = true
-enter_type = 3
-enter_amount = 2
+prevent_loss = true
+constant_type = 1
+constant_amount = 5
 metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConfidenceZone" unique_id=1007565774]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_lqj5n")
