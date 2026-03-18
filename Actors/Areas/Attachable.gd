@@ -168,6 +168,7 @@ func _physics_process(delta: float) -> void:
 			velocity += get_gravity() * delta
 			velocity.x = move_toward(velocity.x, 0.0, 0.5 * delta)
 			velocity.z = move_toward(velocity.z, 0.0, 0.5 * delta)
+			velocity.y = clamp(velocity.y, -10.0, 10.0)
 		else:
 			velocity.x = move_toward(velocity.x, 0.0, 6 * delta)
 			velocity.z = move_toward(velocity.z, 0.0, 6 * delta)

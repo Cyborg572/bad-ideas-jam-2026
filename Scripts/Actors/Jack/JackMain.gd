@@ -400,6 +400,7 @@ func _physics_process(delta: float) -> void:
 
 	var direction = get_direction()
 	distance_to_box = (box.position - position).length()
+	GameManager.distance_to_box = distance_to_box
 
 	#print("Ground Speed ", get_ground_speed(velocity).length())
 	#print("Fall Speed ", floor(velocity.y))

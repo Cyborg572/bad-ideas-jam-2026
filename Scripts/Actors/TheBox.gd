@@ -28,6 +28,8 @@ var cranking_pop_window_end : float = 4.2
 var is_open : bool = false
 var is_cranking : bool = false
 var inventory : Array[Attachable] = []
+var last_ground_position := Vector3.ZERO
+var last_ground_speed := Vector3.ZERO
 
 
 func _ready() -> void:
@@ -183,6 +185,20 @@ func hold_item(item: Attachable, delta) -> void:
 	if item in inventory:
 		item.track(10 * delta, self, 0.2)
 
+
+func _physics_process(delta: float) -> void:
+	super(delta)
+
+	if is_on_floor():
+		last_ground_position = position
+		last_ground_speed = Utils.get_ground_speed(velocity)
+	elif (
+		has_attachment
+		and attachment is Jack
+		and (attachment as Jack).is_on_floor()
+	):
+		last_ground_position = attachment.position
+		last_ground_speed = Utils.get_ground_speed(attachment.velocity)
 
 func _attach(_target : Node3D) -> void:
 	disable_collisions()
