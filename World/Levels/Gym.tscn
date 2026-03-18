@@ -7,6 +7,7 @@
 [ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="5_veq21"]
 [ext_resource type="Material" uid="uid://d1y52u70tki6c" path="res://Materials/ToonTiles.tres" id="5_wfd2y"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
+[ext_resource type="PackedScene" uid="uid://bokohmujw272q" path="res://Actors/Pickups/mullberry.tscn" id="7_wfd2y"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="9_8txj2"]
 [ext_resource type="AudioStream" uid="uid://ttryn1fabmb6" path="res://Music/melody_3_simplified.ogg" id="10_farb7"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
@@ -193,6 +194,21 @@ mesh = SubResource("PlaneMesh_v1x4i")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Floor" unique_id=321137014]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
 shape = SubResource("BoxShape3D_gkq5e")
+
+[node name="mullberry" parent="Floor" unique_id=475435490 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.5, 0, -10.75)
+
+[node name="mullberry2" parent="Floor" unique_id=341287479 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 0, -10.75)
+
+[node name="mullberry3" parent="Floor" unique_id=829643275 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -10.75)
+
+[node name="mullberry4" parent="Floor" unique_id=1281361374 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -8.75)
+
+[node name="mullberry5" parent="Floor" unique_id=1289620185 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6, 0, -6.75)
 
 [node name="Pillar" type="StaticBody3D" parent="." unique_id=1704631383]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.211021, 0, -1.9194224)
@@ -457,3 +473,15 @@ metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ConfidenceZone" unique_id=1007565774]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("CylinderShape3D_lqj5n")
+
+[node name="mullberry" parent="." unique_id=795314714 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 1.5, 3.25)
+
+[node name="mullberry2" parent="." unique_id=1368543255 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 3, 3)
+
+[node name="mullberry3" parent="." unique_id=2085910510 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.5, 3.25)
+
+[node name="mullberry4" parent="." unique_id=2080827339 instance=ExtResource("7_wfd2y")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 6, 3.25)

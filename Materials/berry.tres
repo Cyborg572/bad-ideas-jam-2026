@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://kkr8evbwpsiq"]
+
+[resource]
+resource_name = "Berry"
+cull_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.8313727, 0.26274514, 0.38431376, 1)
+metallic_specular = 0.52
+roughness = 0.1
+disable_receive_shadows = true

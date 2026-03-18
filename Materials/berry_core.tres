@@ -1,0 +1,10 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://beyf7md54lxmq"]
+
+[resource]
+resource_name = "Core"
+cull_mode = 2
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.46666673, 0, 0.10196079, 1)
+roughness = 0.5
+disable_receive_shadows = true

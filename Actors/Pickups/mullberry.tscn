@@ -1,0 +1,140 @@
+[gd_scene format=3 uid="uid://bokohmujw272q"]
+
+[ext_resource type="PackedScene" uid="uid://dp63uqiv36e7e" path="res://Models/original/mullberry.glb" id="1_vkxbp"]
+[ext_resource type="Script" uid="uid://cwsaxgha1n57p" path="res://Scripts/Actors/Pickups/mullberry.gd" id="2_fhpyp"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vkxbp"]
+radius = 0.2
+height = 0.75
+
+[sub_resource type="Animation" id="Animation_vkxbp"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Berry3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.10000001, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Berry3:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, -0.2617994, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Berry3:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0.9999999, 1, 0.9999999)]
+}
+
+[sub_resource type="Animation" id="Animation_fhpyp"]
+resource_name = "bob"
+length = 12.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Berry3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1.9896966, 4, 6, 8.0103035, 10, 12.0103035),
+"transitions": PackedFloat32Array(-2, -2, -2, -2, -2, -2, -2),
+"update": 0,
+"values": [Vector3(0, 0.18, 0), Vector3(0, 0.02, 0), Vector3(0, 0.18, 0), Vector3(0, 0.02, 0), Vector3(0, 0.18, 0), Vector3(0, 0.02, 0), Vector3(0, 0.18, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Berry3:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 6, 12),
+"transitions": PackedFloat32Array(-2, -2, -2),
+"update": 0,
+"values": [Vector3(0, -0.2617994, 0), Vector3(0, 0.2617994, 0), Vector3(0, -0.2617994, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_srfdy"]
+resource_name = "Pickup"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Berry3:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(0.5, 2, 1),
+"update": 0,
+"values": [Vector3(0, 0.10000001, 0), Vector3(0, 0.75, 0), Vector3(0, 1.1, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Berry3:rotation")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(0, -0.2617994, 0), Vector3(0, 18.849556, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Berry3:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(2, 1),
+"update": 0,
+"values": [Vector3(0.9999999, 1, 0.9999999), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_srfdy"]
+_data = {
+&"RESET": SubResource("Animation_vkxbp"),
+&"bob": SubResource("Animation_fhpyp"),
+&"pickup": SubResource("Animation_srfdy")
+}
+
+[node name="mullberry" unique_id=475435490 instance=ExtResource("1_vkxbp")]
+script = ExtResource("2_fhpyp")
+
+[node name="Berry3" parent="." index="0" unique_id=1617289120]
+transform = Transform3D(0.9659257, 0, -0.258819, 0, 1, 0, 0.258819, 0, 0.9659257, 0, 0.10000001, 0)
+
+[node name="Area3D" type="Area3D" parent="." index="1" unique_id=2136769100]
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Area3D" index="0" unique_id=598623272]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.375, 0)
+shape = SubResource("CapsuleShape3D_vkxbp")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2" unique_id=1272647807]
+libraries/ = SubResource("AnimationLibrary_srfdy")
