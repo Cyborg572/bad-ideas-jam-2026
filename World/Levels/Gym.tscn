@@ -5,11 +5,14 @@
 [ext_resource type="PackedScene" uid="uid://wkiytlqj20xh" path="res://Actors/Jack.tscn" id="2_v1x4i"]
 [ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_8txj2"]
 [ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="5_veq21"]
-[ext_resource type="Material" uid="uid://d1y52u70tki6c" path="res://Materials/ToonTiles.tres" id="5_wfd2y"]
+[ext_resource type="Material" uid="uid://bjba213cebnno" path="res://Materials/grass_ground.tres" id="6_enqkj"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
 [ext_resource type="PackedScene" uid="uid://bokohmujw272q" path="res://Actors/Pickups/mullberry.tscn" id="7_wfd2y"]
+[ext_resource type="Material" uid="uid://vk0isikpdof3" path="res://Materials/dirt.tres" id="8_yso7o"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="9_8txj2"]
+[ext_resource type="Material" uid="uid://bui3qaueg3mvm" path="res://Materials/grass_caps.tres" id="9_p2mj2"]
 [ext_resource type="AudioStream" uid="uid://ttryn1fabmb6" path="res://Music/melody_3_simplified.ogg" id="10_farb7"]
+[ext_resource type="Material" uid="uid://dr4tvpg3c6rsm" path="res://Materials/stone.tres" id="10_yso7o"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
 [ext_resource type="Script" uid="uid://ba2byxdo5cmmb" path="res://Scripts/Zones/confidence_zone.gd" id="11_wfd2y"]
 
@@ -46,28 +49,20 @@ ambient_light_sky_contribution = 0.34
 tonemap_mode = 2
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_v1x4i"]
-material = ExtResource("5_wfd2y")
+material = ExtResource("6_enqkj")
 size = Vector2(50, 50)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_gkq5e"]
 size = Vector3(50, 1, 50)
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_gkq5e"]
-albedo_color = Color(0.5058824, 0.21960784, 0, 1)
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_gkq5e"]
-material = SubResource("StandardMaterial3D_gkq5e")
+material = ExtResource("8_yso7o")
 top_radius = 1.8
 bottom_radius = 1.8
 height = 1.25
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_farb7"]
-diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(0.15294118, 0.4392157, 0, 1)
-
 [sub_resource type="CylinderMesh" id="CylinderMesh_8txj2"]
-material = SubResource("StandardMaterial3D_farb7")
+material = ExtResource("9_p2mj2")
 top_radius = 2.0
 bottom_radius = 2.0
 height = 0.25
@@ -76,13 +71,8 @@ height = 0.25
 height = 1.5
 radius = 2.0
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8txj2"]
-diffuse_mode = 3
-specular_mode = 1
-albedo_color = Color(1, 0.7019608, 0.47058824, 1)
-
 [sub_resource type="BoxMesh" id="BoxMesh_tn2j0"]
-material = SubResource("StandardMaterial3D_8txj2")
+material = ExtResource("8_yso7o")
 size = Vector3(1, 0.5, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_g1s66"]
@@ -99,7 +89,7 @@ material = SubResource("StandardMaterial3D_veq21")
 [sub_resource type="BoxShape3D" id="BoxShape3D_enqkj"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_wfd2y"]
-material = SubResource("StandardMaterial3D_farb7")
+material = ExtResource("10_yso7o")
 size = Vector3(1, 3, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_lqj5n"]
@@ -120,6 +110,11 @@ radius = 0.125
 
 [sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_gkq5e"]
 data = PackedVector3Array(-0.5, -0.5, -4.5, -0.5, 0.5, -4.5, -0.5, -0.5, -0.75, -0.5, -0.5, -4.5, -0.5, -0.5, -0.75, 5.5, -0.5, -4.5, -0.5, -0.5, -4.5, 5.5, -0.5, -4.5, -0.5, 0.5, -4.5, -0.5, 0.5, -4.5, -0.5, 0.25, -0.75, -0.5, -0.5, -0.75, -0.5, 0.25, -0.75, -0.5, 0.5, -4.5, -0.5, 0.5, -0.75, -0.5, 0.5, -0.75, 2.5, 0.25, -0.75, -0.5, 0.25, -0.75, -0.5, 0.5, -4.5, 5.5, 0.5, -0.75, -0.5, 0.5, -0.75, -0.5, 0.5, -0.75, 3.5, 0.25, -0.75, 2.5, 0.25, -0.75, -0.5, -0.5, -0.75, 2.5, -0.5, -0.75, 5.5, -0.5, -4.5, 5.5, -0.5, -4.5, 2.5, -0.5, -0.75, 3.5, -0.5, -0.75, 3.5, 0.25, -0.75, 3.5, -0.5, -0.75, 2.5, -0.5, -0.75, 5.5, -0.5, -4.5, 3.5, -0.5, -0.75, 5.5, -0.5, -0.75, 5.5, -0.5, -4.5, 5.5, -0.5, -0.75, 5.5, 0.25, -0.75, -0.5, 0.5, -4.5, 5.5, -0.5, -4.5, 5.5, 0.5, -4.5, 3.5, 0.25, -0.75, 2.5, -0.5, -0.75, 2.5, 0.25, -0.75, -0.5, 0.5, -4.5, 5.5, 0.5, -4.5, 5.5, 0.5, -0.75, -0.5, 0.5, -0.75, 5.5, 0.25, -0.75, 3.5, 0.25, -0.75, -0.5, 0.5, -0.75, 5.5, 0.5, -0.75, 5.5, 0.25, -0.75, 5.5, -0.5, -4.5, 5.5, 0.5, -0.75, 5.5, 0.5, -4.5, 5.5, -0.5, -4.5, 5.5, 0.25, -0.75, 5.5, 0.5, -0.75, 3.5, -0.5, 2.25, 4.5, -0.5, 2.25, 3.5, -0.5, 2, 3.5, 0.25, -0.75, 3.5, -0.5, 2, 3.5, -0.5, -0.75, 3.5, -0.5, -0.75, 3.5, -0.5, 2, 5.5, -0.5, -0.75, 3.5, -0.5, 2, 4.5, -0.5, 2.25, 5.5, -0.5, -0.75, 4.5, -0.5, 2.25, 5.5, -0.5, 2.75, 5.5, -0.5, -0.75, 4.5, -0.5, 2.25, 4.5, -0.5, 2.75, 5.5, -0.5, 2.75, 5.5, -0.5, 2.75, 5.5, 0.25, 2.75, 5.5, -0.5, -0.75, 3.5, 0.25, -0.75, 3.5, 0.25, 2, 3.5, -0.5, 2, 3.5, 0.25, 2, 3.5, 0.25, -0.75, 4.5, 0.25, 2.25, 4.5, 0.25, 2.25, 3.5, 0.25, 2.25, 3.5, 0.25, 2, 5.5, -0.5, -0.75, 5.5, 0.25, 2.75, 5.5, 0.25, -0.75, 4.5, 0.25, 2.25, 3.5, 0.25, -0.75, 5.5, 0.25, 2.75, 5.5, 0.25, -0.75, 5.5, 0.25, 2.75, 3.5, 0.25, -0.75, 4.5, 0.25, 2.25, 5.5, 0.25, 2.75, 4.5, 0.25, 2.75, -0.5, -0.5, -0.75, -0.5, -0.5, 1.25, 0.5, -0.5, 1.25, -0.5, -0.5, -0.75, 0.5, -0.5, 1.25, 2.5, -0.5, -0.75, 0.5, -0.5, 1.25, 0.5, -0.5, 1.5, 1.5, -0.5, 1.5, -0.5, -0.5, 1.25, -0.5, -0.5, -0.75, -0.5, 0.25, -0.75, 0.5, -0.5, 1.25, 1.5, -0.5, 1.5, 2.5, -0.5, -0.75, 1.5, -0.5, 1.75, 2.5, -0.5, 1.75, 1.5, -0.5, 1.5, 2.5, -0.5, 1.75, 2.5, -0.5, -0.75, 1.5, -0.5, 1.5, -0.5, -0.5, 1.25, -0.5, 0.25, -0.75, -0.5, 0.25, 1.25, 0.5, 0.25, 1.25, -0.5, 0.25, 1.25, -0.5, 0.25, -0.75, 0.5, 0.25, 1.25, -0.5, 0.25, -0.75, 1.5, 0.25, 1.5, 0.5, 0.25, 1.5, 0.5, 0.25, 1.25, 1.5, 0.25, 1.5, -0.5, 0.25, -0.75, 2.5, 0.25, -0.75, 1.5, 0.25, 1.5, 1.5, 0.25, 1.75, 1.5, 0.25, 1.5, 2.5, 0.25, -0.75, 1.5, 0.25, 1.75, 2.5, 0.25, -0.75, 2.5, 0.25, 1.75, 2.5, -0.5, 1.75, 2.5, 0.25, 1.75, 2.5, -0.5, -0.75, 2.5, -0.5, -0.75, 2.5, 0.25, 1.75, 2.5, 0.25, -0.75, -0.5, -0.5, 1.25, -0.5, -0.5, 3.75, 0.5, -0.5, 1.25, 0.5, -0.5, 1.25, -0.5, -0.5, 3.75, 0.5, -0.5, 1.5, 0.5, -0.5, 1.5, -0.5, -0.5, 3.75, 0.5, -0.5, 3.75, -0.5, -0.5, 1.25, -0.5, 0.25, 1.25, -0.5, -0.5, 3.75, -0.5, -0.5, 3.75, 0.5, 0.5, 3.75, 0.5, -0.5, 3.75, -0.5, 0.5, 1.25, -0.5, -0.5, 3.75, -0.5, 0.25, 1.25, -0.5, -0.5, 3.75, -0.5, 0.5, 1.25, -0.5, 0.5, 3.75, -0.5, -0.5, 3.75, -0.5, 0.5, 3.75, 0.5, 0.5, 3.75, 0.5, 0.5, 1.25, -0.5, 0.25, 1.25, 0.5, 0.25, 1.25, -0.5, 0.5, 1.25, -0.5, 0.25, 1.25, 0.5, 0.5, 1.25, -0.5, 0.5, 1.25, 0.5, 0.5, 1.25, 0.5, 0.5, 1.5, 0.5, 0.5, 1.5, 0.5, 0.25, 1.25, 0.5, 0.25, 1.5, 0.5, 0.5, 1.25, 0.5, 0.25, 1.25, 0.5, 0.5, 1.5, -0.5, 0.5, 1.25, 0.5, 0.5, 1.5, 0.5, 0.5, 3.75, -0.5, 0.5, 1.25, 0.5, 0.5, 3.75, -0.5, 0.5, 3.75, 0.5, -0.5, 1.5, 0.5, -0.5, 3.75, 1.5, -0.5, 1.5, 0.5, -0.5, 3.75, 1.5, -0.5, 1.75, 1.5, -0.5, 1.5, 0.5, -0.5, 3.75, 1.5, -0.5, 3.75, 1.5, -0.5, 1.75, 0.5, -0.5, 3.75, 1.5, 0.5, 3.75, 1.5, -0.5, 3.75, 0.5, -0.5, 3.75, 0.5, 0.5, 3.75, 1.5, 0.5, 3.75, 0.5, 0.5, 1.5, 0.5, 0.25, 1.5, 1.5, 0.25, 1.5, 0.5, 0.5, 1.5, 1.5, 0.5, 3.75, 0.5, 0.5, 3.75, 1.5, 0.5, 1.75, 1.5, 0.25, 1.5, 1.5, 0.25, 1.75, 0.5, 0.5, 1.5, 1.5, 0.25, 1.5, 1.5, 0.5, 1.5, 0.5, 0.5, 1.5, 1.5, 0.5, 1.5, 1.5, 0.5, 1.75, 1.5, 0.5, 1.5, 1.5, 0.25, 1.5, 1.5, 0.5, 1.75, 0.5, 0.5, 1.5, 1.5, 0.5, 1.75, 1.5, 0.5, 3.75, 1.5, -0.5, 1.75, 1.5, -0.5, 3.75, 2.5, -0.5, 1.75, 1.5, -0.5, 3.75, 2.5, -0.5, 2, 2.5, -0.5, 1.75, 1.5, -0.5, 3.75, 2.5, -0.5, 3.75, 2.5, -0.5, 2, 1.5, -0.5, 3.75, 2.5, 0.5, 3.75, 2.5, -0.5, 3.75, 1.5, -0.5, 3.75, 1.5, 0.5, 3.75, 2.5, 0.5, 3.75, 2.5, 0.5, 1.75, 1.5, 0.25, 1.75, 2.5, 0.25, 1.75, 1.5, 0.5, 1.75, 1.5, 0.25, 1.75, 2.5, 0.5, 1.75, 1.5, 0.5, 1.75, 2.5, 0.5, 1.75, 2.5, 0.5, 2, 1.5, 0.5, 1.75, 2.5, 0.5, 2, 2.5, 0.5, 3.75, 1.5, 0.5, 1.75, 2.5, 0.5, 3.75, 1.5, 0.5, 3.75, 2.5, -0.5, 2, 2.5, 0.25, 1.75, 2.5, -0.5, 1.75, 2.5, 0.25, 1.75, 2.5, -0.5, 2, 2.5, 0.5, 1.75, 2.5, -0.5, 2, 2.5, 0.5, 2, 2.5, 0.5, 1.75, 2.5, -0.5, 2, 2.5, -0.5, 3.75, 3.5, -0.5, 2, 2.5, -0.5, 3.75, 3.5, -0.5, 2.25, 3.5, -0.5, 2, 2.5, -0.5, 3.75, 3.5, -0.5, 3.75, 3.5, -0.5, 2.25, 2.5, -0.5, 2, 3.5, -0.5, 2, 2.5, 0.5, 2, 2.5, -0.5, 3.75, 3.5, 0.5, 3.75, 3.5, -0.5, 3.75, 2.5, 0.5, 2, 3.5, -0.5, 2, 3.5, 0.25, 2, 2.5, -0.5, 3.75, 2.5, 0.5, 3.75, 3.5, 0.5, 3.75, 2.5, 0.5, 2, 3.5, 0.25, 2, 3.5, 0.5, 2, 2.5, 0.5, 2, 3.5, 0.5, 2, 3.5, 0.5, 2.25, 2.5, 0.5, 2, 3.5, 0.5, 2.25, 3.5, 0.5, 3.75, 2.5, 0.5, 2, 3.5, 0.5, 3.75, 2.5, 0.5, 3.75, 3.5, 0.5, 2.25, 3.5, 0.25, 2, 3.5, 0.25, 2.25, 3.5, 0.5, 2, 3.5, 0.25, 2, 3.5, 0.5, 2.25, 3.5, -0.5, 2.25, 3.5, -0.5, 3.75, 4.5, -0.5, 2.25, 3.5, -0.5, 3.75, 4.5, -0.5, 2.75, 4.5, -0.5, 2.25, 3.5, -0.5, 3.75, 4.5, -0.5, 3.75, 4.5, -0.5, 2.75, 3.5, -0.5, 3.75, 4.5, 0.5, 3.75, 4.5, -0.5, 3.75, 3.5, -0.5, 3.75, 3.5, 0.5, 3.75, 4.5, 0.5, 3.75, 3.5, 0.5, 2.25, 3.5, 0.25, 2.25, 4.5, 0.5, 2.25, 3.5, 0.5, 2.25, 4.5, 0.5, 3.75, 3.5, 0.5, 3.75, 4.5, 0.5, 2.25, 3.5, 0.25, 2.25, 4.5, 0.25, 2.25, 4.5, 0.5, 2.75, 4.5, 0.25, 2.25, 4.5, 0.25, 2.75, 3.5, 0.5, 2.25, 4.5, 0.5, 2.25, 4.5, 0.5, 2.75, 4.5, 0.5, 2.25, 4.5, 0.25, 2.25, 4.5, 0.5, 2.75, 3.5, 0.5, 2.25, 4.5, 0.5, 2.75, 4.5, 0.5, 3.75, 4.5, -0.5, 2.75, 4.5, -0.5, 3.75, 5.5, -0.5, 2.75, 4.5, -0.5, 3.75, 5.5, -0.5, 3.75, 5.5, -0.5, 2.75, 4.5, -0.5, 3.75, 5.5, 0.5, 3.75, 5.5, -0.5, 3.75, 5.5, -0.5, 2.75, 5.5, -0.5, 3.75, 5.5, 0.5, 3.75, 5.5, 0.5, 3.75, 5.5, 0.25, 2.75, 5.5, -0.5, 2.75, 4.5, -0.5, 3.75, 4.5, 0.5, 3.75, 5.5, 0.5, 3.75, 5.5, 0.5, 2.75, 4.5, 0.25, 2.75, 5.5, 0.25, 2.75, 4.5, 0.5, 2.75, 4.5, 0.25, 2.75, 5.5, 0.5, 2.75, 4.5, 0.5, 2.75, 5.5, 0.5, 3.75, 4.5, 0.5, 3.75, 5.5, 0.25, 2.75, 5.5, 0.5, 3.75, 5.5, 0.5, 2.75, 4.5, 0.5, 2.75, 5.5, 0.5, 2.75, 5.5, 0.5, 3.75)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_8txj2"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(1, 0.7019608, 0.47058824, 1)
 
 [sub_resource type="ArrayMesh" id="ArrayMesh_8txj2"]
 _surfaces = [{
@@ -144,7 +139,7 @@ _surfaces = [{
 "aabb": AABB(2.5, -0.5, 2, 1, 1, 1.75),
 "attribute_data": PackedByteArray("AACAPwAAAAAAAAAAAAAAAAAAgD8AAIA/AAAAAAAAAAC3bVs/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAP7dtWz8AAIA/AACAPwAAAAAAAAAAAAAAAAAAgD8AAIA/AACAPwAAgD8AAAAAAAAAAAAAAAAAAIA/AACAPwAAgD8AAAAAAAAAAAAAAAAAAEA/AACAPwAAgD8AAIA/AAAAAAAAAAAAAAAAAACAPwAAgD8AAAAAAABAPwAAAAAAAIA/AACAPwAAgD8AAIA/AAAAALdtWz8AAAAAAACAPwAAgD+3bVs/AAAAAAAAAAAAAAAAAACAPwAAgD8AAAAAAAAAAAAAAAAAAIA/AAAAALdtWz8AAIA+AACAPwAAgD63bVs/AAAAAAAAgD8AAIA+AACAPwAAAAC3bVs/"),
 "format": 34359738391,
-"material": SubResource("StandardMaterial3D_farb7"),
+"material": ExtResource("9_p2mj2"),
 "primitive": 3,
 "uv_scale": Vector4(0, 0, 0, 0),
 "vertex_count": 39,

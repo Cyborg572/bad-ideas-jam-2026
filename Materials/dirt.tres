@@ -1,0 +1,20 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://vk0isikpdof3"]
+
+[ext_resource type="Gradient" uid="uid://e2n728uldy4m" path="res://Materials/dirt_ramp.tres" id="1_1w51v"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_d2cop"]
+noise_type = 0
+frequency = 0.0419
+fractal_type = 0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_yyg1b"]
+noise = SubResource("FastNoiseLite_d2cop")
+color_ramp = ExtResource("1_1w51v")
+seamless = true
+in_3d_space = true
+
+[resource]
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(0.735357, 0.735357, 0.735357, 1)
+albedo_texture = SubResource("NoiseTexture2D_yyg1b")

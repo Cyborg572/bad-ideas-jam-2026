@@ -1,0 +1,31 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://bjba213cebnno"]
+
+[ext_resource type="Gradient" uid="uid://qr8qvtkcyt6i" path="res://Materials/grass_ground_ramp.tres" id="1_qe7jf"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_bymr8"]
+noise_type = 2
+frequency = 0.0424
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_l3537"]
+noise = SubResource("FastNoiseLite_bymr8")
+color_ramp = ExtResource("1_qe7jf")
+seamless = true
+invert = true
+in_3d_space = true
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_qe7jf"]
+noise = SubResource("FastNoiseLite_bymr8")
+seamless = true
+invert = true
+in_3d_space = true
+as_normal_map = true
+
+[resource]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.7372549, 0.7372549, 0.7372549, 1)
+albedo_texture = SubResource("NoiseTexture2D_l3537")
+roughness = 0.6
+normal_texture = SubResource("NoiseTexture2D_qe7jf")
+uv1_scale = Vector3(10, 10, 10)
