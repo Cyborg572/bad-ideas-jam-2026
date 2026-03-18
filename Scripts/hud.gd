@@ -57,7 +57,6 @@ func _on_health_changed(new_health: int, new_max: int) -> void:
 
 
 func _on_confidence_changed(new_value: float) -> void:
-	print("Confidence now %f", new_value)
 	confidence = new_value
 
 

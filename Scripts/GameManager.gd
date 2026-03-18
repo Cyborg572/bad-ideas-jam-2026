@@ -28,7 +28,7 @@ var active_interaction_point : InteractionPoint
 
 @export var player_health : int = 5:
 	set(new_health):
-		player_health = max(new_health, 0)
+		player_health = clamp(new_health, 0, player_max_health)
 		player_health_changed.emit(player_health, player_max_health)
 
 		print("Health updated to %d" % player_health)
@@ -39,7 +39,7 @@ var active_interaction_point : InteractionPoint
 @export var player_base_confidence : float = 50.0
 @export var player_confidence : float = 50.0:
 	set(new_confidence):
-		player_confidence = max(new_confidence, 0)
+		player_confidence = clamp(new_confidence, 0.0, 100.0)
 		player_confidence_changed.emit(player_confidence)
 
 		if player_confidence <= 0:
@@ -93,8 +93,9 @@ func trigger_interaction() -> void:
 		interaction.emit(active_interaction_point)
 
 
-func reset_confidence() -> void:
-	player_confidence = player_base_confidence
+func reset_confidence(keep_extra: bool = true) -> void:
+	if player_confidence < player_base_confidence or not keep_extra:
+		player_confidence = player_base_confidence
 
 
 func kill_player() -> void:
@@ -107,6 +108,7 @@ func kill_player() -> void:
 func player_out_of_bounds() -> void:
 	jack.velocity = Vector3.ZERO
 	if jack.box.is_on_floor():
+		reset_confidence(false)
 		jack.popToBox()
 	elif jack.is_boxed:
 		jack.position = jack.box.last_ground_position

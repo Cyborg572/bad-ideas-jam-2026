@@ -36,6 +36,19 @@ enum JumpType {
 	PopIn
 }
 
+## The jump types count as flips for the various things that care.
+const FLIP_JUMPS := [
+	JumpType.BackFlip,
+	JumpType.SideFlip
+]
+
+## These jump types do not qualify for scoring
+const UNSCORED_JUMPS := [
+	JumpType.None,
+	JumpType.Spring,
+	JumpType.Hop,
+]
+
 
 #region Export Vars
 @export var state_config : Dictionary[State, JackStateConfiguration]
@@ -80,6 +93,14 @@ var jump_cancelled : bool = false
 
 var active_camera : CameraRig
 var distance_to_box : float = 0
+
+# Confidence tracker stats
+var jump_start_position := Vector3.ZERO
+var walljump_count: int = 0
+# Start the jump with any of the FLIP_JUMP jumps
+var flipped_into_jump: bool = false
+# Need to land on the open box while holding the crouch button
+var landed_in_box: bool = false
 
 
 func _ready() -> void:
@@ -192,10 +213,13 @@ func _enter_state(from : State, to : State) -> void:
 	#print_debug("entering ", State.keys()[to])
 	match to:
 		State.Grounded:
+			var score_jump: bool = jump_type not in UNSCORED_JUMPS
 			jump_type = JumpType.None
 			jump_cancelled = false
+
 			if is_boxed:
 				anim.play("Idle", 0.25)
+
 			if not Input.is_action_pressed("Jump"):
 				finish_charge_jump()
 			if is_standing_on_box() && box.is_open:
@@ -203,11 +227,22 @@ func _enter_state(from : State, to : State) -> void:
 				enter_box()
 				if Input.is_action_pressed("Crouch"):
 					hide_in_box()
+					landed_in_box = true
+
+			if score_jump:
+				var jump_coolness = caclulate_jump_coolness()
+				GameManager.player_confidence += jump_coolness / 10.0
+
+			reset_jump_stats()
 
 		State.Airborn:
 			falling = false
 			hanging = false
 			hanging_cooldown = 0.0
+
+			jump_start_position = position
+			if jump_type in FLIP_JUMPS:
+				flipped_into_jump = true
 
 		#State.Crouched:
 			#other_model.scale.y = .25
@@ -362,7 +397,6 @@ func charge_jump(delta) -> void:
 	if hanging:
 		if anim.current_animation != "StretchWallBoxed":
 			model.anim.play("StretchWallBoxed")
-		print(jump_multiplier)
 		anim.seek(jump_multiplier)
 
 		var offset = -0.375 * jump_multiplier
@@ -407,7 +441,65 @@ func tick_down_confidence() -> void:
 		GameManager.player_confidence -= 4
 
 
+func reset_jump_stats() -> void:
+	jump_start_position = Vector3.ZERO
+	walljump_count = 0
+	flipped_into_jump = false
+
+
+func caclulate_jump_coolness() -> int:
+	var jump_distance = position - jump_start_position
+	var jump_height = jump_distance.y
+	var horizontal_distance = Utils.get_ground_speed(jump_distance).length()
+
+	# Upwards jumps get points, as long as they're more than the basic jump
+	var height_bonus: int = 0 if jump_height < 0.75 else floor(jump_height * 2)
+
+	# Big jumps get a "leap of faith" bonus (walking off a ledge doesn't count)
+	var leap_of_faith_bonus: int =  0 if jump_height > -10 else 1 + floor(abs(jump_height) / 10)
+
+	# Multiplier for diving into the box (must be holding crouch)
+	var dive_bonus: int = 2 if landed_in_box else 0
+
+	# Horizontal distance bonus needs to be longer than standard long jump.
+	# 4.5m requires popping into the box to extend the distance, after dipping
+	# a bit below the starting jump height
+	# 7 requires hoping back out.
+	var distance_bonus : int = (
+		5 if horizontal_distance > 7
+		else 3 if horizontal_distance > 4.5
+		else 0
+	)
+
+	# Reduce the distance bonus if there was a large loss of height
+	if jump_height < 0:
+		distance_bonus = ceil(distance_bonus / ceil(abs(jump_height)))
+
+	print("Distance bonus: ", distance_bonus)
+
+	# BIG multiplier for diving directly into the box from a great height
+	var dive_of_faith_multiplier: int = 10 if (
+		jump_height < -5
+		and landed_in_box
+		and walljump_count < 1
+	) else 1
+
+	# Multiplier for wall jumps
+	var wall_jump_multiplier: int = clamp(1, walljump_count * 2, 16)
+
+	# Any jump that starts with a flip is 3 times cooler
+	var flip_multiplier: int = 3 if flipped_into_jump else 1
+
+	var total: int = height_bonus + leap_of_faith_bonus
+	total += dive_bonus
+	total += distance_bonus
+	total *= dive_of_faith_multiplier
+	total *= wall_jump_multiplier
+	total *= flip_multiplier
+
+	return total
 #endregion
+
 
 func _physics_process(delta: float) -> void:
 	# Component ticks
@@ -576,7 +668,6 @@ func _physics_process(delta: float) -> void:
 						&& anim.current_animation != "Idle2"
 						&& jump_type == JumpType.None
 					):
-						print("Ground idle active!")
 						anim.play("Idle", 0.25)
 						idle_2_timer.start()
 
@@ -725,6 +816,7 @@ func _physics_process(delta: float) -> void:
 					velocity = wall_normal
 				else:
 					jump_type = JumpType.Wall
+					walljump_count += 1
 					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 					follow_motion(wall_normal, 60 * delta)
 					anim.play("WallJump")
