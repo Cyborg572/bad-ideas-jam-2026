@@ -84,7 +84,7 @@ metadata/_custom_type_script = "uid://bs5r7rqwja1pf"
 [node name="Head" type="Node3D" parent="AttachmentPoints" unique_id=317700511]
 transform = Transform3D(1.3113416e-07, 1, 0, -1, 1.3113416e-07, 0, 0, 0, 1, 0, 0.875, 0)
 
-[node name="Hand" type="Node3D" parent="AttachmentPoints" unique_id=1028626978]
+[node name="Hand" type="Node3D" parent="AttachmentPoints" unique_id=459985205]
 transform = Transform3D(0.5334078, -0.8458582, 0, 0.8458582, 0.5334078, 0, 0, 0, 1, -0.16076256, 0.41118115, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="AttachmentPoints/Hand" unique_id=1934733003]

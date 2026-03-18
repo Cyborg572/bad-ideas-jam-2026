@@ -33,6 +33,7 @@ func _after_attach(target : Node3D) -> void:
 func attach(target : Node3D):
 	_before_attach(target)
 
+	passing = true
 	has_attachment = true
 	attachment = target
 	velocity = Vector3.ZERO
@@ -93,8 +94,12 @@ func be_held(delta : float) -> void:
 		track(0, attachment)
 
 
-func reposition(speed : float, target_position: Vector3 = attachment.global_position):
-	var offset_position := target_position - attachment_point.position
+func reposition(
+		speed : float,
+		target_position: Vector3 = attachment.global_position,
+		scale_modifier: Vector3 = scale
+	):
+	var offset_position := target_position - (attachment_point.position * scale_modifier)
 	if speed == 0:
 		position = offset_position
 	else:
@@ -120,9 +125,9 @@ func match_scale(speed: float, target_scale: Vector3 = Vector3(1, 1, 1)):
 
 
 func track(speed: float, target: Node3D = attachment, scale_modifier : float = 1.0):
+	match_scale(speed, target.scale * scale_modifier)
 	reposition(speed, target.global_position)
 	reorient(speed, target.global_rotation)
-	match_scale(speed, target.scale * scale_modifier)
 	if passing && (target.global_position - position).length() < 0.2:
 		passing = false
 		clear_extra_collision_exceptions()
@@ -181,5 +186,6 @@ func _physics_process(delta: float) -> void:
 					clear_extra_collision_exceptions(true)
 				passing = false
 
+		match_scale(10 * delta)
 		reorient(10 * delta)
 	move_and_slide();

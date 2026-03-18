@@ -111,8 +111,9 @@ func _ready() -> void:
 	GameManager.player_confidence_lost.connect(popToBox)
 
 	attachment_points['head'] = $AttachmentPoints/Head
-	attachment_points['hand'] = $AttachmentPoints/Hand
+	attachment_points['hand'] = model.hand_attachment
 	attachment_points['foot'] = $AttachmentPoints/Foot
+	attachment_points['model_foot'] = model.foot_attachment
 	attachment_points['throw'] = $AttachmentPoints/Throw
 
 	anxiety_timer.timeout.connect(tick_down_confidence)
@@ -336,9 +337,15 @@ func would_recieve_item(_item: Attachable) -> bool:
 func hold_item(item : Attachable, delta) -> void:
 	match item:
 		carried_item when is_carrying:
-			item.track(10 * delta, attachment_points['hand'])
+			item.track(
+				10 * delta if item.passing else 0,
+				attachment_points['hand']
+			)
 		box:
-			item.reposition(0, attachment_points['foot'].global_position)
+			var point: String = "model_foot" if anim.current_animation == "HangWallBoxed" else "foot"
+
+			item.match_scale(0, attachment_points[point].scale)
+			item.reposition(0, attachment_points[point].global_position)
 			match state:
 				State.Airborn:
 					item.reorient(10 * delta, global_rotation)
@@ -775,7 +782,7 @@ func _physics_process(delta: float) -> void:
 
 				hanging_cooldown = 1
 				hanging = false
-				anim.play("Jump", 0.1)
+				anim.play("Rocket", 0.1)
 				jump_type = JumpType.LedgeLaunch
 				velocity = launch_direction + launch_height
 
@@ -954,7 +961,7 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 			else:
 				drop_carried_item()
 
-		types.attachable when state != State.Crouched:
+		types.attachable when state != State.Crouched and not hiding:
 			if would_recieve_item(target):
 				recieve_item(target)
 		types.dispenser when state != State.Crouched:
