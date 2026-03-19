@@ -5,8 +5,22 @@ extends Control
 @export var credits_scene: PackedScene
 
 
+@onready var jack: JackModel = $HBoxContainer/SubViewportContainer/SubViewport/Node3D/Jack
+@onready var the_box: TheBox = $HBoxContainer/SubViewportContainer/SubViewport/Node3D/TheBox
+
 func _ready() -> void:
 	start_button.grab_focus.call_deferred()
+	jack.anim.play("SideFlip")
+	jack.anim.seek(0.38, true)
+	jack.anim.pause()
+	the_box.anim.play("Open")
+	the_box.anim.seek(0.5, true)
+	the_box.anim.pause()
+	the_box.start_cranking()
+
+
+func _process(delta: float) -> void:
+	pass
 
 
 func _on_start_button_pressed() -> void:

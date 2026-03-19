@@ -5,9 +5,20 @@
 [ext_resource type="PackedScene" uid="uid://l2jbxqdgxpqg" path="res://World/Main.tscn" id="2_7ihqj"]
 [ext_resource type="PackedScene" uid="uid://b6pmd8ujin6tc" path="res://Menus/Credits.tscn" id="3_n6o36"]
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="5_5ncg0"]
+[ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="6_0xbyl"]
+[ext_resource type="PackedScene" uid="uid://bu2rf6sg2q7v2" path="res://Models/jack.tscn" id="7_1txdl"]
 
-[sub_resource type="Theme" id="Theme_7ihqj"]
-PanelContainer/styles/panel = null
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xbyl"]
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.7882353, 0.2509804, 0.4392157, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1txdl"]
+material = SubResource("StandardMaterial3D_0xbyl")
+flip_faces = true
+size = Vector3(5, 5, 5)
+
+[sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_m16r1"]
 
 [node name="MainMenu" type="Control" unique_id=1220054263 node_paths=PackedStringArray("start_button")]
 layout_mode = 3
@@ -16,32 +27,39 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = SubResource("Theme_7ihqj")
+theme = ExtResource("1_3g7qx")
 script = ExtResource("1_r8dbq")
-start_button = NodePath("PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Start Button")
+start_button = NodePath("HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Start Button")
 main_scene = ExtResource("2_7ihqj")
 credits_scene = ExtResource("3_n6o36")
 
 [node name="PanelContainer" type="PanelContainer" parent="." unique_id=1825587894]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_3g7qx")
 
-[node name="HBoxContainer" type="HBoxContainer" parent="PanelContainer" unique_id=1368086567]
-layout_mode = 2
+[node name="HBoxContainer" type="HBoxContainer" parent="." unique_id=1368086567]
+layout_mode = 0
+offset_right = 1152.0
+offset_bottom = 648.0
+theme_override_constants/separation = 0
 
-[node name="MarginContainer2" type="MarginContainer" parent="PanelContainer/HBoxContainer" unique_id=74094461]
+[node name="PanelContainer" type="PanelContainer" parent="HBoxContainer" unique_id=650329665]
 layout_mode = 2
 size_flags_horizontal = 3
 
-[node name="VBoxContainer" type="VBoxContainer" parent="PanelContainer/HBoxContainer/MarginContainer2" unique_id=571932135]
+[node name="MarginContainer2" type="MarginContainer" parent="HBoxContainer/PanelContainer" unique_id=74094461]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="VBoxContainer" type="VBoxContainer" parent="HBoxContainer/PanelContainer/MarginContainer2" unique_id=571932135]
 layout_mode = 2
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1237055171]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=1237055171]
 layout_mode = 2
 size_flags_vertical = 3
 theme_type_variation = &"Title"
@@ -53,13 +71,13 @@ bbcode_enabled = true
 text = "[b]Bouncing Back[/b]"
 fit_content = true
 
-[node name="Start Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=777100360]
+[node name="Start Button" type="Button" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=777100360]
 layout_mode = 2
 focus_neighbor_bottom = NodePath("../Options Button")
 focus_next = NodePath("../Options Button")
 text = "New Game"
 
-[node name="Options Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1534645383]
+[node name="Options Button" type="Button" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=1534645383]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Start Button")
 focus_neighbor_bottom = NodePath("../Credits Button")
@@ -69,7 +87,7 @@ disabled = true
 text = "Options
 "
 
-[node name="Credits Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=2053390167]
+[node name="Credits Button" type="Button" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=2053390167]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Options Button")
 focus_neighbor_bottom = NodePath("../Quit Button")
@@ -77,21 +95,62 @@ focus_next = NodePath("../Quit Button")
 focus_previous = NodePath("../Options Button")
 text = "Credits"
 
-[node name="Quit Button" type="Button" parent="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer" unique_id=1207329540]
+[node name="Quit Button" type="Button" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=1207329540]
 layout_mode = 2
 focus_neighbor_top = NodePath("../Credits Button")
 focus_previous = NodePath("../Credits Button")
 text = "Quit"
 
-[node name="MarginContainer" type="MarginContainer" parent="PanelContainer/HBoxContainer" unique_id=1194675601]
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer" unique_id=1194675601]
+visible = false
 layout_mode = 2
 size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
 
-[node name="RichTextLabel" type="RichTextLabel" parent="PanelContainer/HBoxContainer/MarginContainer" unique_id=1764131540]
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer/MarginContainer" unique_id=1764131540]
 layout_mode = 2
 text = "Something useful goes here?"
 
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Start Button" to="." method="_on_start_button_pressed"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Options Button" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Credits Button" to="." method="_on_credits_button_pressed"]
-[connection signal="pressed" from="PanelContainer/HBoxContainer/MarginContainer2/VBoxContainer/Quit Button" to="." method="_on_quit_button_pressed"]
+[node name="SubViewportContainer" type="SubViewportContainer" parent="HBoxContainer" unique_id=58604958]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_stretch_ratio = 2.0
+stretch = true
+
+[node name="SubViewport" type="SubViewport" parent="HBoxContainer/SubViewportContainer" unique_id=2135309706]
+handle_input_locally = false
+size = Vector2i(768, 648)
+render_target_update_mode = 4
+
+[node name="Node3D" type="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" unique_id=1793845617]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=528567129]
+
+[node name="Room" type="MeshInstance3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D/StaticBody3D" unique_id=2131548711]
+transform = Transform3D(0.70710677, 0, 0.70710677, 0, 1, 0, -0.70710677, 0, 0.70710677, 0, 2.5, 0)
+mesh = SubResource("BoxMesh_1txdl")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D/StaticBody3D" unique_id=315273586]
+shape = SubResource("WorldBoundaryShape3D_m16r1")
+
+[node name="Camera3D" type="Camera3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=1753174992]
+transform = Transform3D(1, 0, 0, 0, 0.9184464, 0.39554554, 0, -0.39554554, 0.9184464, 0, 0.8194132, -0.8582355)
+
+[node name="TheBox" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=2010327691 instance=ExtResource("6_0xbyl")]
+transform = Transform3D(0.10371262, 0, -0.9946073, 0, 1, 0, 0.9946073, 0, 0.10371262, 0.4057511, 0.125, -1.7134199)
+
+[node name="SpotLight3D" type="SpotLight3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=1787407669]
+transform = Transform3D(0.8929004, -0.25360665, 0.37203845, 0, 0.8262851, 0.56325203, -0.45025432, -0.50292796, 0.73779035, 1.4813724, 1.8654141, 0.37828946)
+light_energy = 9.281
+light_indirect_energy = 5.351
+shadow_enabled = true
+shadow_opacity = 0.2
+spot_range = 7.9091744
+
+[node name="Jack" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=1820938000 instance=ExtResource("7_1txdl")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.34121752, 0.57929564, -1.6488105)
+
+[connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Start Button" to="." method="_on_start_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Options Button" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Credits Button" to="." method="_on_credits_button_pressed"]
+[connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Quit Button" to="." method="_on_quit_button_pressed"]
