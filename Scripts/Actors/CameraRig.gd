@@ -136,10 +136,10 @@ func _ready() -> void:
 	set_shot_type(default_shot_type)
 
 
-func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventMouseMotion:
-		rotation.y -= event.relative.x * (mouse_sensitivity / 1000)
-		rotation.x -= event.relative.y * (mouse_sensitivity / 1000)
+#func _unhandled_input(event: InputEvent) -> void:
+	#if event is InputEventMouseMotion:
+		#rotation.y -= event.relative.x * (mouse_sensitivity / 1000)
+		#rotation.x -= event.relative.y * (mouse_sensitivity / 1000)
 
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -187,7 +187,6 @@ func _process(delta: float) -> void:
 
 	# Once the bearing is right, jump if the distance is _really_ far
 	if distance > 10 and not aligning:
-		print("Jumping!")
 		position = position.move_toward(target_position, distance - 5)
 
 	position = position.move_toward(target_position, chase_speed * delta)

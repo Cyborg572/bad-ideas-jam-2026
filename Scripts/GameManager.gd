@@ -31,7 +31,6 @@ var active_interaction_point : InteractionPoint
 		player_health = clamp(new_health, 0, player_max_health)
 		player_health_changed.emit(player_health, player_max_health)
 
-		print("Health updated to %d" % player_health)
 		if player_health <= 0:
 			player_health_depleted.emit()
 
@@ -112,13 +111,11 @@ func player_out_of_bounds() -> void:
 		jack.popToBox()
 	elif jack.is_boxed:
 		jack.position = jack.box.last_ground_position
-		print("Losing health for dying in box")
 		player_health -= 1
 	else:
 		jack.box.position = jack.box.last_ground_position
 		jack.position = jack.box.last_ground_position
 		jack.popToBox()
-		print("Losing health for dying with box")
 		player_health -= 1
 
 
@@ -126,7 +123,5 @@ func box_out_of_bounds() -> void:
 	jack.box.position = jack.box.last_ground_position
 	jack.box.velocity = Vector3.ZERO
 	if not jack.is_boxed:
-		print("chain-killing jack")
-		print("Losing health for losing box")
 		player_health -= 1
 		player_out_of_bounds()

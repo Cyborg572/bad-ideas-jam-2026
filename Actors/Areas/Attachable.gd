@@ -71,7 +71,6 @@ func detach():
 
 	has_attachment = false
 	passing = true
-	print("Detached from ", attachment)
 	_detach(attachment)
 
 	detached.emit(self, attachment)
@@ -80,7 +79,6 @@ func detach():
 
 
 func clear_extra_collision_exceptions(all : bool = false) -> void:
-	#print("Should clear ", get_collision_exceptions())
 	for body in get_collision_exceptions():
 		if body != attachment || all:
 			body.remove_collision_exception_with(self)

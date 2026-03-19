@@ -172,8 +172,6 @@ func enter_box() -> void:
 	velocity += box.velocity
 	box.attach(self)
 	box_collider.position = attachment_points['foot'].position - box.attachment_point.position
-	if not box.inventory.is_empty() && would_recieve_item(box.get_offered_item()):
-		box.give_item(self)
 
 func hide_in_box() -> void:
 	hiding = true
@@ -337,10 +335,10 @@ func would_recieve_item(_item: Attachable) -> bool:
 func hold_item(item : Attachable, delta) -> void:
 	match item:
 		carried_item when is_carrying:
-			item.track(
-				10 * delta if item.passing else 0,
-				attachment_points['hand']
-			)
+			if hiding:
+				item.track(0, attachment_points['foot'], 0.1)
+			else:
+				item.track(10 * delta if item.passing else 0, attachment_points['hand'])
 		box:
 			var point: String = "model_foot" if anim.current_animation == "HangWallBoxed" else "foot"
 
@@ -384,7 +382,6 @@ func recieve_item(item: Attachable):
 	carried_item = item
 	carried_item.attach(self)
 	is_carrying = true
-	print("Carrying ", carried_item)
 	if carried_item == box:
 		carried_item.close()
 
@@ -491,8 +488,6 @@ func caclulate_jump_coolness() -> int:
 	if jump_height < 0:
 		distance_bonus = ceil(distance_bonus / ceil(abs(jump_height)))
 
-	print("Distance bonus: ", distance_bonus)
-
 	# BIG multiplier for diving directly into the box from a great height
 	var dive_of_faith_multiplier: int = 10 if (
 		jump_height < -5
@@ -552,13 +547,21 @@ func _physics_process(delta: float) -> void:
 		if GameManager.active_interaction_point:
 			can_interact = true
 			is_pickup = GameManager.active_interaction_point.type == types.attachable
-		if can_interact && not (is_carrying && is_pickup) :
+		if can_interact && not (is_carrying && is_pickup):
 			GameManager.trigger_interaction()
-		else:
+		elif hiding:
+			if is_carrying:
+				if box.would_recieve_item(carried_item):
+					carried_item.detach()
+					carried_item.give_to(box)
+					is_carrying = false
+			elif not box.inventory.is_empty():
+				box.give_item(self)
+
+		elif is_carrying:
 			drop_carried_item()
 
 	if Input.is_action_just_pressed("Pop"):
-		print("Distance: ", distance_to_box)
 		match is_boxed:
 			true:
 				if hiding:
@@ -604,8 +607,8 @@ func _physics_process(delta: float) -> void:
 				pop_button_timer.stop()
 
 	if Input.is_action_just_pressed("Crouch") && is_boxed:
-		if is_carrying:
-				drop_carried_item(0, PI/2, "head")
+		#if is_carrying:
+				#drop_carried_item(0, PI/2, "head")
 		hide_in_box()
 
 	if Input.is_action_just_released("Crouch") && is_boxed:
@@ -627,7 +630,12 @@ func _physics_process(delta: float) -> void:
 				charge_jump(delta)
 
 			if Input.is_action_just_pressed("Attack") && is_carrying:
-				drop_carried_item(3, PI/4)
+				if hiding:
+					drop_carried_item(3, PI/4)
+					await box.pop()
+					box.slam()
+				else:
+					drop_carried_item(3, PI/4)
 
 			# Handle jump.
 			if Input.is_action_just_released("Jump"):

@@ -14,13 +14,12 @@ func _ready() -> void:
 func _process(delta: float) -> void:
 	var should_indicate : bool = false
 	var interaction_point := GameManager.active_interaction_point
-	
+
 	if GameManager.active_interaction_point:
 		var types := InteractionPoint.InteractionType
 
 		match interaction_point.type:
 			types.attachable, types.dispenser:
-				print("Still go heare")
 				should_indicate = not parent.is_carrying && not parent.state == Jack.State.Crouched
 			_:
 				should_indicate = true
@@ -35,5 +34,5 @@ func _process(delta: float) -> void:
 			rest_position = parent.camera_target.global_position
 		position = position.move_toward(rest_position, 10 * delta)
 		scale = scale.move_toward(Vector3.ZERO, 10 * delta)
-	
+
 	visible = scale.y > 0.1;

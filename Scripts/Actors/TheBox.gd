@@ -47,14 +47,14 @@ func _process(delta: float) -> void:
 
 
 func pop() -> void:
-	open(true)
+	await open(true)
 
 
 func toggle_open(fast : bool = false) -> void:
 	if is_open:
-		close(fast)
+		await close(fast)
 	else:
-		open(fast)
+		await open(fast)
 
 
 func open(fast : bool = false) -> void:
@@ -73,6 +73,7 @@ func open(fast : bool = false) -> void:
 		anim.play("Pop")
 	else:
 		anim.play("Open")
+	await anim.animation_finished
 
 func close(fast : bool = false) -> void:
 	if not is_open: return
@@ -82,10 +83,11 @@ func close(fast : bool = false) -> void:
 	if fast:
 		anim.speed_scale = 10
 	anim.play_backwards("Open")
+	await  anim.animation_finished
 
 
 func slam() -> void:
-	close(true)
+	await close(true)
 
 
 func start_music() -> void:
@@ -106,17 +108,14 @@ func stop_music() -> bool:
 		is_pop_window = true
 
 	if not is_pop_window:
-		print("Stopped at: ", crank_audio.get_playback_position())
 		crank_audio.stream_paused = true
 	else:
-		print("POP!")
 		stopped_in_pop.emit()
 
 	return is_pop_window
 
 func start_cranking() -> void:
 	is_cranking = true
-	print("Start crankin'")
 	start_music()
 
 
@@ -146,35 +145,28 @@ func enable_collisions() -> void:
 
 
 func disable_collisions() -> void:
-	pass
-	#collisions_enabled = false
-	#open_collider.disabled = true
-	#closed_collider.disabled = true
+	collisions_enabled = false
+	open_collider.disabled = true
+	closed_collider.disabled = true
 
 
 func would_recieve_item(_item: Attachable) -> bool:
-	return is_open
+	return has_attachment or is_open
 
 
 func recieve_item(item: Attachable) -> bool:
-	print("Recieving ", item)
-	if is_open:
-		item.attach(self)
-		inventory.push_back(item)
-		return true
-	else:
-		return false
+	inventory.push_back(item)
+	item.get_parent().remove_child(item)
+	return true
 
 
 func give_item(to : CharacterBody3D) -> void:
 	var item = inventory.pop_back()
-	print("Giving ", item)
 	if item.can_attach(to):
-		print("Passing to ", to)
-		item.detach()
+		get_parent().add_child(item)
 		item.give_to(to)
 	else:
-		print("Jack didn't want it")
+		inventory.push_back(item)
 
 
 func get_offered_item() -> Attachable:
@@ -227,12 +219,14 @@ func get_interaction_type(point: InteractionPoint) -> InteractionPoint.Interacti
 func _on_interaction_point_interaction(point: InteractionPoint) -> void:
 	var jack : Jack = GameManager.jack
 	if point.type != InteractionPoint.InteractionType.custom:
-		print(jack.is_carrying, inventory.is_empty())
 		return
 
-	if jack.is_carrying || inventory.is_empty():
-		return
+	if jack.is_carrying:
+		print("Your hands are full.")
+	if inventory.is_empty():
+		print("Box is empty")
 
+	print(inventory)
 	give_item(jack)
 
 
@@ -240,6 +234,5 @@ func _on_anim_complete(_animation: String):
 	anim.speed_scale = 1
 
 func _on_song_finished() -> void:
-	print("It finished!")
 	if is_cranking:
 		crank_audio.play()
