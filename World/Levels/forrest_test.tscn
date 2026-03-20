@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="7_13yra"]
 [ext_resource type="AudioStream" uid="uid://dsgi88ece4fld" path="res://Music/Melody2.ogg" id="7_qvx36"]
 [ext_resource type="PackedScene" uid="uid://bokohmujw272q" path="res://Actors/Pickups/mullberry.tscn" id="8_2580x"]
+[ext_resource type="PackedScene" uid="uid://tbek3xcg2lo" path="res://Actors/forest_platform.tscn" id="10_0ch6b"]
+[ext_resource type="Script" uid="uid://efge2y8tfd36" path="res://Scripts/Actors/moving_platform.gd" id="10_ncbkr"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ncbkr"]
 noise_type = 0
@@ -41,6 +43,14 @@ ambient_light_source = 3
 ambient_light_color = Color(1, 1, 1, 1)
 ambient_light_sky_contribution = 0.34
 tonemap_mode = 2
+
+[sub_resource type="Curve3D" id="Curve3D_0ch6b"]
+closed = true
+_data = {
+"points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -6.5, 0, 0, 0, 0, 0, 0, -3.75, 0, -3.75),
+"tilts": PackedFloat32Array(0, 0, 0)
+}
+point_count = 3
 
 [node name="ForrestTest" type="Node3D" unique_id=1740911666]
 script = ExtResource("1_1wiq1")
@@ -134,3 +144,24 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 0.75, -6.25)
 
 [node name="mullberry15" parent="." unique_id=292440049 instance=ExtResource("8_2580x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.25, 0.75, -6.25)
+
+[node name="Path3D" type="Path3D" parent="." unique_id=1535027955]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -14.25)
+curve = SubResource("Curve3D_0ch6b")
+
+[node name="MovingPlatform" type="PathFollow3D" parent="Path3D" unique_id=11475063]
+transform = Transform3D(1, 0, 0, 0, 0.99999815, 0, 0, 0, 0.99999815, 0, 0, 0)
+rotation_mode = 0
+script = ExtResource("10_ncbkr")
+metadata/_custom_type_script = "uid://efge2y8tfd36"
+
+[node name="platform" parent="Path3D/MovingPlatform" unique_id=952740952 instance=ExtResource("10_0ch6b")]
+
+[node name="MovingPlatform2" type="PathFollow3D" parent="Path3D" unique_id=473068171]
+transform = Transform3D(1, 0, 0, 0, 0.99999815, 0, 0, 0, 0.99999815, -1.3923726, 0, -5.4789267)
+progress = 8.226788
+rotation_mode = 0
+script = ExtResource("10_ncbkr")
+metadata/_custom_type_script = "uid://efge2y8tfd36"
+
+[node name="platform" parent="Path3D/MovingPlatform2" unique_id=735296637 instance=ExtResource("10_0ch6b")]
