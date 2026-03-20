@@ -1,0 +1,25 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://d0r338jcixdlb"]
+
+[sub_resource type="Gradient" id="Gradient_c5htq"]
+interpolation_mode = 1
+offsets = PackedFloat32Array(0, 0.23782235, 0.71346706)
+colors = PackedColorArray(0.15294118, 0.4392157, 0, 1, 0.14349996, 0.41, 0, 1, 0.13649996, 0.39, 0, 1)
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_7thqn"]
+noise_type = 2
+frequency = 0.0473
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dji24"]
+noise = SubResource("FastNoiseLite_7thqn")
+color_ramp = SubResource("Gradient_c5htq")
+seamless = true
+in_3d_space = true
+
+[resource]
+resource_name = "Leaves"
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.7372549, 0.7372549, 0.7372549, 1)
+albedo_texture = SubResource("NoiseTexture2D_dji24")
+roughness = 0.5

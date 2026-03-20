@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://bxa6h48a1brww"]
+
+[ext_resource type="PackedScene" uid="uid://bbvaqokf2rjpe" path="res://Models/original/forrest_tiles.glb" id="1_omqun"]
+
+[node name="forrest_tiles" unique_id=1147150409 instance=ExtResource("1_omqun")]
