@@ -2,6 +2,8 @@ class_name Jack
 extends CharacterBody3D
 
 signal popped(box: TheBox)
+signal boxed()
+signal unboxed()
 
 enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 
@@ -161,6 +163,7 @@ func leave_box() -> void:
 	# box.slam()
 	anxiety_timer.start()
 	active_camera.set_shot_type(CameraRig.Shot.Wide)
+	unboxed.emit()
 
 func enter_box() -> void:
 	anim.speed_scale = 1
@@ -172,6 +175,7 @@ func enter_box() -> void:
 	velocity += box.velocity
 	box.attach(self)
 	box_collider.position = attachment_points['foot'].position - box.attachment_point.position
+	boxed.emit()
 
 func hide_in_box() -> void:
 	hiding = true

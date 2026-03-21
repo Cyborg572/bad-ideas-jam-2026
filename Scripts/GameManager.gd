@@ -14,7 +14,19 @@ var main_camera : CameraRig = null:
 		main_camera = camera
 		change_camera.emit(main_camera)
 
-var jack : Jack = null
+var jack : Jack = null:
+	set(new_jack):
+		if jack:
+			if jack.boxed.is_connected(_on_jack_boxed):
+				jack.boxed.disconnect(_on_jack_boxed)
+			if jack.unboxed.is_connected(_on_jack_unboxed):
+				jack.unboxed.disconnect(_on_jack_unboxed)
+
+		jack = new_jack
+		jack.boxed.connect(_on_jack_boxed)
+		jack.unboxed.connect(_on_jack_unboxed)
+
+var bg_music_player: AudioStreamPlayer = null
 
 var interaction_points : Array[InteractionPoint] = []
 var active_interaction_point : InteractionPoint
@@ -49,6 +61,22 @@ var active_interaction_point : InteractionPoint
 	set(new_distance):
 		distance_to_box = new_distance
 		distance_to_box_changed.emit(distance_to_box)
+
+
+func _on_jack_boxed() -> void:
+	# Make the music more confident
+	if bg_music_player:
+		var stream = bg_music_player.get_stream_playback()
+		if stream is AudioStreamPlaybackInteractive:
+			stream.switch_to_clip_by_name("boxed")
+
+
+func _on_jack_unboxed() -> void:
+	# Make the music less confident
+	if bg_music_player:
+		var stream = bg_music_player.get_stream_playback()
+		if stream is AudioStreamPlaybackInteractive:
+			stream.switch_to_clip_by_name("unboxed")
 
 
 func set_active_interaction_point(point : InteractionPoint) -> void:

@@ -2,6 +2,8 @@
 
 [ext_resource type="PackedScene" uid="uid://cdbis65vjtoox" path="res://World/Levels/Gym.tscn" id="1_e7rx8"]
 [ext_resource type="Theme" uid="uid://cnaxn7u3n0m3n" path="res://World/UITheme.tres" id="1_q6i1d"]
+[ext_resource type="AudioStream" uid="uid://2cl3w527mleh" path="res://Music/interactive/melody3_interactive.tres" id="2_3venj"]
+[ext_resource type="Script" uid="uid://bmiv4qpi33mcj" path="res://Scripts/main_game_scene.gd" id="2_4tara"]
 [ext_resource type="Script" uid="uid://dhkh5118gb0fw" path="res://Scripts/main_viewport.gd" id="2_m2obh"]
 [ext_resource type="PackedScene" uid="uid://y8x8jkr2afcw" path="res://Menus/PauseMenu.tscn" id="3_475tg"]
 [ext_resource type="Script" uid="uid://b6ercbf3yiu46" path="res://Scripts/hud.gd" id="4_8rcjl"]
@@ -66,6 +68,13 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_q6i1d")
+script = ExtResource("2_4tara")
+
+[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1958800623]
+process_mode = 3
+stream = ExtResource("2_3venj")
+autoplay = true
+bus = &"Music"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1360691485]
 layout_mode = 1

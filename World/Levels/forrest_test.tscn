@@ -85,13 +85,6 @@ cranking_song = ExtResource("5_qvx36")
 [node name="DeathZone" parent="." unique_id=1821243704 instance=ExtResource("7_13yra")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
 
-[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1096477596]
-process_mode = 3
-stream = ExtResource("7_qvx36")
-autoplay = true
-bus = &"Music"
-parameters/looping = true
-
 [node name="GridMap" type="GridMap" parent="." unique_id=1376894822]
 mesh_library = ExtResource("6_0ch6b")
 cell_size = Vector3(1, 0.5, 1)
