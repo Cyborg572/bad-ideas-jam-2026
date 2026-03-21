@@ -2,6 +2,8 @@ class_name TheBox
 extends Attachable
 
 signal stopped_in_pop()
+signal cranking_started()
+signal cranking_stopped(was_pop: bool)
 
 @export var launch_force : float = 6
 @export var cranking_song : AudioStream
@@ -116,12 +118,15 @@ func stop_music() -> bool:
 
 func start_cranking() -> void:
 	is_cranking = true
+	cranking_started.emit()
 	start_music()
 
 
 func stop_cranking() -> bool:
 	is_cranking = false
-	return stop_music()
+	var was_pop = stop_music()
+	cranking_stopped.emit(was_pop)
+	return was_pop
 
 
 func launch(item: Node3D):

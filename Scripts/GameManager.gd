@@ -21,10 +21,18 @@ var jack : Jack = null:
 				jack.boxed.disconnect(_on_jack_boxed)
 			if jack.unboxed.is_connected(_on_jack_unboxed):
 				jack.unboxed.disconnect(_on_jack_unboxed)
+			if jack.box:
+				if jack.box.cranking_started.is_connected(_on_crank_started):
+					jack.boxed.disconnect(_on_crank_started)
+				if jack.box.cranking_stopped.is_connected(_on_crank_stopped):
+					jack.boxed.disconnect(_on_crank_stopped)
 
 		jack = new_jack
 		jack.boxed.connect(_on_jack_boxed)
 		jack.unboxed.connect(_on_jack_unboxed)
+		if jack.box:
+			jack.box.cranking_started.connect(_on_crank_started)
+			jack.box.cranking_stopped.connect(_on_crank_stopped)
 
 var bg_music_player: AudioStreamPlayer = null
 
@@ -62,6 +70,22 @@ var active_interaction_point : InteractionPoint
 		distance_to_box = new_distance
 		distance_to_box_changed.emit(distance_to_box)
 
+#region Volume variables!
+@onready var audio_bus_master: int = AudioServer.get_bus_index("Master")
+@onready var audio_master_volume: float = AudioServer.get_bus_volume_linear(audio_bus_master)
+
+@onready var audio_bus_ambiance: int = AudioServer.get_bus_index("Ambiance")
+@onready var audio_ambiance_volume: float = AudioServer.get_bus_volume_linear(audio_bus_ambiance)
+
+@onready var audio_bus_music: int = AudioServer.get_bus_index("Music")
+@onready var audio_music_volume: float = AudioServer.get_bus_volume_linear(audio_bus_music)
+
+@onready var audio_bus_effects: int = AudioServer.get_bus_index("Sound Effects")
+@onready var audio_effects_volume: float = AudioServer.get_bus_volume_linear(audio_bus_effects)
+
+@onready var audio_bus_dialog: int = AudioServer.get_bus_index("Dialog")
+@onready var audio_dialog_volume: float = AudioServer.get_bus_volume_linear(audio_bus_dialog)
+#endregion
 
 func _on_jack_boxed() -> void:
 	# Make the music more confident
@@ -79,6 +103,17 @@ func _on_jack_unboxed() -> void:
 		if stream is AudioStreamPlaybackInteractive:
 			stream.switch_to_clip_by_name("unboxed")
 	main_camera.set_shot_type(CameraRig.Shot.Wide)
+
+
+func _on_crank_started() -> void:
+	AudioServer.set_bus_volume_linear(audio_bus_music, audio_music_volume / 5)
+
+func _on_crank_stopped(was_pop: bool) -> void:
+	if was_pop:
+		await jack.box.crank_audio.finished
+
+	AudioServer.set_bus_volume_linear(audio_bus_music, audio_music_volume)
+
 
 
 func set_active_interaction_point(point : InteractionPoint) -> void:
