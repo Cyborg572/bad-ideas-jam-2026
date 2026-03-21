@@ -8,6 +8,18 @@
 [ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="6_0xbyl"]
 [ext_resource type="PackedScene" uid="uid://bu2rf6sg2q7v2" path="res://Models/jack.tscn" id="7_1txdl"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_1txdl"]
+sky_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+ground_horizon_color = Color(0.66224277, 0.6717428, 0.6867428, 1)
+
+[sub_resource type="Sky" id="Sky_m16r1"]
+sky_material = SubResource("ProceduralSkyMaterial_1txdl")
+
+[sub_resource type="Environment" id="Environment_ju15h"]
+background_mode = 1
+sky = SubResource("Sky_m16r1")
+tonemap_mode = 2
+
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0xbyl"]
 diffuse_mode = 3
 specular_mode = 1
@@ -127,6 +139,14 @@ render_target_update_mode = 4
 
 [node name="Node3D" type="Node3D" parent="HBoxContainer/SubViewportContainer/SubViewport" unique_id=1793845617]
 
+[node name="WorldEnvironment" type="WorldEnvironment" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=779232813]
+environment = SubResource("Environment_ju15h")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=1971400222]
+transform = Transform3D(-0.8660254, -0.43301278, 0.25, 0, 0.49999997, 0.86602545, -0.50000006, 0.75, -0.43301266, 0, 0, 0)
+light_energy = 0.0
+shadow_enabled = true
+
 [node name="StaticBody3D" type="StaticBody3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=528567129]
 
 [node name="Room" type="MeshInstance3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D/StaticBody3D" unique_id=2131548711]
@@ -144,8 +164,7 @@ transform = Transform3D(0.10371262, 0, -0.9946073, 0, 1, 0, 0.9946073, 0, 0.1037
 
 [node name="SpotLight3D" type="SpotLight3D" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=1787407669]
 transform = Transform3D(0.8929004, -0.25360665, 0.37203845, 0, 0.8262851, 0.56325203, -0.45025432, -0.50292796, 0.73779035, 1.4813724, 1.8654141, 0.37828946)
-light_energy = 9.281
-light_indirect_energy = 5.351
+light_energy = 8.0
 shadow_enabled = true
 shadow_opacity = 0.2
 spot_range = 7.9091744
