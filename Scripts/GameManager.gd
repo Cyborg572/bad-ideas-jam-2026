@@ -69,6 +69,7 @@ func _on_jack_boxed() -> void:
 		var stream = bg_music_player.get_stream_playback()
 		if stream is AudioStreamPlaybackInteractive:
 			stream.switch_to_clip_by_name("boxed")
+	main_camera.set_shot_type(CameraRig.Shot.Normal)
 
 
 func _on_jack_unboxed() -> void:
@@ -77,6 +78,7 @@ func _on_jack_unboxed() -> void:
 		var stream = bg_music_player.get_stream_playback()
 		if stream is AudioStreamPlaybackInteractive:
 			stream.switch_to_clip_by_name("unboxed")
+	main_camera.set_shot_type(CameraRig.Shot.Wide)
 
 
 func set_active_interaction_point(point : InteractionPoint) -> void:

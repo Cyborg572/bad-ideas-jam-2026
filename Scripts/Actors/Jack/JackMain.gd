@@ -162,14 +162,12 @@ func leave_box() -> void:
 	# Cinema!
 	# box.slam()
 	anxiety_timer.start()
-	active_camera.set_shot_type(CameraRig.Shot.Wide)
 	unboxed.emit()
 
 func enter_box() -> void:
 	anim.speed_scale = 1
 	is_boxed = true
 	box_collider.disabled = false
-	active_camera.set_shot_type(CameraRig.Shot.Normal)
 	anxiety_timer.stop()
 	GameManager.reset_confidence()
 	velocity += box.velocity
