@@ -14,7 +14,7 @@
 [ext_resource type="AudioStream" uid="uid://ttryn1fabmb6" path="res://Music/melody_3_simplified.ogg" id="10_farb7"]
 [ext_resource type="Material" uid="uid://1uhtt6nw8bet" path="res://Materials/hard_dirt.tres" id="10_p2mj2"]
 [ext_resource type="Material" uid="uid://dr4tvpg3c6rsm" path="res://Materials/stone.tres" id="10_yso7o"]
-[ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Actors/Areas/Attachable.gd" id="11_farb7"]
+[ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Scripts/Actors/Attachable.gd" id="11_farb7"]
 [ext_resource type="Script" uid="uid://ba2byxdo5cmmb" path="res://Scripts/Zones/confidence_zone.gd" id="11_wfd2y"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_wfd2y"]

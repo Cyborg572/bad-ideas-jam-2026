@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://bokohmujw272q" path="res://Actors/Pickups/mullberry.tscn" id="8_2580x"]
 [ext_resource type="PackedScene" uid="uid://tbek3xcg2lo" path="res://Actors/forest_platform.tscn" id="10_0ch6b"]
 [ext_resource type="Script" uid="uid://efge2y8tfd36" path="res://Scripts/Actors/moving_platform.gd" id="10_ncbkr"]
+[ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Scripts/Actors/Attachable.gd" id="12_ojlqv"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ncbkr"]
 noise_type = 0
@@ -80,11 +81,13 @@ light_energy = 0.5
 shadow_enabled = true
 
 [node name="CameraRig" parent="." unique_id=296487055 node_paths=PackedStringArray("target") instance=ExtResource("2_sych8")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
 is_main_camera = true
 target = NodePath("../Jack")
 
 [node name="Jack" parent="." unique_id=1250745410 node_paths=PackedStringArray("box") instance=ExtResource("3_13yra")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6399617, 2.25, -1.427105)
+is_carrying = null
 start_with_box = true
 box = NodePath("../TheBox")
 
