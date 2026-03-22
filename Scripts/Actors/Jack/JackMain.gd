@@ -7,50 +7,50 @@ signal unboxed()
 signal got_box()
 signal lost_box()
 
-enum State { Grounded, Airborn, Crouched, Aiming, Armed }
+enum State { GROUNDED, AIRBORN, CROUCHED, AIMING, ARMED }
 
 enum JumpType {
 	## Not a Jump
-	None,
+	NONE,
 	## Jump from the ground, no box, no fancyness
-	Normal,
+	NORMAL,
 	## Jump from the ground, attached to the box, but out of it
-	Spring,
+	SPRING,
 	## Jump from the ground while hiding in the box
-	Hop,
+	HOP,
 	## Jump during sudden change in direction
-	SideFlip,
+	SIDE_FLIP,
 	## Jump from sliding during a crouch
-	Long,
+	LONG,
 	## Jump from crouch
-	BackFlip,
+	BACK_FLIP,
 	## Kick off a wall
-	Wall,
+	WALL,
 	## Onto a ledge from hanging
-	LedgeTowards,
+	LEDGE_TOWARDS,
 	## Like a wall kick, but from hanging
-	LedgeAway,
+	LEDGE_AWAY,
 	## Stretch and launch with the box, from hanging
-	LedgeLaunch,
+	LEDGE_LAUNCH,
 	## Shot out of the box, or other launcher
-	Launch,
+	LAUNCH,
 	## Detached from the box
-	PopOut,
+	POP_OUT,
 	## The little boost from entering the box while carrying it
-	PopIn
+	POP_IN
 }
 
 ## The jump types count as flips for the various things that care.
 const FLIP_JUMPS := [
-	JumpType.BackFlip,
-	JumpType.SideFlip
+	JumpType.BACK_FLIP,
+	JumpType.SIDE_FLIP
 ]
 
 ## These jump types do not qualify for scoring
 const UNSCORED_JUMPS := [
-	JumpType.None,
-	JumpType.Spring,
-	JumpType.Hop,
+	JumpType.NONE,
+	JumpType.SPRING,
+	JumpType.HOP,
 ]
 
 
@@ -67,7 +67,7 @@ const UNSCORED_JUMPS := [
 
 @onready var input_component: InputComponent = $InputComponent
 @onready var model : JackModel = $Jack
-@onready var anim : AnimationPlayer = model.anim
+@onready var anim : AnimationTree = model.animation_tree
 @onready var indicator := $InteractionIndicator
 @onready var camera_target := $CameraTarget
 @onready var ledge_hook: RayCast3D = $LedgeHook
@@ -76,27 +76,30 @@ const UNSCORED_JUMPS := [
 @onready var box_collider: CollisionShape3D = $BoxCollider
 @onready var anxiety_timer: Timer = $Timers/AnxietyTimer
 @onready var pop_button_timer: Timer = $Timers/PopButtonTimer
-@onready var idle_2_timer: Timer = $Timers/Idle2Timer
 #endregion
 
-var state : State = State.Grounded
+var state : State = State.GROUNDED
 var is_boxed : bool = false
 var attachment_points : Dictionary[String, Node3D] = {}
 
 var can_flip : bool = false
-var falling : bool = false
 var throwing : bool = false
 var aiming : bool = false
-var hanging : bool = false
+var is_hanging : bool = false
 var hanging_cooldown : float = 0.0
-var hiding : bool = false
+var is_hiding : bool = false
 var jump_charge: float = 1.0
 var jump_charge_rate : float = 5
-var jump_type : JumpType = JumpType.None
+var is_jump_charging : bool = false
+var jump_type : JumpType = JumpType.NONE
 var jump_cancelled : bool = false
 
 var active_camera : CameraRig
 var distance_to_box : float = 0
+
+# Movement tracking for controls and animation tree
+var speed : float = 0
+var sharp : bool = false
 
 # Confidence tracker stats
 var jump_start_position := Vector3.ZERO
@@ -122,7 +125,6 @@ func _ready() -> void:
 
 	anxiety_timer.timeout.connect(tick_down_confidence)
 	pop_button_timer.timeout.connect(popToBox)
-	idle_2_timer.timeout.connect(do_fancy_idle)
 
 	if start_with_box:
 		popToBox.call_deferred()
@@ -157,7 +159,7 @@ func leave_box() -> void:
 	box_collider.disabled = true
 
 	# Clean up from hiding in box
-	hiding = false
+	is_hiding = false
 	model.show()
 	body_collider.disabled = false
 
@@ -168,7 +170,6 @@ func leave_box() -> void:
 	lost_box.emit()
 
 func enter_box() -> void:
-	anim.speed_scale = 1
 	is_boxed = true
 	got_box.emit()
 	box_collider.disabled = false
@@ -180,18 +181,16 @@ func enter_box() -> void:
 	boxed.emit()
 
 func hide_in_box() -> void:
-	hiding = true
+	is_hiding = true
 	body_collider.disabled = true
-	anim.play("Hide")
 	model.hide()
 	box.slam()
 
 func pop_out() -> void:
-	hiding = false
+	is_hiding = false
 	body_collider.disabled = false
 	box.pop()
 	model.show()
-	anim.play_backwards("Hide")
 
 ## Checks if Jack is in - or (optionally) is carrying - The Box.
 func has_the_box(ignore_carrying: bool = false) -> bool:
@@ -216,8 +215,6 @@ func _leave_state(from : State, to : State) -> void:
 	if from == to: return
 	#print_debug("leaving ", State.keys()[from])
 	match from:
-		State.Grounded:
-			anim.speed_scale = 1
 		_:
 			pass
 
@@ -226,18 +223,14 @@ func _enter_state(from : State, to : State) -> void:
 	if from == to: return
 	#print_debug("entering ", State.keys()[to])
 	match to:
-		State.Grounded:
+		State.GROUNDED:
 			var score_jump: bool = jump_type not in UNSCORED_JUMPS
-			jump_type = JumpType.None
+			jump_type = JumpType.NONE
 			jump_cancelled = false
-
-			if is_boxed:
-				anim.play("Idle", 0.25)
 
 			if not Input.is_action_pressed("Jump"):
 				finish_charge_jump()
 			if is_standing_on_box() && box.is_open:
-				anim.play("Idle", 0.25)
 				enter_box()
 				if Input.is_action_pressed("Crouch"):
 					hide_in_box()
@@ -249,17 +242,13 @@ func _enter_state(from : State, to : State) -> void:
 
 			reset_jump_stats()
 
-		State.Airborn:
-			falling = false
-			hanging = false
+		State.AIRBORN:
+			is_hanging = false
 			hanging_cooldown = 0.0
 
 			jump_start_position = position
 			if jump_type in FLIP_JUMPS:
 				flipped_into_jump = true
-
-		#State.Crouched:
-			#other_model.scale.y = .25
 		_:
 			pass
 
@@ -298,6 +287,8 @@ func apply_movement(acceleration: Vector3, delta : float, multiplier : float = 1
 	ground_speed = ground_speed.limit_length(max_speed)
 
 	velocity = ground_speed + vertical_speed
+	speed = ground_speed.length()
+	sharp = Utils.is_sharp_turn(velocity, direction)
 
 
 func cap_speed() -> void:
@@ -350,17 +341,19 @@ func would_recieve_item(_item: Attachable) -> bool:
 func hold_item(item : Attachable, delta) -> void:
 	match item:
 		carried_item when is_carrying:
-			if hiding:
+			if is_hiding:
 				item.track(0, attachment_points['foot'], 0.1)
 			else:
 				item.track(10 * delta if item.passing else 0, attachment_points['hand'])
 		box:
-			var point: String = "model_foot" if anim.current_animation == "HangWallBoxed" else "foot"
+			var point: String = "model_foot" if (
+				is_hanging and is_boxed and not is_jump_charging
+			) else "foot"
 
 			item.match_scale(0, attachment_points[point].scale)
 			item.reposition(0, attachment_points[point].global_position)
 			match state:
-				State.Airborn:
+				State.AIRBORN:
 					item.reorient(10 * delta, global_rotation)
 				_:
 					item.reorient(0)
@@ -405,6 +398,7 @@ func recieve_item(item: Attachable):
 
 
 func start_charing_jump() -> void:
+	is_jump_charging = true
 	model.scale.y = 1
 	jump_charge = 0.0
 
@@ -416,21 +410,24 @@ func charge_jump(delta) -> void:
 		jump_charge_rate = 1
 	var jump_multiplier = boxed_jump_power.sample(jump_charge)
 
-	if hanging:
-		if anim.current_animation != "StretchWallBoxed":
-			model.anim.play("StretchWallBoxed")
-		anim.seek(jump_multiplier)
+	if is_hanging:
+		anim.set(
+			"parameters/Base/Boxed/WallHang/charge/power/seek_request",
+			jump_multiplier
+		)
 
 		var offset = -0.375 * jump_multiplier
 		attachment_points["foot"].position.y = offset
-	elif hiding:
+	elif is_hiding:
 		box.model.scale.y = 1 - (0.25 * jump_multiplier)
 		box.model.scale.x = 1 + (0.25 * jump_multiplier)
 		box.model.scale.z = 1 + (0.25 * jump_multiplier)
 	else:
-		if anim.current_animation != "Squat":
-			anim.play("Squat")
-		anim.seek(jump_multiplier)
+		anim.set(
+			"parameters/Base/Boxed/Spring/charge/power/seek_request",
+			jump_multiplier
+		)
+		pass
 
 
 func finish_charge_jump() -> float:
@@ -440,16 +437,11 @@ func finish_charge_jump() -> float:
 	model.scale.y = 1
 	box.model.scale = Vector3(1, 1, 1)
 
-	if hanging:
+	if is_hanging:
 		attachment_points["foot"].position.y = 0
 
+	is_jump_charging = false
 	return jump_multiplier
-
-
-func do_fancy_idle() -> void:
-	if anim.current_animation == "Idle" && !is_boxed:
-		anim.queue("Idle2")
-		anim.queue("Idle")
 
 
 func tick_down_confidence() -> void:
@@ -545,10 +537,10 @@ func _physics_process(delta: float) -> void:
 
 	# Toggle Airborn state automatically
 	if not is_on_floor():
-		if state != State.Airborn:
-			change_state(State.Airborn)
-	elif state == State.Airborn:
-		change_state(State.Grounded)
+		if state != State.AIRBORN:
+			change_state(State.AIRBORN)
+	elif state == State.AIRBORN:
+		change_state(State.GROUNDED)
 
 	# Count off cooldowns
 	hanging_cooldown -= delta
@@ -567,7 +559,7 @@ func _physics_process(delta: float) -> void:
 			is_pickup = GameManager.active_interaction_point.type == types.attachable
 		if can_interact && not (is_carrying && is_pickup):
 			GameManager.trigger_interaction()
-		elif hiding:
+		elif is_hiding:
 			if is_carrying:
 				if box.would_recieve_item(carried_item):
 					carried_item.detach()
@@ -582,19 +574,18 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("Pop"):
 		match is_boxed:
 			true:
-				if hiding:
+				if is_hiding:
 					box.start_cranking()
 				else:
 					box.detach()
 					leave_box()
-					anim.play("Jump", 0.1)
-					jump_type = JumpType.PopOut
+					jump_type = JumpType.POP_OUT
 					velocity.y = get_jump_strength()
-					change_state(State.Airborn)
+					change_state(State.AIRBORN)
 
 			false when is_carrying && carried_item == box:
 				is_carrying = false
-				jump_type = JumpType.PopIn
+				jump_type = JumpType.POP_IN
 				velocity.y = get_jump_strength()
 				popToBox()
 			false when box:
@@ -614,10 +605,9 @@ func _physics_process(delta: float) -> void:
 				box.detach()
 				leave_box()
 				box.pop()
-				anim.play("Rocket", 0.1)
-				jump_type = JumpType.Launch
+				jump_type = JumpType.LAUNCH
 				velocity.y = get_jump_strength() * 2
-				change_state(State.Airborn)
+				change_state(State.AIRBORN)
 		else:
 			if pop_button_timer.time_left > pop_button_timer.wait_time / 3 && distance_to_box > 3:
 				active_camera.align(get_angle_to_box(), 10)
@@ -635,7 +625,7 @@ func _physics_process(delta: float) -> void:
 	#endregion
 
 	match state:
-		State.Grounded when is_boxed:
+		State.GROUNDED when is_boxed:
 			apply_movement(Vector3.ZERO, delta)
 
 			if (direction):
@@ -648,7 +638,7 @@ func _physics_process(delta: float) -> void:
 				charge_jump(delta)
 
 			if Input.is_action_just_pressed("Attack") && is_carrying:
-				if hiding:
+				if is_hiding:
 					drop_carried_item(3, PI/4)
 					await box.pop()
 					box.slam()
@@ -657,61 +647,45 @@ func _physics_process(delta: float) -> void:
 
 			# Handle jump.
 			if Input.is_action_just_released("Jump"):
-				if hiding:
+				if is_hiding:
 					var jump_multiplier := finish_charge_jump()
 					var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
 					var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
-					jump_type = JumpType.Hop
+					jump_type = JumpType.HOP
 					velocity += (launch_direction + launch_height) / 2
 					cap_speed()
 				else:
-					anim.play("Spring", 0.1)
 					var jump_multiplier := finish_charge_jump()
 					var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
 					var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
-					jump_type = JumpType.Spring
+					jump_type = JumpType.SPRING
 					velocity += launch_direction + launch_height
 					cap_speed()
 
-		State.Grounded:
+		State.GROUNDED:
 			apply_movement(direction, delta)
-
-			var speed := Utils.get_ground_speed(velocity).length()
-			var sharp := Utils.is_sharp_turn(velocity, direction)
 
 			if get_max_move_speed() - speed < 0.2:
 				active_camera.align(rotation.y, 1, true)
 
 			if sharp:
-				if can_flip == false:
-					anim.play("Skid", 0.25)
 				can_flip = true
 			else:
-				if can_flip == true:
-					anim.play_backwards("Skid", 0.25)
-
 				can_flip = false
 
 				if (direction):
 					follow_motion(direction, delta * 6)
 
 				if speed > get_max_move_speed() / 2:
-					var adjusted_speed = 3 / speed
-					anim.speed_scale = 1 / adjusted_speed
-					anim.play("Run", 0.25)
+					anim.set(
+						"parameters/Base/Free/Move/Run/run_speed/scale",
+						1 / (3 / speed)
+					)
 				elif speed > 0:
-					var adjusted_speed = 1.5 / speed
-					anim.speed_scale = 1 / adjusted_speed
-					anim.play("Walk", 0.25)
-				else:
-					anim.speed_scale = 1
-					if (
-						anim.current_animation != "Idle"
-						&& anim.current_animation != "Idle2"
-						&& jump_type == JumpType.None
-					):
-						anim.play("Idle", 0.25)
-						idle_2_timer.start()
+					anim.set(
+						"parameters/Base/Free/Move/Walk/walk_speed/scale",
+						1 / (1.5 / speed)
+					)
 
 			if Input.is_action_just_pressed("Crouch"):
 				if is_carrying:
@@ -722,31 +696,25 @@ func _physics_process(delta: float) -> void:
 						hide_in_box()
 					else:
 						drop_carried_item()
-						change_state(State.Crouched)
+						change_state(State.CROUCHED)
 				else:
-					change_state(State.Crouched)
+					change_state(State.CROUCHED)
 
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
 				if (can_flip):
-					anim.play("SideFlip", 0.1)
-					jump_type = JumpType.SideFlip
+					jump_type = JumpType.SIDE_FLIP
 					velocity = Vector3.UP * (get_jump_strength() * 1.5)
 				else:
-					anim.play("Jump", 0.1)
-					jump_type = JumpType.Normal
+					jump_type = JumpType.NORMAL
 					jump_cancelled = false
 					velocity.y = get_jump_strength()
 
 			if Input.is_action_just_pressed("Attack") && is_carrying:
 				drop_carried_item(3, PI/4)
 
-		State.Airborn when hanging:
+		State.AIRBORN when is_hanging:
 			var wall_normal : Vector3
-			if is_boxed:
-				anim.play("HangWallBoxed", 0.1)
-			else:
-				anim.play("HangWall", 0.1)
 
 			if is_on_wall():
 				wall_normal = get_wall_normal()
@@ -781,7 +749,7 @@ func _physics_process(delta: float) -> void:
 				finish_charge_jump()
 				active_camera.align(best_side_view, 10)
 				hanging_cooldown = 1
-				hanging = false
+				is_hanging = false
 
 			# Handle normal jump.
 			elif Input.is_action_just_pressed("Jump") and !is_boxed:
@@ -789,15 +757,13 @@ func _physics_process(delta: float) -> void:
 				hanging_cooldown = 1
 
 
-				hanging = false
+				is_hanging = false
 				if wall_dot > 0.8:
-					anim.play("WallJump")
-					jump_type = JumpType.LedgeAway
+					jump_type = JumpType.LEDGE_AWAY
 					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 					follow_motion(wall_normal, 60 * delta)
 				else:
-					anim.play("Jump")
-					jump_type = JumpType.LedgeTowards
+					jump_type = JumpType.LEDGE_TOWARDS
 					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * -0.5)
 
 			# Handle boxed jump
@@ -807,9 +773,8 @@ func _physics_process(delta: float) -> void:
 				var launch_direction :=  + (wall_normal * -0.5)
 
 				hanging_cooldown = 1
-				hanging = false
-				anim.play("Rocket", 0.1)
-				jump_type = JumpType.LedgeLaunch
+				is_hanging = false
+				jump_type = JumpType.LEDGE_LAUNCH
 				velocity = launch_direction + launch_height
 
 			# Move along ledge
@@ -820,7 +785,7 @@ func _physics_process(delta: float) -> void:
 				velocity = direction + (gravity * delta)
 				velocity.y = 0
 
-		State.Airborn when is_on_wall_only():
+		State.AIRBORN when is_on_wall_only():
 			var wall_normal := get_wall_normal()
 			var gravity := get_gravity()
 
@@ -833,7 +798,7 @@ func _physics_process(delta: float) -> void:
 				&& ledge_hook.is_colliding()
 				&& not wall_detect.is_colliding()
 			):
-				hanging = true
+				is_hanging = true
 				hanging_cooldown = 1
 				velocity = Vector3.ZERO
 
@@ -842,7 +807,6 @@ func _physics_process(delta: float) -> void:
 				direction = direction.slide(wall_normal)
 				gravity = ((wall_normal * -1) + (gravity / 10))
 				follow_motion(wall_normal, 30 * delta)
-				anim.play("WallSlide")
 
 			# Handle movement
 			apply_movement(direction, delta)
@@ -854,16 +818,15 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_just_pressed("Jump"):
 				active_camera.align(Utils.get_best_side_view(wall_normal, active_camera), 10)
 				if is_boxed:
-					jump_type = JumpType.Wall
+					jump_type = JumpType.WALL
 					velocity = wall_normal
 				else:
-					jump_type = JumpType.Wall
+					jump_type = JumpType.WALL
 					walljump_count += 1
 					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
 					follow_motion(wall_normal, 60 * delta)
-					anim.play("WallJump")
 
-		State.Airborn:
+		State.AIRBORN:
 			# Grab gravity
 			var gravity := get_gravity()
 
@@ -878,7 +841,7 @@ func _physics_process(delta: float) -> void:
 				&& ledge_hook.is_colliding()
 				&& not wall_detect.is_colliding()
 			):
-				hanging = true
+				is_hanging = true
 				hanging_cooldown = 1
 				velocity = Vector3.ZERO
 
@@ -889,7 +852,7 @@ func _physics_process(delta: float) -> void:
 			# Trigger jump cancelling
 			if (
 				Input.is_action_just_released("Jump")
-				&& jump_type == JumpType.Normal
+				&& jump_type == JumpType.NORMAL
 				&& jump_cancelled == false
 			) :
 				jump_cancelled = true
@@ -905,14 +868,8 @@ func _physics_process(delta: float) -> void:
 					if distance_to_wall.length() < .2:
 						velocity += ledge_direction * 0.1
 
-				# Animation Logic
-				if !falling:
-					falling = true
-					if !is_boxed:
-						anim.play("Fall", 0.25)
 			else:
-				falling = false
-				if jump_type == JumpType.Normal && jump_cancelled:
+				if jump_type == JumpType.NORMAL && jump_cancelled:
 					if velocity.y < 3:
 						velocity.y *= 0.5
 
@@ -920,7 +877,7 @@ func _physics_process(delta: float) -> void:
 			velocity += gravity * delta
 
 			# TODO: This should be looking at jump type
-			var flipping = anim.current_animation == "SideFlip"
+			var flipping = jump_type in FLIP_JUMPS
 			apply_movement(direction, delta, 1.5 if flipping else 1.0)
 			#if flipping:
 				#follow_motion(direction, 6 * delta)
@@ -938,36 +895,30 @@ func _physics_process(delta: float) -> void:
 
 			velocity.y = clamp(velocity.y, -10.0, 10.0)
 
-		State.Crouched:
+		State.CROUCHED:
 			apply_movement(direction, delta)
-			var speed := Utils.get_ground_speed(velocity).length()
 
 			if get_max_move_speed() - speed < 0.2:
 				active_camera.align(rotation.y, 1, true)
 
 			if speed > 0.01:
-				anim.play("Crawl", 0.1)
 				follow_motion(direction, delta * 6)
-			else:
-				anim.play("Crouch", 0.1)
 
 			if Input.is_action_just_released("Crouch"):
-				change_state(State.Grounded)
+				change_state(State.GROUNDED)
 
 			if Input.is_action_pressed("Jump"):
 				if speed > 1.5:
-					anim.play("Rocket", 0.1)
-					jump_type = JumpType.Long
+					jump_type = JumpType.LONG
 					velocity += (Vector3.UP + (velocity.normalized() * 0.5)) * get_jump_strength()
 				else:
-					anim.play("Backflip", 0.1)
-					jump_type = JumpType.BackFlip
+					jump_type = JumpType.BACK_FLIP
 					velocity = Vector3.UP  * (get_jump_strength() * 1.5)
 
-		State.Armed when aiming:
+		State.ARMED when aiming:
 			print("Aiming!")
 
-		State.Armed:
+		State.ARMED:
 			print("Armed!")
 
 	move_and_slide()
@@ -987,10 +938,10 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 			else:
 				drop_carried_item()
 
-		types.attachable when state != State.Crouched and not hiding:
+		types.attachable when state != State.CROUCHED and not is_hiding:
 			if would_recieve_item(target):
 				recieve_item(target)
-		types.dispenser when state != State.Crouched:
+		types.dispenser when state != State.CROUCHED:
 			if would_recieve_item(target.get_offered_item()):
 				target.give_item(self)
 		types.custom:

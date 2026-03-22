@@ -2,60 +2,37 @@
 
 [ext_resource type="PackedScene" uid="uid://dxltg0v30kcwd" path="res://Models/original/Jack.glb" id="1_4cpdq"]
 [ext_resource type="Script" uid="uid://b2ot877r6v082" path="res://Scripts/Actors/Jack/jack_model.gd" id="2_lw0y0"]
+[ext_resource type="AnimationNodeBlendTree" uid="uid://bbbgoftvjhl5a" path="res://Models/jack_animation_blend_tree.tres" id="3_ryiek"]
 
-[node name="Jack" unique_id=1820938000 instance=ExtResource("1_4cpdq")]
+[node name="Jack" unique_id=1212287044 instance=ExtResource("1_4cpdq")]
 script = ExtResource("2_lw0y0")
 
-[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(654939460) index="0" unique_id=1793346171]
-bones/1/position = Vector3(-6.4213297e-25, 0.19999999, -2.8412485e-25)
-bones/1/rotation = Quaternion(-3.4527837e-08, 0.7071068, 0.7071068, -3.0908623e-08)
-bones/2/rotation = Quaternion(-2.9235123e-08, -4.1520945e-08, 7.3087785e-09, 1)
-bones/3/rotation = Quaternion(0.5169316, 0.49971333, 0.4997134, -0.48306826)
-bones/3/scale = Vector3(1.0000001, 1.0000001, 1)
-bones/4/rotation = Quaternion(-0.48966667, 0.340905, -0.028134, 0.8020092)
-bones/4/scale = Vector3(0.9999995, 1, 0.99999964)
-bones/5/rotation = Quaternion(-0.021294255, 0.00080550346, -0.3194447, 0.9473653)
-bones/5/scale = Vector3(0.99999964, 0.99999976, 1)
-bones/6/rotation = Quaternion(-0.08536799, 0.3110241, -0.051881228, 0.94513744)
-bones/7/position = Vector3(-0.0056631854, 0.16408667, -0.16713856)
-bones/10/position = Vector3(8.1441556e-19, 0.09791434, -7.3298525e-18)
-bones/11/rotation = Quaternion(0.5169316, -0.4997133, -0.49971333, -0.48306823)
-bones/11/scale = Vector3(1.0000001, 1.0000001, 1)
-bones/12/rotation = Quaternion(-0.4896666, -0.34090492, 0.02813403, 0.80200934)
-bones/12/scale = Vector3(0.9999999, 1.0000001, 0.9999998)
-bones/13/rotation = Quaternion(-0.021294234, -0.00080556085, 0.31944457, 0.9473654)
-bones/13/scale = Vector3(0.99999964, 0.9999997, 0.9999999)
-bones/14/rotation = Quaternion(-0.08536799, -0.3110241, 0.051881235, 0.94513744)
-bones/15/position = Vector3(0.0056631905, 0.16408664, -0.16713853)
-bones/16/rotation = Quaternion(0, 0, 0.7071068, 0.7071068)
-bones/17/rotation = Quaternion(0.51881915, 0.5188192, -0.48044425, -0.4804442)
-bones/17/scale = Vector3(1, 0.9999999, 1.0000002)
-bones/18/rotation = Quaternion(0.07160582, 3.5125212e-09, -2.5216387e-10, 0.997433)
-bones/18/scale = Vector3(1, 0.99999976, 0.99999946)
-bones/19/rotation = Quaternion(-3.1920074e-08, -0.68318415, 0.7302462, 2.9862928e-08)
-bones/20/rotation = Quaternion(0, 0, -0.7071068, 0.7071068)
-bones/21/rotation = Quaternion(0.5188192, -0.51881915, 0.48044425, -0.48044425)
-bones/21/scale = Vector3(1, 0.9999999, 1.0000002)
-bones/22/rotation = Quaternion(0.07160582, -3.5125254e-09, 2.5216293e-10, 0.997433)
-bones/22/scale = Vector3(1, 0.99999976, 0.99999946)
-bones/28/rotation = Quaternion(-0.7071068, 0, 0, 0.7071068)
-bones/29/rotation = Quaternion(-0.7071068, 0, 0, 0.7071068)
-
-[node name="Hand" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="1" unique_id=529625324]
-transform = Transform3D(-0.9577232, 0.06298653, -0.28071028, -0.105925635, -0.9843955, 0.14051408, -0.26747924, 0.16430789, 0.94945085, -0.15832986, 0.04083518, 1.2665987e-07)
+[node name="Hand" type="BoneAttachment3D" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(922838718) index="1" unique_id=529625324]
+transform = Transform3D(0.005714474, -0.99713844, -0.075379066, -0.07537901, -0.075595245, 0.9942853, -0.99713844, 1.4595571e-07, -0.075595334, -0.2887771, 0.19613136, 8.6613e-08)
 bone_name = "right_wrist.left_hand"
 bone_idx = 14
 
 [node name="Attachment" type="Node3D" parent="Armature/Skeleton3D/Hand" index="0" unique_id=1808109156]
 transform = Transform3D(-2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 0, 0, 0, 0.5, -0.057243258, 0.053938992, -3.4924597e-10)
 
-[node name="Foot" type="BoneAttachment3D" parent="Armature/Skeleton3D" index="2" unique_id=1053024826]
-transform = Transform3D(-1, 7.559373e-08, -2.6324104e-08, 2.8358278e-08, 2.6002526e-06, 0.99999964, 7.0221655e-09, 0.9999999, -2.4437904e-06, -0.07999996, -0.27646855, -2.514571e-08)
+[node name="Foot" type="BoneAttachment3D" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(922838718) index="2" unique_id=1053024826]
+transform = Transform3D(-1, 1.2588052e-07, 9.710592e-08, 1.17765275e-07, -1.7881393e-07, 0.9999997, 1.2623168e-07, 0.9999999, 2.0861626e-07, -0.07999999, -0.27646852, -2.514571e-08)
 bone_name = "right_foot"
 bone_idx = 23
 
 [node name="Attachment" type="Node3D" parent="Armature/Skeleton3D/Foot" index="0" unique_id=2132919388]
 transform = Transform3D(-1, -2.6323924e-08, 7.559378e-08, 7.0222357e-09, 2.4437913e-06, 0.99999976, 2.835827e-08, 1.0000002, -2.6002529e-06, -0.07999996, 2.5707491e-08, 2.2685953e-09)
 
-[node name="AnimationPlayer" parent="." index="1" unique_id=383400055]
+[node name="AnimationTree" type="AnimationTree" parent="." index="1" unique_id=1356655806]
+root_motion_track = NodePath("Armature/Skeleton3D:Root")
+tree_root = ExtResource("3_ryiek")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")
+parameters/Base/Boxed/Falling/Blend2/blend_amount = 1.0
+parameters/Base/Boxed/Spring/charge/power/seek_request = -1.0
+parameters/Base/Boxed/WallHang/charge/power/seek_request = -1.0
+parameters/Base/Free/Move/Run/run_speed/scale = 1.0
+parameters/Base/Free/Move/Walk/walk_speed/scale = 1.0
+
+[node name="AnimationPlayer" parent="." index="2" unique_id=683758434]
 root_motion_track = NodePath("Armature/Skeleton3D:Root")

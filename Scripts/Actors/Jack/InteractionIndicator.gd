@@ -20,7 +20,7 @@ func _process(delta: float) -> void:
 
 		match interaction_point.type:
 			types.attachable, types.dispenser:
-				should_indicate = not parent.is_carrying && not parent.state == Jack.State.Crouched
+				should_indicate = not parent.is_carrying && not parent.state == Jack.State.CROUCHED
 			_:
 				should_indicate = true
 

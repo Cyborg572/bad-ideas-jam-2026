@@ -10,6 +10,7 @@ extends Control
 
 func _ready() -> void:
 	start_button.grab_focus.call_deferred()
+	jack.animation_tree.process_mode = Node.PROCESS_MODE_DISABLED
 	jack.anim.play("SideFlip")
 	jack.anim.seek(0.38, true)
 	jack.anim.pause()
@@ -17,10 +18,6 @@ func _ready() -> void:
 	the_box.anim.seek(0.5, true)
 	the_box.anim.pause()
 	the_box.start_cranking()
-
-
-func _process(delta: float) -> void:
-	pass
 
 
 func _on_start_button_pressed() -> void:

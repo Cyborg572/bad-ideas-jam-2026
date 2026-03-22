@@ -113,7 +113,8 @@ target_position = Vector3(0, 0, 0.3)
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)
 target_position = Vector3(0, 0, 0.3)
 
-[node name="Jack" parent="." unique_id=1820938000 instance=ExtResource("4_58ja8")]
+[node name="Jack" parent="." unique_id=107971710 node_paths=PackedStringArray("parent") instance=ExtResource("4_58ja8")]
+parent = NodePath("..")
 
 [node name="InteractionIndicator" type="Node3D" parent="." unique_id=1743642341]
 visible = false
@@ -136,7 +137,3 @@ editor_description = "Ticks down the player's confidence at a set interval"
 editor_description = "Pop the player if the button is held long enough"
 wait_time = 0.25
 one_shot = true
-
-[node name="Idle2Timer" type="Timer" parent="Timers" unique_id=664863890]
-editor_description = "Determines how often to play the extra idle animation"
-wait_time = 6.0
