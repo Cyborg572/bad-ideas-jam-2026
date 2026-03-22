@@ -7,7 +7,6 @@
 [ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="5_qvx36"]
 [ext_resource type="MeshLibrary" uid="uid://clf0iphvuyght" path="res://Models/forrest_tiles.meshlib" id="6_0ch6b"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="7_13yra"]
-[ext_resource type="AudioStream" uid="uid://dsgi88ece4fld" path="res://Music/Melody2.ogg" id="7_qvx36"]
 [ext_resource type="PackedScene" uid="uid://bokohmujw272q" path="res://Actors/Pickups/mullberry.tscn" id="8_2580x"]
 [ext_resource type="PackedScene" uid="uid://tbek3xcg2lo" path="res://Actors/forest_platform.tscn" id="10_0ch6b"]
 [ext_resource type="Script" uid="uid://efge2y8tfd36" path="res://Scripts/Actors/moving_platform.gd" id="10_ncbkr"]

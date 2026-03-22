@@ -72,7 +72,7 @@ script = ExtResource("2_4tara")
 
 [node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1958800623]
 process_mode = 3
-stream = ExtResource("2_3venj")
+stream = ExtResource("3_4tara")
 autoplay = true
 bus = &"Music"
 
