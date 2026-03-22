@@ -680,7 +680,6 @@ filter_enabled = true
 filters = ["Armature/Skeleton3D/MainBody:Frown"]
 
 [resource]
-graph_offset = Vector2(-169.42834, -72.61847)
 nodes/output/position = Vector2(960, 220)
 nodes/Base/node = SubResource("AnimationNodeStateMachine_f0jun")
 nodes/Base/position = Vector2(-20, 80)

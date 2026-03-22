@@ -13,7 +13,7 @@ bone_name = "right_wrist.left_hand"
 bone_idx = 14
 
 [node name="Attachment" type="Node3D" parent="Armature/Skeleton3D/Hand" index="0" unique_id=1808109156]
-transform = Transform3D(-2.1855694e-08, -0.5, 0, 0.5, -2.1855694e-08, 0, 0, 0, 0.5, -0.057243258, 0.053938992, -3.4924597e-10)
+transform = Transform3D(-2.1815488e-08, -0.5, 0, 0.5, -2.1680222e-08, 5.8622307e-10, 2.8945912e-10, -1.1175871e-08, 0.5, -0.1, 0.045, 0)
 
 [node name="Foot" type="BoneAttachment3D" parent="Armature/Skeleton3D" parent_id_path=PackedInt32Array(922838718) index="2" unique_id=1053024826]
 transform = Transform3D(-1, 1.2588052e-07, 9.710592e-08, 1.17765275e-07, -1.7881393e-07, 0.9999997, 1.2623168e-07, 0.9999999, 2.0861626e-07, -0.07999999, -0.27646852, -2.514571e-08)

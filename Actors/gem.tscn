@@ -1,0 +1,33 @@
+[gd_scene format=3 uid="uid://detj4tonpd81q"]
+
+[ext_resource type="PackedScene" uid="uid://brqs8wyjfmjqh" path="res://Models/original/gem.glb" id="1_xojtr"]
+[ext_resource type="Script" uid="uid://1ngdwntno3bo" path="res://Scripts/Actors/gem.gd" id="2_uvuo5"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="3_xjdos"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_xojtr"]
+radius = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_f7lea"]
+height = 0.5
+
+[node name="gem" unique_id=341686107 instance=ExtResource("1_xojtr")]
+script = ExtResource("2_uvuo5")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=65816828]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("SphereShape3D_xojtr")
+
+[node name="InteractionPoint" type="Area3D" parent="." index="2" unique_id=1005976510]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("3_xjdos")
+type = 1
+pointer_position = Vector3(0, 0.5, 0)
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" index="1" unique_id=188328344]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_f7lea")
+
+[node name="AttachmentPoint" type="Node3D" parent="." index="3" unique_id=1557494161]
+transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 0, 0.25, 0)

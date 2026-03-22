@@ -97,11 +97,12 @@ func reposition(
 		target_position: Vector3 = attachment.global_position,
 		scale_modifier: Vector3 = scale
 	):
-	var offset_position := target_position - (attachment_point.position * scale_modifier)
+	var offset: Vector3 = attachment_point.global_position - global_position
+	var offset_position: Vector3 = target_position - offset
 	if speed == 0:
-		position = offset_position
+		global_position = offset_position
 	else:
-		position = position.move_toward(offset_position, speed)
+		global_position = position.move_toward(offset_position, speed)
 
 
 func reorient(speed : float, orientation: Vector3 = Vector3(0, rotation.y, 0)):
@@ -111,7 +112,7 @@ func reorient(speed : float, orientation: Vector3 = Vector3(0, rotation.y, 0)):
 
 	var current_rotation = Quaternion.from_euler(rotation)
 	var target_rotation = Quaternion.from_euler(orientation)
-	rotation = current_rotation.slerp(target_rotation, speed).get_euler()
+	global_rotation = current_rotation.slerp(target_rotation, speed).get_euler()
 
 
 func match_scale(speed: float, target_scale: Vector3 = Vector3(1, 1, 1)):
@@ -162,6 +163,8 @@ func _ready() -> void:
 	var custom_attachment = get_node_or_null("AttachmentPoint")
 	if custom_attachment:
 		attachment_point = custom_attachment
+	else:
+		add_child(attachment_point)
 
 func _physics_process(delta: float) -> void:
 	if has_attachment:
