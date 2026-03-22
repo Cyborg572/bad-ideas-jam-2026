@@ -4,6 +4,8 @@ extends CharacterBody3D
 signal popped(box: TheBox)
 signal boxed()
 signal unboxed()
+signal got_box()
+signal lost_box()
 
 enum State { Grounded, Airborn, Crouched, Aiming, Armed }
 
@@ -163,10 +165,12 @@ func leave_box() -> void:
 	# box.slam()
 	anxiety_timer.start()
 	unboxed.emit()
+	lost_box.emit()
 
 func enter_box() -> void:
 	anim.speed_scale = 1
 	is_boxed = true
+	got_box.emit()
 	box_collider.disabled = false
 	anxiety_timer.stop()
 	GameManager.reset_confidence()
@@ -188,6 +192,15 @@ func pop_out() -> void:
 	box.pop()
 	model.show()
 	anim.play_backwards("Hide")
+
+## Checks if Jack is in - or (optionally) is carrying - The Box.
+func has_the_box(ignore_carrying: bool = false) -> bool:
+	# Check if in the box
+	if is_boxed or ignore_carrying:
+		return is_boxed
+
+	# Check if carrying the box
+	return is_carrying && carried_item == box
 
 #endregion
 
@@ -378,6 +391,8 @@ func drop_carried_item(force : float = 0.0, pitch : float = 0.0, from: String = 
 	carried_item.reposition(0, throw_origin)
 	carried_item.velocity = throw_force
 	carried_item.detach()
+	if carried_item == box:
+		lost_box.emit()
 
 
 func recieve_item(item: Attachable):
@@ -385,6 +400,7 @@ func recieve_item(item: Attachable):
 	carried_item.attach(self)
 	is_carrying = true
 	if carried_item == box:
+		got_box.emit()
 		carried_item.close()
 
 

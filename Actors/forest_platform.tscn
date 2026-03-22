@@ -1,12 +1,28 @@
 [gd_scene format=3 uid="uid://tbek3xcg2lo"]
 
 [ext_resource type="PackedScene" uid="uid://bwnqbe4nv7dk7" path="res://Models/original/forest_platform.glb" id="1_2luuu"]
+[ext_resource type="Script" uid="uid://c3qxsgwrgl3rq" path="res://Scripts/Actors/platform.gd" id="2_j880c"]
+[ext_resource type="Script" uid="uid://iefdlteligvr" path="res://Scripts/Zones/trigger_zone.gd" id="3_qvhfy"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_reij8"]
 size = Vector3(2, 1, 2)
 
-[node name="forest_platform" unique_id=952740952 instance=ExtResource("1_2luuu")]
+[sub_resource type="BoxShape3D" id="BoxShape3D_okf7y"]
+size = Vector3(2, 0.5, 2)
+
+[node name="forest_platform" unique_id=1873223565 instance=ExtResource("1_2luuu")]
+script = ExtResource("2_j880c")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=33470831]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 shape = SubResource("BoxShape3D_reij8")
+
+[node name="TriggerZone" type="Area3D" parent="." index="2" unique_id=123906707]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.25, 0)
+collision_mask = 2
+script = ExtResource("3_qvhfy")
+metadata/_custom_type_script = "uid://iefdlteligvr"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerZone" index="0" unique_id=739522582]
+shape = SubResource("BoxShape3D_okf7y")

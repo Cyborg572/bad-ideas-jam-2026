@@ -108,7 +108,8 @@ height = 0.25
 radius = 0.25
 
 [node name="TheBox" type="CharacterBody3D" unique_id=2010327691]
-collision_mask = 9
+collision_layer = 193
+collision_mask = 5
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 script = ExtResource("1_wbnku")
@@ -152,7 +153,7 @@ libraries/ = SubResource("AnimationLibrary_ltv4v")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.075, 0)
 
 [node name="InteractionPoint" type="Area3D" parent="." unique_id=502210270]
-collision_layer = 3
+collision_layer = 2
 collision_mask = 4
 script = ExtResource("2_wbnku")
 require_focus = true

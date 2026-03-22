@@ -67,8 +67,8 @@ var constant_adjustment_ticks: int = 0
 
 func _ready() -> void:
 	# Configure the collision mask and layers
-	collision_layer = 2 # Layer 2(2)
-	collision_mask = 4 # Layer 3(4)
+	collision_layer = 2 # Layer 2(val 2, "Zones")
+	collision_mask = 4 # Layer 3(val 4, "Player)
 
 	# Wire up the signals
 	body_entered.connect(_on_body_entered)

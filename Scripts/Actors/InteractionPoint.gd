@@ -81,8 +81,8 @@ func _ready() -> void:
 	body_exited.connect(_on_body_exited)
 
 	# Configure the collision mask and layers
-	collision_layer = 3 # Layers 1(1) and 2(2)
-	collision_mask = 4 # Layer 3(4)
+	collision_layer = 2 # Layer 2(val 2, "Zones")
+	collision_mask = 4 # Layer 3(val 4, "Player")
 
 	if disabled:
 		disable()

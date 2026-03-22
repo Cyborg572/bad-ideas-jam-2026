@@ -156,8 +156,8 @@ func _ready() -> void:
 		interaction_point.require_focus = true
 		add_child(interaction_point)
 
-	collision_layer = 8 # Layer 4(bit 3, value 8)
-	set_collision_mask_value(4, true)
+	set_collision_layer_value(8, true) # "Attachments"
+	set_collision_mask_value(3, true) # "Player"
 
 	var custom_attachment = get_node_or_null("AttachmentPoint")
 	if custom_attachment:
