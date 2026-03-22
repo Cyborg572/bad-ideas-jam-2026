@@ -665,9 +665,31 @@ states/Start/position = Vector2(261, 36)
 transitions = ["Free", "Boxed", SubResource("AnimationNodeStateMachineTransition_ya61b"), "Boxed", "Free", SubResource("AnimationNodeStateMachineTransition_83q1p"), "Start", "Free", SubResource("AnimationNodeStateMachineTransition_wnowc"), "Start", "Boxed", SubResource("AnimationNodeStateMachineTransition_jn74p")]
 graph_offset = Vector2(28.19394, -306)
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fagtx"]
+animation = &"Carry"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_lvom2"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D:right_arm", "Armature/Skeleton3D:right_arm_ik", "Armature/Skeleton3D:right_arm_ik_pole", "Armature/Skeleton3D:right_wrist", "Armature/Skeleton3D:right_wrist.left_hand"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ebfow"]
+animation = &"Frown"
+
+[sub_resource type="AnimationNodeBlend2" id="AnimationNodeBlend2_4ddec"]
+filter_enabled = true
+filters = ["Armature/Skeleton3D/MainBody:Frown"]
+
 [resource]
-graph_offset = Vector2(-377.23593, 152.20195)
+graph_offset = Vector2(-169.42834, -72.61847)
 nodes/output/position = Vector2(960, 220)
 nodes/Base/node = SubResource("AnimationNodeStateMachine_f0jun")
-nodes/Base/position = Vector2(-80, 120)
-node_connections = [&"output", 0, &"Base"]
+nodes/Base/position = Vector2(-20, 80)
+nodes/Carrying/node = SubResource("AnimationNodeBlend2_lvom2")
+nodes/Carrying/position = Vector2(360, 60)
+nodes/Carry/node = SubResource("AnimationNodeAnimation_fagtx")
+nodes/Carry/position = Vector2(0, 300)
+nodes/Frowning/node = SubResource("AnimationNodeBlend2_4ddec")
+nodes/Frowning/position = Vector2(680, 220)
+nodes/Frown/node = SubResource("AnimationNodeAnimation_ebfow")
+nodes/Frown/position = Vector2(260, 440)
+node_connections = [&"output", 0, &"Frowning", &"Carrying", 0, &"Base", &"Carrying", 1, &"Carry", &"Frowning", 0, &"Carrying", &"Frowning", 1, &"Frown"]

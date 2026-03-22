@@ -115,7 +115,9 @@ func _ready() -> void:
 	set_active_camera(GameManager.main_camera)
 	GameManager.change_camera.connect(set_active_camera)
 	GameManager.interaction.connect(_on_global_interaction)
+	GameManager.player_confidence_changed.connect(_on_player_confidence_changed)
 	GameManager.player_confidence_lost.connect(popToBox)
+	match_face_to_confidence(GameManager.player_confidence)
 
 	attachment_points['head'] = $AttachmentPoints/Head
 	attachment_points['hand'] = model.hand_attachment
@@ -365,6 +367,7 @@ func hold_item(item : Attachable, delta) -> void:
 func drop_carried_item(force : float = 0.0, pitch : float = 0.0, from: String = "auto") -> void:
 	if not is_carrying: return
 	is_carrying = false
+	anim.set("parameters/Carrying/blend_amount", 0)
 	var throw_origin : Vector3 = attachment_points["throw"].global_position
 	var throw_force : Vector3 = velocity
 
@@ -392,6 +395,7 @@ func recieve_item(item: Attachable):
 	carried_item = item
 	carried_item.attach(self)
 	is_carrying = true
+	anim.set("parameters/Carrying/blend_amount", 1)
 	if carried_item == box:
 		got_box.emit()
 		carried_item.close()
@@ -442,6 +446,12 @@ func finish_charge_jump() -> float:
 
 	is_jump_charging = false
 	return jump_multiplier
+
+
+func match_face_to_confidence(confidence: float) -> void:
+	var frown_amount: float = 1.0 - (confidence / 100.0)
+	print("Frown amount: ", frown_amount)
+	anim.set("parameters/Frowning/blend_amount", frown_amount)
 
 
 func tick_down_confidence() -> void:
@@ -565,6 +575,7 @@ func _physics_process(delta: float) -> void:
 					carried_item.detach()
 					carried_item.give_to(box)
 					is_carrying = false
+					anim.set("parameters/Carrying/blend_amount", 0)
 			elif not box.inventory.is_empty():
 				box.give_item(self)
 
@@ -585,6 +596,7 @@ func _physics_process(delta: float) -> void:
 
 			false when is_carrying && carried_item == box:
 				is_carrying = false
+				anim.set("parameters/Carrying/blend_amount", 0)
 				jump_type = JumpType.POP_IN
 				velocity.y = get_jump_strength()
 				popToBox()
@@ -691,6 +703,7 @@ func _physics_process(delta: float) -> void:
 				if is_carrying:
 					if carried_item == box:
 						is_carrying = false
+						anim.set("parameters/Carrying/blend_amount", 0)
 						position.y += box.attachment_point.position.y
 						enter_box()
 						hide_in_box()
@@ -924,6 +937,10 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
+func _on_player_confidence_changed(confidence: float) -> void:
+	match_face_to_confidence(confidence)
+
+
 func _on_global_interaction(interaction_point : InteractionPoint):
 	var types := InteractionPoint.InteractionType
 	var target := interaction_point.get_parent_node_3d()
@@ -932,6 +949,7 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 		types.carrier when is_carrying:
 			if carried_item.can_attach(target):
 				is_carrying = false
+				anim.set("parameters/Carrying/blend_amount", 0)
 				if target.has_method("recieve_item"):
 					carried_item.detach()
 					target.recieve_item(carried_item)

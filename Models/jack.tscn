@@ -33,6 +33,8 @@ parameters/Base/Boxed/Spring/charge/power/seek_request = -1.0
 parameters/Base/Boxed/WallHang/charge/power/seek_request = -1.0
 parameters/Base/Free/Move/Run/run_speed/scale = 1.0
 parameters/Base/Free/Move/Walk/walk_speed/scale = 1.0
+parameters/Carrying/blend_amount = 0.0
+parameters/Frowning/blend_amount = 0.0
 
 [node name="AnimationPlayer" parent="." index="2" unique_id=683758434]
 root_motion_track = NodePath("Armature/Skeleton3D:Root")
