@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://tbek3xcg2lo" path="res://Actors/forest_platform.tscn" id="10_0ch6b"]
 [ext_resource type="Script" uid="uid://efge2y8tfd36" path="res://Scripts/Actors/moving_platform.gd" id="10_ncbkr"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Scripts/Actors/Attachable.gd" id="12_ojlqv"]
+[ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="12_v2mee"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ncbkr"]
 noise_type = 0
@@ -180,3 +181,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 0.75, -6.25)
 
 [node name="mullberry15" parent="Berries" unique_id=292440049 instance=ExtResource("8_2580x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.25, 0.75, -6.25)
+
+[node name="signpost" parent="." unique_id=265319638 instance=ExtResource("12_v2mee")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.75, -11.5)

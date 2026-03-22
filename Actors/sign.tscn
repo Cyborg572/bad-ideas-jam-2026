@@ -1,0 +1,28 @@
+[gd_scene format=3 uid="uid://b7xm6nsbk44dh"]
+
+[ext_resource type="PackedScene" uid="uid://bgampa7l3lbiv" path="res://Models/original/signpost.glb" id="1_cnjsu"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="2_qdqf8"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_cnjsu"]
+size = Vector3(0.85, 0.925, 0.175)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i2lfu"]
+size = Vector3(1, 1, 0.5)
+
+[node name="signpost" unique_id=265319638 instance=ExtResource("1_cnjsu")]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=271544689]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4625, 0.0124999955)
+shape = SubResource("BoxShape3D_cnjsu")
+
+[node name="InteractionPoint" type="Area3D" parent="." index="2" unique_id=1046895410]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("2_qdqf8")
+type = 2
+require_focus = true
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" index="1" unique_id=254521725]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.25)
+shape = SubResource("BoxShape3D_i2lfu")
