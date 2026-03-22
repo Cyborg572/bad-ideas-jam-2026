@@ -14,6 +14,7 @@
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Scripts/Actors/Attachable.gd" id="12_ojlqv"]
 [ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="12_v2mee"]
 [ext_resource type="PackedScene" uid="uid://detj4tonpd81q" path="res://Actors/gem.tscn" id="13_v2mee"]
+[ext_resource type="PackedScene" uid="uid://5qgf14nbd4k" path="res://Actors/Pickups/gem_shard.tscn" id="14_cooxk"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ncbkr"]
 noise_type = 0
@@ -188,3 +189,15 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0.75, -11.5)
 
 [node name="gem" parent="." unique_id=341686107 instance=ExtResource("13_v2mee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.75, 0.75, -4.5)
+
+[node name="gem_shard" parent="." unique_id=1248578273 instance=ExtResource("14_cooxk")]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 4.025, 0.75, -26.675001)
+
+[node name="gem_shard2" parent="." unique_id=148386516 instance=ExtResource("14_cooxk")]
+transform = Transform3D(-0.7071068, 0, -0.7071067, 0, 1, 0, 0.7071067, 0, -0.7071068, 4, 0.75, -26.625)
+
+[node name="gem_shard3" parent="." unique_id=1775781597 instance=ExtResource("14_cooxk")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.925, 0.75, -26.775)
+
+[node name="gem_shard4" parent="." unique_id=1077958041 instance=ExtResource("14_cooxk")]
+transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 4, 0.75, -26.75)
