@@ -4,7 +4,7 @@
 [ext_resource type="Script" uid="uid://bmiv4qpi33mcj" path="res://Scripts/main_game_scene.gd" id="2_4tara"]
 [ext_resource type="Script" uid="uid://dhkh5118gb0fw" path="res://Scripts/main_viewport.gd" id="2_m2obh"]
 [ext_resource type="AudioStream" uid="uid://2cl3w527mleh" path="res://Music/interactive/melody3_interactive.tres" id="3_4tara"]
-[ext_resource type="PackedScene" uid="uid://dqk2r40v804fr" path="res://World/Levels/forrest_test.world.tscn" id="3_8rcjl"]
+[ext_resource type="PackedScene" uid="uid://dqk2r40v804fr" path="res://World/Levels/forest_test.world.tscn" id="3_8rcjl"]
 [ext_resource type="PackedScene" uid="uid://y8x8jkr2afcw" path="res://Menus/PauseMenu.tscn" id="3_475tg"]
 [ext_resource type="Script" uid="uid://b6ercbf3yiu46" path="res://Scripts/hud.gd" id="4_8rcjl"]
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="4_ud1bm"]

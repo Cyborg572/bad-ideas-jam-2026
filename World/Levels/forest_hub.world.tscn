@@ -1,0 +1,5 @@
+[gd_scene format=3 uid="uid://dord8un54pu4n"]
+
+[ext_resource type="PackedScene" uid="uid://beh0218hb3sxt" path="res://World/level_template.tscn" id="1_gclfr"]
+
+[node name="forest_hub" unique_id=1740911666 instance=ExtResource("1_gclfr")]
