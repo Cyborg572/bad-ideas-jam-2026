@@ -2,3 +2,65 @@ Color Scheme 1: https://paletton.com/#uid=74T0u0krfqpgWxClOsJtjl8zFgb
 Color Scheme 2: https://paletton.com/#uid=75u0B0krfqpgWxClOsJtjl8zFgb
 
 Possible alternate Color Scheme: https://paletton.com/#uid=74T0u0krfqpgWxClOsJtjl8zFgb
+
+
+Todo:
+
+- [x] Convert Attachment to boolean
+- [x] Move Jack's custom motion and rotation calculations into a utility class
+- [x] Move camera push in/pull out controls to the camera rig
+- [x] Fix crouching/hiding behaviour
+- [x] Basic animation
+- [x] Remove all the references to the old model
+- [x] Health & UI!!!
+- [x] Bottomless pits
+  - [x] send jack to the box
+  - [x] return to last ledge
+- [x] Moving platforms
+  - [x] Wait for jack
+  - [x] Go back without jack
+- [ ] Level progression
+  - [ ] Exits can transport you
+  - [ ] Track Gems
+  - [ ] Gems unlock exits
+- [ ] Better fall recovery
+  - [ ] Use a ray-cast to better detect the last ledge position
+  - [ ] Don't set the last ledge position on moving platforms
+- [ ] Switches
+	- [x] Trigger zones
+	- [ ] Weight triggers
+	- [ ] Interaction triggers
+- [ ] Enemies
+  - [ ] Hedgehog
+	- [x] Movement AI
+	- [ ] Real AI
+  - [ ] Boss
+  - [ ] Others?
+- [ ] Hazzards
+  - [ ] Flame/Lazer/water jets?
+- [ ] The Mallet
+- [ ] Add Berry counter to UI
+- [ ] Allow viewing box contents
+- [ ] Have the game manager spawn Jack and TheBox
+- [x] Advanced animations
+
+3D Models I need:
+
+- [x] Sign Post
+- [x] Gem
+- [x] Gem Shard
+- [x] Enemy
+- [x] Level Exit
+- [ ] Mallet
+- [ ] Tunnel cover
+- [ ] Check Point
+- [ ] Big Door
+- [ ] Boss
+
+Bugs:
+
+- Edge grabs on low ledges
+- Pickup and throw when hiding
+- Moving on ledges breaks when you move too fast (especially while boxed)
+- detaching mid ledge launch leaves the box collider in the wrong place
+- Need a special jack model for the main menu
