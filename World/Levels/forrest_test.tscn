@@ -14,6 +14,7 @@
 [ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="12_v2mee"]
 [ext_resource type="PackedScene" uid="uid://detj4tonpd81q" path="res://Actors/gem.tscn" id="13_v2mee"]
 [ext_resource type="PackedScene" uid="uid://5qgf14nbd4k" path="res://Actors/Pickups/gem_shard.tscn" id="14_cooxk"]
+[ext_resource type="PackedScene" uid="uid://bnipp2chg4u4v" path="res://Actors/hedgehog.tscn" id="15_flq6b"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_ncbkr"]
 noise_type = 0
@@ -200,3 +201,6 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.925, 0.75, -26.775)
 
 [node name="gem_shard4" parent="." unique_id=1077958041 instance=ExtResource("14_cooxk")]
 transform = Transform3D(0.70710677, 0, -0.70710677, 0, 1, 0, 0.70710677, 0, 0.70710677, 4, 0.75, -26.75)
+
+[node name="hedgehog" parent="." unique_id=900400880 instance=ExtResource("15_flq6b")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0.75, -29.75)

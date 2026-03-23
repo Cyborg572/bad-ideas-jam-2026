@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cgwa0wtopmdwi"]
+
+[resource]
+resource_name = "spikes"
+diffuse_mode = 3
+specular_mode = 1
+albedo_color = Color(0.5058824, 0.21960784, 0, 1)
+roughness = 0.1
