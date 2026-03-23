@@ -1,0 +1,23 @@
+[gd_resource type="StandardMaterial3D" format=3 uid="uid://cgeng26s28355"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_snto1"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bd0dd"]
+noise = SubResource("FastNoiseLite_snto1")
+seamless = true
+in_3d_space = true
+as_normal_map = true
+
+[resource]
+resource_local_to_scene = true
+resource_name = "Portal"
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(0.34117648, 0.4, 0.39607844, 1)
+emission_enabled = true
+emission = Color(0.3019608, 0.003921569, 0.32941177, 1)
+emission_energy_multiplier = 0.0
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_bd0dd")

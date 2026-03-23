@@ -107,8 +107,9 @@ func update_trigger_settings() -> void:
 	collision_layer = 0
 	collision_mask = 0
 
-	set_collision_mask_value(3, trigger_by_jack or trigger_by_box)
-	set_collision_mask_value(7, trigger_by_box or trigger_by_jack)
+	var need_player_collisions = trigger_by_jack or trigger_by_box or trigger_by_jack_in_the_box
+	set_collision_mask_value(3, need_player_collisions)
+	set_collision_mask_value(7, need_player_collisions)
 	set_collision_mask_value(8, trigger_by_throwable)
 
 
