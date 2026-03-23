@@ -450,7 +450,6 @@ func finish_charge_jump() -> float:
 
 func match_face_to_confidence(confidence: float) -> void:
 	var frown_amount: float = 1.0 - (confidence / 100.0)
-	print("Frown amount: ", frown_amount)
 	anim.set("parameters/Frowning/blend_amount", frown_amount)
 
 
