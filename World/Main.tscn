@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://l2jbxqdgxpqg"]
 
-[ext_resource type="PackedScene" uid="uid://cdbis65vjtoox" path="res://World/Levels/Gym.tscn" id="1_e7rx8"]
 [ext_resource type="Theme" uid="uid://cnaxn7u3n0m3n" path="res://World/UITheme.tres" id="1_q6i1d"]
-[ext_resource type="AudioStream" uid="uid://2cl3w527mleh" path="res://Music/interactive/melody3_interactive.tres" id="2_3venj"]
 [ext_resource type="Script" uid="uid://bmiv4qpi33mcj" path="res://Scripts/main_game_scene.gd" id="2_4tara"]
 [ext_resource type="Script" uid="uid://dhkh5118gb0fw" path="res://Scripts/main_viewport.gd" id="2_m2obh"]
+[ext_resource type="AudioStream" uid="uid://2cl3w527mleh" path="res://Music/interactive/melody3_interactive.tres" id="3_4tara"]
+[ext_resource type="PackedScene" uid="uid://dqk2r40v804fr" path="res://World/Levels/forrest_test.world.tscn" id="3_8rcjl"]
 [ext_resource type="PackedScene" uid="uid://y8x8jkr2afcw" path="res://Menus/PauseMenu.tscn" id="3_475tg"]
 [ext_resource type="Script" uid="uid://b6ercbf3yiu46" path="res://Scripts/hud.gd" id="4_8rcjl"]
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="4_ud1bm"]
@@ -60,7 +60,213 @@ corner_radius_top_right = 8
 corner_radius_bottom_right = 8
 corner_radius_bottom_left = 8
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_3venj"]
+bg_color = Color(0, 0, 0, 1)
+
+[sub_resource type="Animation" id="Animation_4tara"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenCover:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenCover:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Loading:visible")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Loading:position")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 648)]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("Loading:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_3venj"]
+resource_name = "fade_to_black"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ScreenCover:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.033333335, 1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [false, true, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("ScreenCover:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_ay062"]
+resource_name = "finish_loading"
+length = 0.50000334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Loading:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.46666667, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [true, true, false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Loading:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.5),
+"transitions": PackedFloat32Array(0.5, 2, 0.5),
+"update": 0,
+"values": [Vector2(0, 298), Vector2(3, 234), Vector2(0, 459)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Loading:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("ScreenCover:visible")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0.4666667, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("ScreenCover:modulate")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0, 0.10000001, 0.5),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 1), Color(1, 1, 1, 1), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_wc48y"]
+resource_name = "start_loading"
+length = 0.50000334
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Loading:visible")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.033333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [false, true]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Loading:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.4, 0.5),
+"transitions": PackedFloat32Array(0.5, 0.5, 1),
+"update": 0,
+"values": [Vector2(0, 459), Vector2(3, 234), Vector2(0, 298)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("Loading:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_4tara"]
+_data = {
+&"RESET": SubResource("Animation_4tara"),
+&"fade_out": SubResource("Animation_3venj"),
+&"finish_loading": SubResource("Animation_ay062"),
+&"start_loading": SubResource("Animation_wc48y")
+}
+
 [node name="Main" type="Control" unique_id=645567632]
+process_mode = 3
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -69,6 +275,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_q6i1d")
 script = ExtResource("2_4tara")
+starting_level = "uid://dqk2r40v804fr"
 
 [node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1958800623]
 process_mode = 3
@@ -77,6 +284,7 @@ autoplay = true
 bus = &"Music"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1360691485]
+process_mode = 1
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -87,12 +295,13 @@ stretch = true
 script = ExtResource("2_m2obh")
 
 [node name="SubViewport" type="SubViewport" parent="SubViewportContainer" unique_id=542780104]
+unique_name_in_owner = true
 handle_input_locally = false
 audio_listener_enable_3d = true
 size = Vector2i(1152, 648)
 render_target_update_mode = 4
 
-[node name="Gym" parent="SubViewportContainer/SubViewport" unique_id=1956799741 instance=ExtResource("1_e7rx8")]
+[node name="ForrestTest" parent="SubViewportContainer/SubViewport" unique_id=1740911666 instance=ExtResource("3_8rcjl")]
 
 [node name="HUD" type="MarginContainer" parent="." unique_id=949245670]
 layout_mode = 1
@@ -150,3 +359,31 @@ show_percentage = false
 
 [node name="PauseMenu" parent="." unique_id=793828353 instance=ExtResource("3_475tg")]
 layout_mode = 1
+
+[node name="ScreenCover" type="PanelContainer" parent="." unique_id=1238175788]
+unique_name_in_owner = true
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_styles/panel = SubResource("StyleBoxFlat_3venj")
+
+[node name="Loading" type="RichTextLabel" parent="." unique_id=1583656197]
+unique_name_in_owner = true
+visible = false
+modulate = Color(1, 1, 1, 0)
+clip_contents = false
+layout_mode = 0
+offset_top = 648.0
+offset_right = 1152.0
+offset_bottom = 698.0
+size_flags_vertical = 4
+bbcode_enabled = true
+text = "[wave amp=10.0 freq=3.0 connected=1][font size=48 name=\"res://Fonts/super_wonder/Super Wonder.ttf\"]Loading...[/font][/wave]"
+fit_content = true
+horizontal_alignment = 1
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1342893220]
+libraries/ = SubResource("AnimationLibrary_4tara")

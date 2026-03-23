@@ -7,6 +7,9 @@ signal player_health_depleted
 signal player_confidence_lost
 signal player_confidence_changed(confidence: float)
 signal distance_to_box_changed(distance: float)
+signal level_changed(new_level: String)
+signal fade_out_requested
+signal fade_in_requested
 
 var main_camera : CameraRig = null:
 	set(camera):
@@ -35,6 +38,8 @@ var jack : Jack = null:
 			jack.box.cranking_stopped.connect(_on_crank_stopped)
 
 var bg_music_player: AudioStreamPlayer = null
+var fade_in_signal: Signal
+var fade_out_signal: Signal
 
 var interaction_points : Array[InteractionPoint] = []
 var active_interaction_point : InteractionPoint
@@ -190,3 +195,17 @@ func box_out_of_bounds() -> void:
 	if not jack.is_boxed:
 		player_health -= 1
 		player_out_of_bounds()
+
+
+func change_level(new_level: String) -> void:
+	level_changed.emit(new_level)
+
+
+func hide_game() -> void:
+	fade_out_requested.emit()
+	await fade_out_signal
+
+
+func show_game() -> void:
+	fade_in_requested.emit()
+	await fade_in_signal
