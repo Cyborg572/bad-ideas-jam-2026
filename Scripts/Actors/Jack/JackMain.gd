@@ -65,7 +65,6 @@ const UNSCORED_JUMPS := [
 
 #region OnReady Vars
 
-@onready var input_component: InputComponent = $InputComponent
 @onready var model : JackModel = $Jack
 @onready var anim : AnimationTree = model.animation_tree
 @onready var indicator := $InteractionIndicator
@@ -307,7 +306,8 @@ func is_standing_on_box() -> bool:
 
 func get_direction() -> Vector3:
 	# Get the input direction and handle the movement/deceleration.
-	var direction := input_component.direction
+	var input_dir := Input.get_vector("Left", "Right", "Forward", "Back")
+	var direction = Vector3(input_dir.x, 0, input_dir.y)
 
 	if active_camera:
 		direction = active_camera.rotate_relative_to_view(direction)
@@ -532,9 +532,6 @@ func caclulate_jump_coolness() -> int:
 func _physics_process(delta: float) -> void:
 	if is_frozen:
 		return
-
-	# Component ticks
-	input_component.update_inputs(self)
 
 	var direction = get_direction()
 	distance_to_box = (box.position - position).length()
