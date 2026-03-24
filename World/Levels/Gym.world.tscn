@@ -1,17 +1,13 @@
 [gd_scene format=4 uid="uid://cdbis65vjtoox"]
 
 [ext_resource type="Script" uid="uid://m40dtgkl4ia3" path="res://Scripts/Level.gd" id="1_3yyff"]
-[ext_resource type="PackedScene" uid="uid://duykwhism24sd" path="res://Actors/CameraRig.tscn" id="2_skitp"]
-[ext_resource type="PackedScene" uid="uid://wkiytlqj20xh" path="res://Actors/Jack.tscn" id="2_v1x4i"]
-[ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_8txj2"]
-[ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="5_veq21"]
 [ext_resource type="Material" uid="uid://bjba213cebnno" path="res://Materials/grass_ground.tres" id="6_enqkj"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="7_veq21"]
 [ext_resource type="PackedScene" uid="uid://bokohmujw272q" path="res://Actors/Pickups/mullberry.tscn" id="7_wfd2y"]
 [ext_resource type="Material" uid="uid://vk0isikpdof3" path="res://Materials/dirt.tres" id="8_yso7o"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="9_8txj2"]
 [ext_resource type="Material" uid="uid://bui3qaueg3mvm" path="res://Materials/grass_caps.tres" id="9_p2mj2"]
-[ext_resource type="AudioStream" uid="uid://ttryn1fabmb6" path="res://Music/melody_3_simplified.ogg" id="10_farb7"]
+[ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="10_kvcr5"]
 [ext_resource type="Material" uid="uid://1uhtt6nw8bet" path="res://Materials/hard_dirt.tres" id="10_p2mj2"]
 [ext_resource type="Material" uid="uid://dr4tvpg3c6rsm" path="res://Materials/stone.tres" id="10_yso7o"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Scripts/Actors/Attachable.gd" id="11_farb7"]
@@ -168,18 +164,11 @@ light_color = Color(0.81, 0.9113333, 1, 1)
 light_energy = 0.5
 shadow_enabled = true
 
-[node name="CameraRig" parent="." unique_id=296487055 node_paths=PackedStringArray("target") instance=ExtResource("2_skitp")]
-is_main_camera = true
-target = NodePath("../Jack")
-
-[node name="Jack" parent="." unique_id=1250745410 node_paths=PackedStringArray("box") instance=ExtResource("2_v1x4i")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6399617, 0, 5.822895)
-start_with_box = true
-box = NodePath("../TheBox")
-
-[node name="TheBox" parent="." unique_id=493307402 instance=ExtResource("4_8txj2")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.6340563, 1.625, -1.957288)
-cranking_song = ExtResource("5_veq21")
+[node name="forest_level_exit" parent="." unique_id=2125747710 instance=ExtResource("10_kvcr5")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0, -14.75)
+gate_id = 1
+destination_world = "uid://dqk2r40v804fr"
+destination_gate = 1
 
 [node name="Floor" type="StaticBody3D" parent="." unique_id=460721603]
 
@@ -354,7 +343,7 @@ shape = SubResource("BoxShape3D_lqj5n")
 
 [node name="InteractionPoint" type="Area3D" parent="Obstacles/Box3" unique_id=684243992]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.56202793, -0.9677346, 0)
-collision_layer = 3
+collision_layer = 2
 collision_mask = 4
 script = ExtResource("7_veq21")
 type = 2
@@ -452,13 +441,6 @@ mesh = SubResource("ArrayMesh_8txj2")
 
 [node name="DeathZone" parent="." unique_id=1821243704 instance=ExtResource("9_8txj2")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -30, 0)
-
-[node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=626060365]
-process_mode = 3
-stream = ExtResource("10_farb7")
-autoplay = true
-bus = &"Music"
-parameters/looping = true
 
 [node name="ConfidenceZone" type="Area3D" parent="." unique_id=1023240059]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18, 3.25, -5)

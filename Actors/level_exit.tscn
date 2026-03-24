@@ -1,10 +1,31 @@
 [gd_scene format=3 uid="uid://cauwobkh8mskm"]
 
 [ext_resource type="PackedScene" uid="uid://bk41qq8w2i5mu" path="res://Models/original/forest_level_exit.glb" id="1_7a328"]
-[ext_resource type="Material" uid="uid://cgeng26s28355" path="res://Materials/portal.tres" id="2_68xm3"]
 [ext_resource type="Script" uid="uid://iefdlteligvr" path="res://Scripts/Zones/trigger_zone.gd" id="2_uk55o"]
 [ext_resource type="Script" uid="uid://7ge80b8n5t73" path="res://Scripts/Actors/level_exit.gd" id="2_x4qbh"]
 [ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="3_7ihh6"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_snto1"]
+noise_type = 2
+fractal_octaves = 2
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_bd0dd"]
+noise = SubResource("FastNoiseLite_snto1")
+seamless = true
+in_3d_space = true
+as_normal_map = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_68xm3"]
+resource_local_to_scene = true
+resource_name = "Portal"
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(0.34117648, 0.4, 0.39607844, 1)
+emission_enabled = true
+emission = Color(0.3019608, 0.003921569, 0.32941177, 1)
+emission_energy_multiplier = 0.0
+normal_enabled = true
+normal_texture = SubResource("NoiseTexture2D_bd0dd")
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_7ihh6"]
 size = Vector3(0.32500002, 2.2, 0.22500001)
@@ -173,6 +194,12 @@ _data = {
 &"unlocked": SubResource("Animation_iacjk")
 }
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_68xm3"]
+animation = &"locked"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_tlonb"]
+animation = &"unlocked"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_iacjk"]
 animation = &"lock"
 
@@ -184,14 +211,6 @@ animation = &"unlock"
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5hugx"]
 animation = &"unlocked"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_tlonb"]
-advance_mode = 2
-advance_expression = "not is_open"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5rjox"]
-advance_mode = 2
-advance_expression = "is_open"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vhruc"]
 break_loop_at_end = true
@@ -211,23 +230,56 @@ advance_expression = "not is_open"
 switch_mode = 2
 advance_mode = 2
 
-[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_mji8m"]
-states/lock/node = SubResource("AnimationNodeAnimation_iacjk")
-states/lock/position = Vector2(710, 46)
-states/locked/node = SubResource("AnimationNodeAnimation_x4qbh")
-states/locked/position = Vector2(384, 181)
-states/unlock/node = SubResource("AnimationNodeAnimation_6eupa")
-states/unlock/position = Vector2(384, 46)
-states/unlocked/node = SubResource("AnimationNodeAnimation_5hugx")
-states/unlocked/position = Vector2(541, 46)
-transitions = ["Start", "locked", SubResource("AnimationNodeStateMachineTransition_tlonb"), "Start", "unlock", SubResource("AnimationNodeStateMachineTransition_5rjox"), "locked", "unlock", SubResource("AnimationNodeStateMachineTransition_vhruc"), "unlock", "unlocked", SubResource("AnimationNodeStateMachineTransition_ec2ic"), "unlocked", "lock", SubResource("AnimationNodeStateMachineTransition_i0usr"), "lock", "locked", SubResource("AnimationNodeStateMachineTransition_6lrhg")]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_mji8m"]
+break_loop_at_end = true
+switch_mode = 2
+advance_mode = 2
 
-[node name="forest_level_exit" unique_id=2125747710 instance=ExtResource("1_7a328")]
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_c1vh1"]
+break_loop_at_end = true
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_68xm3"]
+advance_mode = 2
+advance_expression = "not is_open"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_x4qbh"]
+advance_mode = 2
+advance_expression = "is_open"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_iacjk"]
+advance_mode = 2
+advance_expression = "is_open"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_6eupa"]
+advance_mode = 2
+advance_expression = "not is_open"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_mji8m"]
+states/End/position = Vector2(919, 151)
+states/Start/position = Vector2(216, 151)
+states/fast_lock/node = SubResource("AnimationNodeAnimation_68xm3")
+states/fast_lock/position = Vector2(369, 354)
+states/fast_unlock/node = SubResource("AnimationNodeAnimation_tlonb")
+states/fast_unlock/position = Vector2(575, -4)
+states/lock/node = SubResource("AnimationNodeAnimation_iacjk")
+states/lock/position = Vector2(778, 151)
+states/locked/node = SubResource("AnimationNodeAnimation_x4qbh")
+states/locked/position = Vector2(575, 354)
+states/unlock/node = SubResource("AnimationNodeAnimation_6eupa")
+states/unlock/position = Vector2(387, 151)
+states/unlocked/node = SubResource("AnimationNodeAnimation_5hugx")
+states/unlocked/position = Vector2(575, 151)
+transitions = ["locked", "unlock", SubResource("AnimationNodeStateMachineTransition_vhruc"), "unlock", "unlocked", SubResource("AnimationNodeStateMachineTransition_ec2ic"), "unlocked", "lock", SubResource("AnimationNodeStateMachineTransition_i0usr"), "lock", "locked", SubResource("AnimationNodeStateMachineTransition_6lrhg"), "fast_unlock", "unlocked", SubResource("AnimationNodeStateMachineTransition_mji8m"), "fast_lock", "locked", SubResource("AnimationNodeStateMachineTransition_c1vh1"), "fast_unlock", "lock", SubResource("AnimationNodeStateMachineTransition_68xm3"), "fast_lock", "unlock", SubResource("AnimationNodeStateMachineTransition_x4qbh"), "Start", "fast_unlock", SubResource("AnimationNodeStateMachineTransition_iacjk"), "Start", "fast_lock", SubResource("AnimationNodeStateMachineTransition_6eupa")]
+graph_offset = Vector2(9, -187)
+
+[node name="forest_level_exit" unique_id=2125747710 groups=["level_gates"] instance=ExtResource("1_7a328")]
 script = ExtResource("2_x4qbh")
 sign_enabled = true
 
 [node name="Exit" parent="." index="0" unique_id=801845830]
-surface_material_override/1 = ExtResource("2_68xm3")
+surface_material_override/1 = SubResource("StandardMaterial3D_68xm3")
 
 [node name="Edges" type="StaticBody3D" parent="." index="1" unique_id=373967919]
 

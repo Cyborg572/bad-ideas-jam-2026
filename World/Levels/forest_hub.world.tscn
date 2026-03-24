@@ -2,4 +2,18 @@
 
 [ext_resource type="PackedScene" uid="uid://beh0218hb3sxt" path="res://World/level_template.tscn" id="1_gclfr"]
 
+[sub_resource type="NavigationMesh" id="NavigationMesh_bp8m3"]
+vertices = PackedVector3Array(-1.5, 1.25, 2.75, -1.5, 1.25, 7.5, 2.5, 1.25, 7.5, 2.75, 1.25, 2.5, -1.75, 1.25, -1.5, -6.5, 1.25, -1.5, -6.5, 1.25, 2.5, 7.5, 1.25, 2.5, 7.5, 1.25, -1.5, 2.5, 1.25, -1.75, 2.5, 1.25, -6.5, -1.5, 1.25, -6.5)
+polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(5, 4, 6), PackedInt32Array(6, 4, 0), PackedInt32Array(7, 3, 8), PackedInt32Array(8, 3, 9), PackedInt32Array(3, 0, 9), PackedInt32Array(9, 0, 4), PackedInt32Array(10, 9, 11), PackedInt32Array(11, 9, 4)]
+geometry_source_geometry_mode = 2
+
 [node name="forest_hub" unique_id=1740911666 instance=ExtResource("1_gclfr")]
+
+[node name="NavigationRegion3D" parent="." index="3" unique_id=2147470274]
+navigation_mesh = SubResource("NavigationMesh_bp8m3")
+
+[node name="GridMap" parent="." index="4" unique_id=1376894822]
+data = {
+"cells": PackedInt32Array(0, 0, 46, 65531, 0, 46, 0, 5, 46, 5, 0, 46, 0, 65531, 46)
+}
+metadata/_editor_floor_ = Vector3(0, 0, 0)

@@ -1,7 +1,11 @@
 class_name LevelExit
 extends Node3D
 
-@export var destination : PackedScene
+## The ID for this exit when used as a spawn point.
+@export var gate_id: int = 0
+@export_group("Destination", "destination_")
+@export_file("*.world.tscn") var destination_world : String = "uid://dord8un54pu4n"
+@export var destination_gate: int = 0
 
 @export_group("Locked", "lock_")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var lock_enabled : bool = false
@@ -33,17 +37,36 @@ func _ready() -> void:
 
 	lock_trigger.triggered.connect(_on_lock_triggered)
 	lock_trigger.untriggered.connect(_on_lock_untriggered)
+	exit_trigger.triggered.connect(_on_exit_triggered)
 
 
 func _on_lock_triggered(_by: Node3D) -> void:
 	print("Triggered! Checking lock...")
 	if not lock_enabled:
 		print("Not locked. Opening")
-		is_open = true
+		open()
 	else:
 		print("Locked.")
 
 
 func _on_lock_untriggered() -> void:
 	print("Closing.")
+	close()
+
+
+func _on_exit_triggered(_by: Node3D) -> void:
+	GameManager.change_level(destination_world, gate_id)
+
+
+func open(fast: bool = false) -> void:
+	is_open = true
+	door.disabled = true
+	if (fast):
+		anim.get("parameters/playback").travel("fast_unlock", true)
+
+
+func close(fast: bool = false) -> void:
 	is_open = false
+	door.disabled = false
+	if (fast):
+		anim.get("parameters/playback").travel("fast_lock", true)

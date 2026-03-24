@@ -27,7 +27,6 @@ func _ready() -> void:
 
 
 func _on_body_entered(body: Node3D) -> void:
-	print("Enter ", body.name)
 	# Regardless of trigger state, track potentially valid occupants
 	if not occupants.has(body):
 		occupants.push_back(body)
@@ -40,7 +39,6 @@ func _on_body_entered(body: Node3D) -> void:
 
 
 func _on_body_exited(body: Node3D) -> void:
-	print("exit ", body.name)
 	if body is Jack and body.has_the_box() and occupants.has(body.box):
 		occupants.erase(body.box)
 
@@ -69,7 +67,6 @@ func check_trigger_condition() -> void:
 			or (trigger_by_jack and jack_is_here and not the_box_is_here)
 			or (trigger_by_box and the_box_is_here and not jack_is_here)
 		)
-		print(has_player_objects, " Jack: ", jack_is_here, " The Box", the_box_is_here)
 
 	if trigger_by_throwable:
 		var throwable_count: int = 0

@@ -2,9 +2,6 @@
 
 [ext_resource type="Script" uid="uid://m40dtgkl4ia3" path="res://Scripts/Level.gd" id="1_1wiq1"]
 [ext_resource type="AudioStream" uid="uid://2cl3w527mleh" path="res://Music/interactive/melody3_interactive.tres" id="2_cfl5d"]
-[ext_resource type="PackedScene" uid="uid://duykwhism24sd" path="res://Actors/CameraRig.tscn" id="2_sych8"]
-[ext_resource type="PackedScene" uid="uid://wkiytlqj20xh" path="res://Actors/Jack.tscn" id="3_13yra"]
-[ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_2580x"]
 [ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="5_qvx36"]
 [ext_resource type="MeshLibrary" uid="uid://clf0iphvuyght" path="res://Models/forrest_tiles.meshlib" id="6_0ch6b"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="7_13yra"]
@@ -77,8 +74,9 @@ height = 0.25
 [sub_resource type="SphereShape3D" id="SphereShape3D_cooxk"]
 radius = 0.125
 
-[node name="ForrestTest" type="Node3D" unique_id=1740911666]
+[node name="ForrestTest" type="Node3D" unique_id=1740911666 node_paths=PackedStringArray("spawn_point")]
 script = ExtResource("1_1wiq1")
+spawn_point = NodePath("SpawnPoint")
 background_music = ExtResource("2_cfl5d")
 cranking_sound = ExtResource("5_qvx36")
 
@@ -96,19 +94,8 @@ light_color = Color(0.81, 0.9113333, 1, 1)
 light_energy = 0.5
 shadow_enabled = true
 
-[node name="CameraRig" parent="." unique_id=296487055 node_paths=PackedStringArray("target") instance=ExtResource("2_sych8")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0)
-is_main_camera = true
-target = NodePath("../Jack")
-
-[node name="Jack" parent="." unique_id=1250745410 node_paths=PackedStringArray("box") instance=ExtResource("3_13yra")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.75, 1)
-start_with_box = true
-box = NodePath("../TheBox")
-
-[node name="TheBox" parent="." unique_id=2010327691 instance=ExtResource("4_2580x")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3, 0.875, 1)
-cranking_song = ExtResource("5_qvx36")
+[node name="SpawnPoint" type="Node3D" parent="." unique_id=1601757472]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 3, 1.25, 0.75)
 
 [node name="DeathZone" parent="." unique_id=1821243704 instance=ExtResource("7_13yra")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
@@ -126,6 +113,10 @@ navigation_mesh = SubResource("NavigationMesh_flq6b")
 
 [node name="forest_level_exit" parent="." unique_id=2125747710 instance=ExtResource("16_d4yy2")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -17, 0.25, -27)
+gate_id = 1
+destination_world = "uid://cdbis65vjtoox"
+destination_gate = 1
+lock_enabled = true
 
 [node name="Path3D" type="Path3D" parent="." unique_id=1535027955]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 0, -14.25)

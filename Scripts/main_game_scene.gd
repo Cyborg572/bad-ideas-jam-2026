@@ -1,18 +1,21 @@
+class_name MainScene
 extends Control
 
 
 signal level_loading
-signal level_loaded
+signal level_loaded(level_scene)
 signal fade_out_finished
 signal fade_in_finished
 
 
-@export_file("*.world.tscn")
-var starting_level : String = "uid://dord8un54pu4n"
+@export_file("*.world.tscn") var starting_level : String = "uid://dord8un54pu4n"
+@export var starting_level_gate: int = 0
 
-var active_level : Node = null
+var active_level : Level = null
 var level_path : String
+var level_gate_id: int
 var is_loading : bool = false
+var is_hiding_game : bool = false
 
 @onready var screen_cover: PanelContainer = %ScreenCover
 @onready var loading_text: RichTextLabel = %Loading
@@ -20,12 +23,9 @@ var is_loading : bool = false
 @onready var sub_viewport: SubViewport = %SubViewport
 
 func _ready() -> void:
+	GameManager.main_scene = self
 	GameManager.bg_music_player = $BackgroundMusicPlayer
 	GameManager.level_changed.connect(load_level)
-	GameManager.fade_in_requested.connect(fade_in)
-	GameManager.fade_in_signal = fade_in_finished
-	GameManager.fade_out_signal = fade_out_finished
-	GameManager.fade_out_requested.connect(fade_out)
 
 	# Allow a level to be pre-set in the editor
 	if sub_viewport.get_child_count() > 0:
@@ -33,7 +33,7 @@ func _ready() -> void:
 		anim.play_backwards("fade_out")
 
 	if active_level == null:
-		load_level(starting_level)
+		load_level(starting_level, starting_level_gate)
 
 
 func _process(_delta: float) -> void:
@@ -41,11 +41,13 @@ func _process(_delta: float) -> void:
 		check_load_status()
 
 
-func load_level(requested_level_path: String):
-	if not screen_cover.visible:
-		await anim.animation_finished
+func load_level(requested_level_path: String, gate_id: int = 0):
+	print("Reacting to level load request...")
+
+	fade_out()
 
 	if not loading_text.visible:
+		anim.play("start_loading")
 		await anim.animation_finished
 
 
@@ -56,6 +58,7 @@ func load_level(requested_level_path: String):
 		unload_current_level()
 
 	level_path = requested_level_path
+	level_gate_id = gate_id
 	ResourceLoader.load_threaded_request(level_path)
 
 
@@ -90,19 +93,27 @@ func finish_loading_level() -> void:
 		get_tree().quit()
 	packed_level = packed_level as PackedScene
 	active_level = packed_level.instantiate()
+	active_level.entrance_gate = level_gate_id
 	sub_viewport.add_child(active_level)
-	anim.play("finish_loading")
+	anim.play_backwards("start_loading")
 	await anim.animation_finished
-	level_loaded.emit()
+	print("Level loaded!")
+	level_loaded.emit(active_level)
 
 
 func fade_out() -> void:
-	anim.play("fade_out")
-	await anim.animation_finished
-	fade_out_finished.emit()
+	if not screen_cover.visible:
+		anim.play("fade_out")
+		await anim.animation_finished
+		fade_out_finished.emit()
+	else:
+		fade_out_finished.emit()
 
 
 func fade_in() -> void:
-	anim.play_backwards("fade_out")
-	await anim.animation_finished
-	fade_in_finished.emit()
+	if screen_cover.visible:
+		anim.play_backwards("fade_out")
+		await anim.animation_finished
+		fade_in_finished.emit()
+	else:
+		fade_in_finished.emit()

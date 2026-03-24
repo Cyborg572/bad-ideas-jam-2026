@@ -26,6 +26,8 @@ enum Shot {
 ## How far way is the camera for wide tracking
 @export var distance_wide : float = 3
 
+var is_frozen: bool = false
+
 @onready var arm: SpringArm3D = $SpringArm3D
 @onready var camera_position: Node3D = $SpringArm3D/CameraPosition
 @onready var camera: Camera3D = $Camera3D
@@ -33,7 +35,9 @@ enum Shot {
 const default_pitch : float  = -PI/8.0
 const default_alignment := Vector3(default_pitch, 0, 0);
 
-var aligning : bool = false
+var aligning : bool = false:
+	set(value):
+		aligning = value
 var alignment_target : Vector3 = default_alignment
 var alignment_speed : float = 0.0
 var alignment_one_time : bool = false
@@ -43,30 +47,50 @@ var chase_speed = 10
 
 func get_target_position() -> Vector3:
 	var target_position : Vector3 = target.position
-	if target.camera_target:
+	if "camera_target" in target:
 		target_position += target.camera_target.position
-	else:
-		target_position.y += 1.5
 	return target_position
+
+
+func get_target_rotation() -> Vector3:
+	var target_rotation : Vector3 = target.rotation
+	if target.camera_target:
+		target_rotation += target.camera_target.rotation
+	#else:
+		#target_rotation.y += PI
+	return target_rotation
 
 
 func rotate_relative_to_view(direction: Vector3) -> Vector3:
 	return direction.rotated(Vector3.UP, camera.global_rotation.y)
 
 
-func start_chase(speed: float = 10, force = false):
-	if force || chase_speed < speed:
+func start_chase(speed: float = 10, force_speed:bool = false, force_jump: bool = false):
+	if force_speed || chase_speed < speed:
 		chase_speed = speed
 	if not chasing:
 		chasing = true
-		align(Utils.direction_to_y_angle(get_target_position() - position), chase_speed)
 		chase_started.emit(target)
+		var target_position = get_target_position()
+		var distance = (target_position - position).length()
+		if distance > 20 or force_jump:
+			print("Forcing? ", force_jump)
+			is_frozen = true
+			await GameManager.hide_game()
+			is_frozen = false
+		else:
+			print("Stating a chase anyway", force_jump)
+			if distance > 1:
+				align(Utils.direction_to_y_angle(get_target_position() - position), chase_speed)
+
 
 
 func end_chase():
 	if chasing:
 		chasing = false
 		chase_speed = 10
+		#align(get_target_rotation().y, 5)
+		await GameManager.show_game()
 		chase_ended.emit(target)
 
 
@@ -125,9 +149,6 @@ func cancel_align() -> void:
 
 
 func _ready() -> void:
-	if is_main_camera:
-		GameManager.main_camera = self
-
 	if !target: return
 
 	position = get_target_position()
@@ -144,6 +165,9 @@ func _ready() -> void:
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta: float) -> void:
+	if is_frozen:
+		return
+
 	var movement_x := Input.get_axis("camera_left", "camera_right")
 	var movement_y := Input.get_axis("camera_up", "camera_down")
 
@@ -186,10 +210,15 @@ func _process(delta: float) -> void:
 		end_chase()
 
 	# Once the bearing is right, jump if the distance is _really_ far
-	if distance > 10 and not aligning:
+	if distance > 5 and not aligning:
 		position = position.move_toward(target_position, distance - 5)
 
 	position = position.move_toward(target_position, chase_speed * delta)
 
 	camera.position = lerp(camera.position, camera_position.position, delta*camera_speed)
 	camera.global_rotation.z = 0
+
+
+## Jump the camera to the position node immediately.
+func skip_camera_travel() -> void:
+	camera.position = camera_position.position

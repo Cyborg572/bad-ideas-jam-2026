@@ -2,9 +2,6 @@
 
 [ext_resource type="Script" uid="uid://m40dtgkl4ia3" path="res://Scripts/Level.gd" id="1_myilo"]
 [ext_resource type="PackedScene" uid="uid://duykwhism24sd" path="res://Actors/CameraRig.tscn" id="2_7t5t0"]
-[ext_resource type="PackedScene" uid="uid://wkiytlqj20xh" path="res://Actors/Jack.tscn" id="3_tbmil"]
-[ext_resource type="PackedScene" uid="uid://cu1llcu6fuf5h" path="res://Actors/TheBox.tscn" id="4_0angs"]
-[ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="5_om1iw"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="6_nt8b4"]
 [ext_resource type="MeshLibrary" uid="uid://clf0iphvuyght" path="res://Models/forrest_tiles.meshlib" id="8_jsw6x"]
 
@@ -47,8 +44,9 @@ agent_height = 0.5
 agent_max_climb = 0.0
 agent_max_slope = 0.02
 
-[node name="level_template" type="Node3D" unique_id=1740911666]
+[node name="level_template" type="Node3D" unique_id=1740911666 node_paths=PackedStringArray("spawn_point")]
 script = ExtResource("1_myilo")
+spawn_point = NodePath("SpawnPoint")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=383782750]
 environment = SubResource("Environment_v2mee")
@@ -72,18 +70,10 @@ mesh_library = ExtResource("8_jsw6x")
 cell_size = Vector3(1, 0.5, 1)
 metadata/_editor_floor_ = Vector3(0, -2, 0)
 
-[node name="CameraRig" parent="." unique_id=296487055 node_paths=PackedStringArray("target") instance=ExtResource("2_7t5t0")]
+[node name="CameraRig" parent="." unique_id=296487055 instance=ExtResource("2_7t5t0")]
 is_main_camera = true
-target = NodePath("../Jack")
-
-[node name="Jack" parent="." unique_id=1250745410 node_paths=PackedStringArray("box") instance=ExtResource("3_tbmil")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3.6399617, 2.25, -1.427105)
-start_with_box = true
-box = NodePath("../TheBox")
-
-[node name="TheBox" parent="." unique_id=2010327691 instance=ExtResource("4_0angs")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 3.6340563, 2.125, -1.457288)
-cranking_song = ExtResource("5_om1iw")
 
 [node name="DeathZone" parent="." unique_id=1821243704 instance=ExtResource("6_nt8b4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
+
+[node name="SpawnPoint" type="Node3D" parent="." unique_id=628433570]

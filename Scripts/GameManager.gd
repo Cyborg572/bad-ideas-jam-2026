@@ -1,50 +1,38 @@
 extends Node
 
-signal change_camera(camera: CameraRig)
 signal interaction(interaction_point : InteractionPoint)
 signal player_health_changed(current: int, max: int)
 signal player_health_depleted
 signal player_confidence_lost
 signal player_confidence_changed(confidence: float)
 signal distance_to_box_changed(distance: float)
-signal level_changed(new_level: String)
-signal fade_out_requested
-signal fade_in_requested
+signal level_changed(new_level: String, gate_id: int)
 
-var main_camera : CameraRig = null:
-	set(camera):
-		if (main_camera == camera): return
-		main_camera = camera
-		change_camera.emit(main_camera)
 
-var jack : Jack = null:
-	set(new_jack):
-		if jack:
-			if jack.boxed.is_connected(_on_jack_boxed):
-				jack.boxed.disconnect(_on_jack_boxed)
-			if jack.unboxed.is_connected(_on_jack_unboxed):
-				jack.unboxed.disconnect(_on_jack_unboxed)
-			if jack.box:
-				if jack.box.cranking_started.is_connected(_on_crank_started):
-					jack.boxed.disconnect(_on_crank_started)
-				if jack.box.cranking_stopped.is_connected(_on_crank_stopped):
-					jack.boxed.disconnect(_on_crank_stopped)
+@export var jack_scene: PackedScene = preload("uid://wkiytlqj20xh")
+@export var the_box_scene: PackedScene = preload("uid://cu1llcu6fuf5h")
+@export var camera_scene: PackedScene = preload("uid://duykwhism24sd")
 
-		jack = new_jack
-		jack.boxed.connect(_on_jack_boxed)
-		jack.unboxed.connect(_on_jack_unboxed)
-		if jack.box:
-			jack.box.cranking_started.connect(_on_crank_started)
-			jack.box.cranking_stopped.connect(_on_crank_stopped)
-
-var bg_music_player: AudioStreamPlayer = null
+# Things managed by the main world scene
+var active_level: Level = null
 var fade_in_signal: Signal
 var fade_out_signal: Signal
+var bg_music_player: AudioStreamPlayer = null
+var main_scene: MainScene = null:
+	set(value):
+		main_scene = value
+		main_scene.level_loaded.connect(_on_level_loaded)
+
+# The player et all
+var jack : Jack = null
+var the_box : TheBox = null
+var main_camera : CameraRig = null
 
 var interaction_points : Array[InteractionPoint] = []
 var active_interaction_point : InteractionPoint
 
-@export var level_spawn_point := Vector3.ZERO
+var current_recovery_point := Vector3.ZERO
+var current_recovery_rotation := Vector3.ZERO
 
 @export var player_max_health : int = 5:
 	set(new_max_health):
@@ -58,6 +46,7 @@ var active_interaction_point : InteractionPoint
 
 		if player_health <= 0:
 			player_health_depleted.emit()
+			kill_player()
 
 
 @export var player_base_confidence : float = 50.0
@@ -120,10 +109,20 @@ func _on_crank_stopped(was_pop: bool) -> void:
 	AudioServer.set_bus_volume_linear(audio_bus_music, audio_music_volume)
 
 
+func _on_level_loaded(level_scene: Node3D) -> void:
+	active_level = level_scene
+	if jack == null:
+		create_jack()
+	spawn_jack()
 
+
+#region Interaction Points
 func set_active_interaction_point(point : InteractionPoint) -> void:
 	if active_interaction_point == point:
+		print("Looks like the same interaction point, somehow")
 		return
+	else:
+		print("New point!")
 
 	# Prevent duplicate elements from building up in the array.
 	interaction_points.erase(point)
@@ -160,52 +159,160 @@ func trigger_interaction() -> void:
 
 		# Then everything else.
 		interaction.emit(active_interaction_point)
-
+#endregion
 
 func reset_confidence(keep_extra: bool = true) -> void:
 	if player_confidence < player_base_confidence or not keep_extra:
 		player_confidence = player_base_confidence
 
 
-func kill_player() -> void:
+func spawn_jack():
+	active_level.add_child(jack)
+	active_level.add_child(the_box)
+	active_level.add_child(main_camera)
+
+	# Position everything
+	var spawn_point = active_level.get_active_spawn_point()
+	the_box.position = spawn_point.global_position
+	the_box.rotation = spawn_point.global_rotation
+	the_box.velocity = Vector3.ZERO
 	jack.velocity = Vector3.ZERO
-	jack.box.velocity = Vector3.ZERO
-	jack.box.position = level_spawn_point
+	jack.position = the_box.position
+	jack.rotation = the_box.rotation
+	main_camera.position = spawn_point.global_position
+	main_camera.rotation.y = jack.rotation.y + PI
+	main_camera.skip_camera_travel()
+
+	# Bit of fun for gate entrances
+	if the_box.has_attachment:
+		the_box.detach()
+	else:
+		the_box.add_collision_exception_with(jack)
+	jack.hide_in_box()
+	main_camera.target = the_box
+	if spawn_point is LevelExit:
+		spawn_point.open(true)
+		main_camera.rotation.y += PI - PI/4
+		the_box.position.y += 1
+		the_box.velocity = Vector3.MODEL_FRONT.rotated(Vector3.UP, the_box.rotation.y) * 3
+		the_box.rotation.x = -PI/4
+		the_box.rotation.z = -PI/2
+	else:
+		#main_camera.rotation.y += PI - PI/4
+		the_box.position.y += 1
+		the_box.velocity = Vector3.UP * 3
+		the_box.rotation.x = -PI
+		the_box.rotation.z = PI/3
+
+	show_game()
+
+	await the_box.settled
+	jack.position = the_box.position
+
+	if spawn_point is LevelExit:
+		spawn_point.close()
+
+	# Start!
+	jack.is_frozen = false
+	main_camera.target = jack
 	jack.popToBox()
+	main_camera.align(jack.rotation.y, 5)
+
+
+func despawn_jack():
+	jack.is_frozen = true
+	active_level.remove_child(main_camera)
+	active_level.remove_child(jack)
+	active_level.remove_child(the_box)
+
+
+func create_jack() -> void:
+	# Set up the box
+	the_box = the_box_scene.instantiate()
+	the_box.cranking_started.connect(_on_crank_started)
+	the_box.cranking_stopped.connect(_on_crank_stopped)
+
+	# Set up Jack
+	jack = jack_scene.instantiate()
+	jack.is_frozen = true
+	jack.start_with_box = true
+	jack.box = the_box
+	jack.boxed.connect(_on_jack_boxed)
+	jack.unboxed.connect(_on_jack_unboxed)
+
+	# Set up the main camera
+	main_camera = camera_scene.instantiate()
+	main_camera.is_main_camera = true
+	main_camera.target = jack
+
+
+
+func destroy_jack() -> void:
+	if jack:
+		if jack.boxed.is_connected(_on_jack_boxed):
+			jack.boxed.disconnect(_on_jack_boxed)
+		if jack.unboxed.is_connected(_on_jack_unboxed):
+			jack.unboxed.disconnect(_on_jack_unboxed)
+		if jack.box:
+			if jack.box.cranking_started.is_connected(_on_crank_started):
+				jack.box.cranking_started.disconnect(_on_crank_started)
+			if jack.box.cranking_stopped.is_connected(_on_crank_stopped):
+				jack.box.cranking_stopped.disconnect(_on_crank_stopped)
+
+
+func kill_player() -> void:
+	jack.is_frozen = true
+	main_camera.is_frozen = true
+	await hide_game()
+	var spawn_point = active_level.get_active_spawn_point()
+	jack.velocity = Vector3.ZERO
+	the_box.position = spawn_point.global_position + the_box.attachment_point.position
+	the_box.position.y += 0.125
+	if spawn_point is LevelExit:
+		the_box.position += Vector3.MODEL_FRONT.rotated(Vector3.UP, spawn_point.rotation.y)
+	the_box.rotation = spawn_point.global_rotation
+	the_box.velocity = Vector3.ZERO
+	player_health = player_max_health
+	jack.popToBox(true)
 
 
 func player_out_of_bounds() -> void:
 	jack.velocity = Vector3.ZERO
 	if jack.box.is_on_floor():
 		reset_confidence(false)
-		jack.popToBox()
+		jack.popToBox(true)
 	elif jack.is_boxed:
-		jack.position = jack.box.last_ground_position
+		jack.position = the_box.last_ground_position
+		the_box.position = the_box.last_ground_position
+		jack.popToBox(true)
 		player_health -= 1
 	else:
 		jack.box.position = jack.box.last_ground_position
 		jack.position = jack.box.last_ground_position
-		jack.popToBox()
+		jack.popToBox(true)
 		player_health -= 1
 
 
 func box_out_of_bounds() -> void:
+	jack.is_frozen = true
+	await hide_game()
 	jack.box.position = jack.box.last_ground_position
 	jack.box.velocity = Vector3.ZERO
-	if not jack.is_boxed:
-		player_health -= 1
-		player_out_of_bounds()
+	player_health -= 1
+	reset_confidence(false)
+	jack.popToBox(true)
 
 
-func change_level(new_level: String) -> void:
-	level_changed.emit(new_level)
+func change_level(new_level: String, gate_id: int = 0) -> void:
+	jack.is_frozen = true
+	await main_scene.fade_out()
+	despawn_jack()
+	level_changed.emit(new_level, gate_id)
 
 
 func hide_game() -> void:
-	fade_out_requested.emit()
-	await fade_out_signal
+	await main_scene.fade_out()
 
 
 func show_game() -> void:
-	fade_in_requested.emit()
-	await fade_in_signal
+	await main_scene.fade_in()

@@ -33,6 +33,7 @@ window/stretch/mode="canvas_items"
 
 "Confidence Zones"="Area3Ds that affect the confidence metre"
 navigation_mesh_source_group=""
+level_gates=""
 
 [input]
 

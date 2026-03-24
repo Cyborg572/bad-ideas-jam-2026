@@ -81,6 +81,7 @@ const UNSCORED_JUMPS := [
 var state : State = State.GROUNDED
 var is_boxed : bool = false
 var attachment_points : Dictionary[String, Node3D] = {}
+var is_frozen : bool = false
 
 var can_flip : bool = false
 var throwing : bool = false
@@ -111,9 +112,7 @@ var landed_in_box: bool = false
 
 
 func _ready() -> void:
-	GameManager.jack = self
 	set_active_camera(GameManager.main_camera)
-	GameManager.change_camera.connect(set_active_camera)
 	GameManager.interaction.connect(_on_global_interaction)
 	GameManager.player_confidence_changed.connect(_on_player_confidence_changed)
 	GameManager.player_confidence_lost.connect(popToBox)
@@ -127,9 +126,6 @@ func _ready() -> void:
 
 	anxiety_timer.timeout.connect(tick_down_confidence)
 	pop_button_timer.timeout.connect(popToBox)
-
-	if start_with_box:
-		popToBox.call_deferred()
 
 
 #region State value accessors
@@ -324,15 +320,17 @@ func follow_motion(direction: Vector3, rate: float) -> void:
 	wall_detect.rotation.y = -rotation.y
 
 
-func popToBox() -> void:
+func popToBox(force_camera_jump: bool = false) -> void:
+	is_frozen = true
 	if is_carrying:
 		drop_carried_item(2, PI/2)
 	position = box.position
 	enter_box()
 	hide_in_box()
-	active_camera.start_chase()
+	active_camera.start_chase(10, false, force_camera_jump)
 	await active_camera.chase_ended
 	pop_out()
+	is_frozen = false
 	popped.emit(box)
 
 
@@ -532,6 +530,9 @@ func caclulate_jump_coolness() -> int:
 
 
 func _physics_process(delta: float) -> void:
+	if is_frozen:
+		return
+
 	# Component ticks
 	input_component.update_inputs(self)
 
@@ -942,6 +943,12 @@ func _on_player_confidence_changed(confidence: float) -> void:
 
 func _on_global_interaction(interaction_point : InteractionPoint):
 	var types := InteractionPoint.InteractionType
+
+	if interaction_point == null:
+		print("Something's up")
+	else:
+		print("good good good")
+
 	var target := interaction_point.get_parent_node_3d()
 
 	match interaction_point.type:

@@ -75,6 +75,8 @@ state_config = Dictionary[int, ExtResource("2_kyi2e")]({
 2: SubResource("Resource_di1ys"),
 4: SubResource("Resource_5g1ux")
 })
+is_carrying = null
+start_with_box = null
 boxed_jump_power = ExtResource("3_di1ys")
 
 [node name="InputComponent" type="Node" parent="." unique_id=1619200345]
