@@ -12,6 +12,12 @@ clip_1/name = &"unboxed"
 clip_1/stream = ExtResource("2_a5rut")
 clip_1/auto_advance = 0
 _transitions = {
+Vector2i(0, 0): {
+"fade_beats": 1.0,
+"fade_mode": 0,
+"from_time": 0,
+"to_time": 0
+},
 Vector2i(0, 1): {
 "fade_beats": 1.0,
 "fade_mode": 3,
@@ -21,6 +27,12 @@ Vector2i(0, 1): {
 Vector2i(1, 0): {
 "fade_beats": 1.0,
 "fade_mode": 3,
+"from_time": 0,
+"to_time": 0
+},
+Vector2i(1, 1): {
+"fade_beats": 1.0,
+"fade_mode": 0,
 "from_time": 0,
 "to_time": 0
 }

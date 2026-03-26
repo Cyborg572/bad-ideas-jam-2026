@@ -42,8 +42,8 @@ Todo:
 - [ ] The Mallet
 - [ ] Add Berry counter to UI
 - [ ] Allow viewing box contents
-- [ ] Have the game manager spawn Jack and TheBox
 - [x] Advanced animations
+- [ ] Set the current song from the level data
 
 3D Models I need:
 
