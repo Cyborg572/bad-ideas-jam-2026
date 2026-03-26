@@ -311,8 +311,6 @@ func is_falling() -> bool:
 	return velocity.y < 0
 
 
-
-
 func is_floor_safe() -> bool:
 	if floor_detect.is_colliding():
 		var floor_type = floor_detect.get_collider()
@@ -324,6 +322,7 @@ func is_standing_on_box() -> bool:
 	return (
 		is_on_floor()
 		&& !is_boxed
+		&& box.is_open
 		&& floor_detect.is_colliding()
 		&& floor_detect.get_collider() == box
 	)
@@ -427,6 +426,12 @@ func recieve_item(item: Attachable):
 	if carried_item == box:
 		got_box.emit()
 		carried_item.close()
+
+
+func get_launched(launch_direction: Vector3, launch_force: float) -> void:
+	change_state(State.AIRBORN)
+	jump_type = JumpType.LAUNCH
+	velocity = launch_direction * launch_force
 
 
 func start_charing_jump() -> void:
@@ -614,6 +619,9 @@ func _physics_process(delta: float) -> void:
 			true:
 				if is_hiding:
 					box.start_cranking()
+				elif is_on_floor() and direction.length() == 0:
+					leave_box()
+					recieve_item(box)
 				else:
 					box.detach()
 					leave_box()

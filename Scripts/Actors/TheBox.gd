@@ -136,7 +136,10 @@ func stop_cranking() -> bool:
 
 func launch(item: Node3D):
 	var launch_direction = Vector3.UP + Vector3.MODEL_REAR.rotated(Vector3.UP, rotation.y)
-	item.velocity = launch_direction * launch_force
+	if item.has_method("get_launched"):
+		item.get_launched(launch_direction, launch_force)
+	else:
+		item.velocity = launch_direction * launch_force
 
 
 ## If collisions are enabled, set the appropriate collider (open vs. closed).
