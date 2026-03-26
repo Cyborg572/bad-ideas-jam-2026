@@ -64,7 +64,7 @@ func toggle_open(fast : bool = false) -> void:
 func open(fast : bool = false) -> void:
 	if is_open: return
 
-	if top_point.is_colliding():
+	if top_point.is_colliding() and is_on_floor():
 		var launchable = top_point.get_collider()
 		if launchable is CharacterBody3D:
 			launch(launchable)

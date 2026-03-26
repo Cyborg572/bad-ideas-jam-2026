@@ -315,7 +315,7 @@ func is_standing_on_box() -> bool:
 		is_on_floor()
 		&& !is_boxed
 		&& distance_to_box < 0.25
-		&& position.y > box.attachment_point.position.y
+		&& position.y > box.attachment_point.global_position.y
 	)
 
 func get_direction() -> Vector3:
