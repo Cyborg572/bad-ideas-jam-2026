@@ -970,11 +970,6 @@ func _on_player_confidence_changed(confidence: float) -> void:
 func _on_global_interaction(interaction_point : InteractionPoint):
 	var types := InteractionPoint.InteractionType
 
-	if interaction_point == null:
-		print("Something's up")
-	else:
-		print("good good good")
-
 	var target := interaction_point.get_parent_node_3d()
 
 	match interaction_point.type:

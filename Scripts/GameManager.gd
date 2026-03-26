@@ -119,10 +119,7 @@ func _on_level_loaded(level_scene: Node3D) -> void:
 #region Interaction Points
 func set_active_interaction_point(point : InteractionPoint) -> void:
 	if active_interaction_point == point:
-		print("Looks like the same interaction point, somehow")
 		return
-	else:
-		print("New point!")
 
 	# Prevent duplicate elements from building up in the array.
 	interaction_points.erase(point)

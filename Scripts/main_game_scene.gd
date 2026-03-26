@@ -42,8 +42,6 @@ func _process(_delta: float) -> void:
 
 
 func load_level(requested_level_path: String, gate_id: int = 0):
-	print("Reacting to level load request...")
-
 	fade_out()
 
 	if not loading_text.visible:
@@ -81,9 +79,7 @@ func check_load_status() -> void:
 
 
 func unload_current_level() -> void:
-	print("Do something with the old level?")
 	sub_viewport.remove_child(active_level)
-	print("Old level is gone...")
 
 
 func finish_loading_level() -> void:
@@ -97,7 +93,6 @@ func finish_loading_level() -> void:
 	sub_viewport.add_child(active_level)
 	anim.play_backwards("start_loading")
 	await anim.animation_finished
-	print("Level loaded!")
 	level_loaded.emit(active_level)
 
 

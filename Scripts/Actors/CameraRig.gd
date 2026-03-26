@@ -74,12 +74,10 @@ func start_chase(speed: float = 10, force_speed:bool = false, force_jump: bool =
 		var target_position = get_target_position()
 		var distance = (target_position - position).length()
 		if distance > 20 or force_jump:
-			print("Forcing? ", force_jump)
 			is_frozen = true
 			await GameManager.hide_game()
 			is_frozen = false
 		else:
-			print("Stating a chase anyway", force_jump)
 			if distance > 1:
 				align(Utils.direction_to_y_angle(get_target_position() - position), chase_speed)
 

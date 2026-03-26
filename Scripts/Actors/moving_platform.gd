@@ -131,7 +131,6 @@ func _on_platform_boarded(_by: Node3D, _is_trigger: bool) -> void:
 		TripType.TRANSIT when not moving:
 			delay_timer.start()
 		TripType.RATCHET:
-			print("Starting forward timer")
 			moving = false
 			reverse = false
 			delay_timer.start()
@@ -153,18 +152,14 @@ func _on_platform_vacated() -> void:
 			delay_timer.stop()
 			moving = false
 		TripType.RATCHET when not at_path_start():
-			print("should stop")
 			moving = false
 			reverse = true
-			print("Starting reverse timer")
 			delay_timer.start()
 		TripType.RATCHET when at_path_start():
-			print("Cancelling timer")
 			delay_timer.stop()
 		_:
 			pass
 
 
 func _on_delay_timer_timeout() -> void:
-	print("Starting ", "in reverse" if reverse else "forward")
 	moving = true

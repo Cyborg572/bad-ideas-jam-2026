@@ -205,7 +205,6 @@ func _physics_process(delta: float) -> void:
 	if velocity.length() > 0 or not is_on_floor():
 		is_settled = false
 	elif not is_settled:
-		print("So very on the floor")
 		is_settled = true
 		settled.emit()
 
@@ -238,12 +237,6 @@ func _on_interaction_point_interaction(point: InteractionPoint) -> void:
 	if point.type != InteractionPoint.InteractionType.custom:
 		return
 
-	if jack.is_carrying:
-		print("Your hands are full.")
-	if inventory.is_empty():
-		print("Box is empty")
-
-	print(inventory)
 	give_item(jack)
 
 
