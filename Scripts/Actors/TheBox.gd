@@ -191,7 +191,7 @@ func hold_item(item: Attachable, delta) -> void:
 func is_floor_safe() -> bool:
 	if floor_detect.is_colliding():
 		var floor_type = floor_detect.get_collider()
-		return floor_type is StaticBody3D or floor_type is GridMap
+		return Utils.is_solid_ground(floor_type)
 	return false
 
 
@@ -206,7 +206,7 @@ func _physics_process(delta: float) -> void:
 		and attachment is Jack
 		and (attachment as Jack).is_on_floor()
 	):
-		if attachment.is_carrying and attachment.carried_item == self:
+		if attachment.is_carrying and attachment.carried_item == self and attachment.is_floor_safe():
 			last_ground_position = attachment.position
 		elif is_floor_safe():
 			last_ground_position = floor_detect.get_collision_point()
@@ -263,10 +263,7 @@ func get_safe_return_point() -> Vector3:
 		var safe_target = NavigationServer3D.map_get_closest_point(nav_map, last_ground_position)
 		var ground_offset := Vector3(0, 0.125, 0)
 		if (safe_target - last_ground_position).length() < 2:
-			print("Found safe point for ", last_ground_position, " -> ", safe_target)
 			safe_target.y = last_ground_position.y + ground_offset.y
 		else:
-			print("Safe target is too far, using actual location: ", last_ground_position)
 			safe_target = last_ground_position + ground_offset
-		print("Settled on ", safe_target )
 		return safe_target

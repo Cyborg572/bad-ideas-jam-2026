@@ -316,7 +316,7 @@ func is_falling() -> bool:
 func is_floor_safe() -> bool:
 	if floor_detect.is_colliding():
 		var floor_type = floor_detect.get_collider()
-		return floor_type is StaticBody3D or floor_type is GridMap
+		return Utils.is_solid_ground(floor_type)
 	return false
 
 

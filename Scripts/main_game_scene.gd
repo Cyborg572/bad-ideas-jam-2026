@@ -105,8 +105,10 @@ func finish_loading_level() -> void:
 
 func fade_out() -> void:
 	if not screen_cover.visible:
+		get_tree().paused = true
 		anim.play("fade_out")
 		await anim.animation_finished
+		get_tree().paused = false
 		fade_out_finished.emit()
 	else:
 		fade_out_finished.emit()

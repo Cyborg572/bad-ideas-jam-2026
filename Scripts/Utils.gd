@@ -52,3 +52,14 @@ static func get_best_side_view(normal: Vector3, camera_rig: CameraRig) -> float:
 		return Vector2(-ccw.z, -ccw.x).angle()
 	else:
 		return Vector2(-cw.z, -cw.x).angle()
+
+
+## Determines if an object counts as "solid ground" i.e. not something that can move
+static func is_solid_ground(body: Node3D) -> bool:
+	if body is GridMap:
+		return true
+
+	if body is StaticBody3D:
+		return not body is AnimatableBody3D
+
+	return false
