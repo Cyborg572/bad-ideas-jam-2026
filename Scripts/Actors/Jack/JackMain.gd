@@ -348,9 +348,13 @@ func popToBox(force_camera_jump: bool = false) -> void:
 	is_frozen = true
 	if is_carrying:
 		drop_carried_item(2, PI/2)
+
+	# Clean up Jack a bit
 	if state == State.CROUCHED:
 		change_state(State.GROUNDED)
 	position = box.attachment_point.global_position
+	is_hanging = false
+
 	enter_box()
 	hide_in_box()
 	active_camera.start_chase(10, false, force_camera_jump)
