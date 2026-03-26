@@ -1,7 +1,16 @@
 [gd_scene format=3 uid="uid://b7xm6nsbk44dh"]
 
 [ext_resource type="PackedScene" uid="uid://bgampa7l3lbiv" path="res://Models/original/signpost.glb" id="1_cnjsu"]
+[ext_resource type="Script" uid="uid://cnx8lesqkbb7u" path="res://Scripts/Actors/sign.gd" id="2_i2lfu"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="2_qdqf8"]
+[ext_resource type="Texture2D" uid="uid://dgcgbelnjm5df" path="res://Images/signs/help.png" id="3_0ey5a"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0ey5a"]
+resource_local_to_scene = true
+resource_name = "Paper"
+diffuse_mode = 3
+specular_mode = 2
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_cnjsu"]
 size = Vector3(0.85, 0.925, 0.175)
@@ -10,6 +19,12 @@ size = Vector3(0.85, 0.925, 0.175)
 size = Vector3(1, 1, 0.5)
 
 [node name="signpost" unique_id=265319638 instance=ExtResource("1_cnjsu")]
+script = ExtResource("2_i2lfu")
+image = ExtResource("3_0ey5a")
+message_enabled = true
+
+[node name="Cylinder" parent="." index="0" unique_id=1534461088]
+surface_material_override/2 = SubResource("StandardMaterial3D_0ey5a")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="." index="1" unique_id=271544689]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.4625, 0.0124999955)

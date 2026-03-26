@@ -4,6 +4,7 @@
 [ext_resource type="Script" uid="uid://iefdlteligvr" path="res://Scripts/Zones/trigger_zone.gd" id="2_uk55o"]
 [ext_resource type="Script" uid="uid://7ge80b8n5t73" path="res://Scripts/Actors/level_exit.gd" id="2_x4qbh"]
 [ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="3_7ihh6"]
+[ext_resource type="Texture2D" uid="uid://dgyxw6d116hqq" path="res://Images/signs/exit_sign.png" id="3_x4qbh"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_snto1"]
 noise_type = 2
@@ -15,7 +16,7 @@ seamless = true
 in_3d_space = true
 as_normal_map = true
 
-[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_68xm3"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_x4qbh"]
 resource_local_to_scene = true
 resource_name = "Portal"
 diffuse_mode = 3
@@ -277,9 +278,10 @@ graph_offset = Vector2(9, -187)
 [node name="forest_level_exit" unique_id=2125747710 groups=["level_gates"] instance=ExtResource("1_7a328")]
 script = ExtResource("2_x4qbh")
 sign_enabled = true
+sign_image = ExtResource("3_x4qbh")
 
-[node name="Exit" parent="." index="0" unique_id=801845830]
-surface_material_override/1 = SubResource("StandardMaterial3D_68xm3")
+[node name="Exit" parent="." index="0" unique_id=1221039631]
+surface_material_override/1 = SubResource("StandardMaterial3D_x4qbh")
 
 [node name="Edges" type="StaticBody3D" parent="." index="1" unique_id=373967919]
 
