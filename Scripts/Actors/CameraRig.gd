@@ -193,7 +193,7 @@ func _process(delta: float) -> void:
 
 	# Contstrain the rotation
 	rotation.y = wrapf(rotation.y, 0.0, TAU)
-	rotation.x = clamp(rotation.x, -PI/4, 0)
+	rotation.x = clamp(rotation.x, -PI/2 + PI/8, PI/4)
 
 	if !target:
 		return
