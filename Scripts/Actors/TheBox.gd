@@ -25,15 +25,18 @@ var cranking_pop_window_end : float = 4.2
 @onready var closed_collider: CollisionShape3D = $ClosedCollider
 @onready var open_collider: CollisionShape3D = $OpenCollider
 @onready var top_point: RayCast3D = $TopPoint
+@onready var floor_detect: RayCast3D = $FloorDetect
 @onready var model: Node3D = $Model
 @onready var crank: Node3D = $Model/Crank
 
 var is_open : bool = false
 var is_cranking : bool = false
 var inventory : Array[Attachable] = []
+var is_settled = false
+
+# Tracking last safe location
 var last_ground_position := Vector3.ZERO
 var last_ground_speed := Vector3.ZERO
-var is_settled = false
 
 
 func _ready() -> void:
@@ -185,22 +188,29 @@ func hold_item(item: Attachable, delta) -> void:
 		item.track(10 * delta, self, 0.2)
 
 
+func is_floor_safe() -> bool:
+	if floor_detect.is_colliding():
+		var floor_type = floor_detect.get_collider()
+		return floor_type is StaticBody3D or floor_type is GridMap
+	return false
+
+
 func _physics_process(delta: float) -> void:
 	super(delta)
 
 	if is_on_floor():
-		last_ground_position = position
-		last_ground_speed = Utils.get_ground_speed(velocity)
+		if is_floor_safe():
+			last_ground_position = floor_detect.get_collision_point()
 	elif (
 		has_attachment
 		and attachment is Jack
 		and (attachment as Jack).is_on_floor()
 	):
 		if attachment.is_carrying and attachment.carried_item == self:
-			last_ground_position = attachment.position + attachment_point.position + Vector3(0, 0.125, 0)
-		else:
 			last_ground_position = attachment.position
-		last_ground_speed = Utils.get_ground_speed(attachment.velocity)
+		elif is_floor_safe():
+			last_ground_position = floor_detect.get_collision_point()
+
 
 	if velocity.length() > 0 or not is_on_floor():
 		is_settled = false
@@ -246,3 +256,17 @@ func _on_anim_complete(_animation: String):
 func _on_song_finished() -> void:
 	if is_cranking:
 		crank_audio.play()
+
+
+func get_safe_return_point() -> Vector3:
+		var nav_map = get_world_3d().navigation_map
+		var safe_target = NavigationServer3D.map_get_closest_point(nav_map, last_ground_position)
+		var ground_offset := Vector3(0, 0.125, 0)
+		if (safe_target - last_ground_position).length() < 2:
+			print("Found safe point for ", last_ground_position, " -> ", safe_target)
+			safe_target.y = last_ground_position.y + ground_offset.y
+		else:
+			print("Safe target is too far, using actual location: ", last_ground_position)
+			safe_target = last_ground_position + ground_offset
+		print("Settled on ", safe_target )
+		return safe_target

@@ -266,7 +266,7 @@ func kill_player() -> void:
 	await hide_game()
 	var spawn_point = active_level.get_active_spawn_point()
 	jack.velocity = Vector3.ZERO
-	the_box.position = spawn_point.global_position + the_box.attachment_point.position
+	the_box.position = spawn_point.global_position + Vector3(0, 0.125, 0)
 	the_box.position.y += 0.125
 	if spawn_point is LevelExit:
 		the_box.position += Vector3.MODEL_FRONT.rotated(Vector3.UP, spawn_point.rotation.y)
@@ -282,13 +282,15 @@ func player_out_of_bounds() -> void:
 		reset_confidence(false)
 		jack.popToBox(true)
 	elif jack.is_boxed:
-		jack.position = the_box.last_ground_position
-		the_box.position = the_box.last_ground_position
+		var safe_point = jack.box.get_safe_return_point()
+		jack.position = safe_point + jack.box.attachment_point.position
+		the_box.position = safe_point
 		jack.popToBox(true)
 		player_health -= 1
 	else:
-		jack.box.position = jack.box.last_ground_position
-		jack.position = jack.box.last_ground_position
+		var safe_point = jack.box.get_safe_return_point()
+		jack.box.position = safe_point + jack.box.attachment_point.position
+		jack.position = safe_point
 		jack.popToBox(true)
 		player_health -= 1
 
@@ -296,8 +298,9 @@ func player_out_of_bounds() -> void:
 func box_out_of_bounds() -> void:
 	jack.is_frozen = true
 	await hide_game()
-	jack.box.position = jack.box.last_ground_position
+	jack.box.position = jack.box.get_safe_return_point()
 	jack.box.velocity = Vector3.ZERO
+	jack.velocity = Vector3.ZERO
 	player_health -= 1
 	reset_confidence(false)
 	jack.popToBox(true)

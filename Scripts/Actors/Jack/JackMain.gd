@@ -72,6 +72,7 @@ const UNSCORED_JUMPS := [
 @onready var ledge_hook: RayCast3D = $LedgeHook
 @onready var wall_detect: RayCast3D = $WallDetect
 @onready var ceiling_detect: RayCast3D = $CeilingDetect
+@onready var floor_detect: RayCast3D = $FloorDetect
 @onready var body_collider: CollisionShape3D = $BodyCollider
 @onready var box_collider: CollisionShape3D = $BoxCollider
 @onready var anxiety_timer: Timer = $Timers/AnxietyTimer
@@ -310,12 +311,21 @@ func is_falling() -> bool:
 	return velocity.y < 0
 
 
+
+
+func is_floor_safe() -> bool:
+	if floor_detect.is_colliding():
+		var floor_type = floor_detect.get_collider()
+		return floor_type is StaticBody3D or floor_type is GridMap
+	return false
+
+
 func is_standing_on_box() -> bool:
 	return (
 		is_on_floor()
 		&& !is_boxed
-		&& distance_to_box < 0.25
-		&& position.y > box.attachment_point.global_position.y
+		&& floor_detect.is_colliding()
+		&& floor_detect.get_collider() == box
 	)
 
 func get_direction() -> Vector3:
@@ -340,7 +350,7 @@ func popToBox(force_camera_jump: bool = false) -> void:
 		drop_carried_item(2, PI/2)
 	if state == State.CROUCHED:
 		change_state(State.GROUNDED)
-	position = box.position
+	position = box.attachment_point.global_position
 	enter_box()
 	hide_in_box()
 	active_camera.start_chase(10, false, force_camera_jump)
@@ -702,6 +712,12 @@ func _physics_process(delta: float) -> void:
 
 			if get_max_move_speed() - speed < 0.2:
 				active_camera.align(rotation.y, 1, true)
+
+			if is_standing_on_box() && box.is_open:
+				enter_box()
+				if Input.is_action_pressed("Crouch"):
+					hide_in_box()
+					landed_in_box = true
 
 			if sharp:
 				can_flip = true

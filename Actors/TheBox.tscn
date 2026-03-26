@@ -178,4 +178,7 @@ bus = &"Sound Effects"
 stream = ExtResource("4_sldcg")
 bus = &"Sound Effects"
 
+[node name="FloorDetect" type="RayCast3D" parent="." unique_id=1485713467]
+target_position = Vector3(0, -0.25, 0)
+
 [connection signal="interaction" from="InteractionPoint" to="." method="_on_interaction_point_interaction"]

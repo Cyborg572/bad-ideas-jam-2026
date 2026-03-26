@@ -570,7 +570,7 @@ advance_expression = "is_on_floor()"
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lvom2"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "jump_type == JumpType.NORMAL"
+advance_expression = "not is_on_floor()"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ebfow"]
 priority = 3
@@ -663,7 +663,7 @@ states/Free/node = SubResource("AnimationNodeStateMachine_hbfra")
 states/Free/position = Vector2(458.24536, -142)
 states/Start/position = Vector2(261, 36)
 transitions = ["Free", "Boxed", SubResource("AnimationNodeStateMachineTransition_ya61b"), "Boxed", "Free", SubResource("AnimationNodeStateMachineTransition_83q1p"), "Start", "Free", SubResource("AnimationNodeStateMachineTransition_wnowc"), "Start", "Boxed", SubResource("AnimationNodeStateMachineTransition_jn74p")]
-graph_offset = Vector2(28.19394, -306)
+graph_offset = Vector2(-12.806061, -217)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_fagtx"]
 animation = &"Carry"
@@ -680,6 +680,7 @@ filter_enabled = true
 filters = ["Armature/Skeleton3D/MainBody:Frown"]
 
 [resource]
+graph_offset = Vector2(-71.38019, -54.93393)
 nodes/output/position = Vector2(960, 220)
 nodes/Base/node = SubResource("AnimationNodeStateMachine_f0jun")
 nodes/Base/position = Vector2(-20, 80)
