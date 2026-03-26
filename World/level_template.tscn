@@ -1,7 +1,6 @@
 [gd_scene format=3 uid="uid://beh0218hb3sxt"]
 
 [ext_resource type="Script" uid="uid://m40dtgkl4ia3" path="res://Scripts/Level.gd" id="1_myilo"]
-[ext_resource type="PackedScene" uid="uid://duykwhism24sd" path="res://Actors/CameraRig.tscn" id="2_7t5t0"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="6_nt8b4"]
 [ext_resource type="MeshLibrary" uid="uid://clf0iphvuyght" path="res://Models/forrest_tiles.meshlib" id="8_jsw6x"]
 
@@ -22,8 +21,8 @@ sky_horizon_color = Color(0.57, 0.71333337, 1, 1)
 sky_curve = 0.34460932
 sky_cover = SubResource("NoiseTexture2D_lqj5n")
 sky_cover_modulate = Color(1, 1, 1, 0.14117648)
-ground_bottom_color = Color(0.23137255, 0.45490196, 0, 1)
-ground_horizon_color = Color(0.6666667, 0.90588236, 0.42745098, 1)
+ground_bottom_color = Color(0.12399999, 0.24, 0, 1)
+ground_horizon_color = Color(0.43137255, 0.74509805, 0.10980392, 1)
 ground_curve = 0.019318745
 
 [sub_resource type="Sky" id="Sky_v1x4i"]
@@ -51,11 +50,6 @@ spawn_point = NodePath("SpawnPoint")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=383782750]
 environment = SubResource("Environment_v2mee")
 
-[node name="SpotLight3D" type="SpotLight3D" parent="." unique_id=1793043092]
-transform = Transform3D(0.8660254, -2.1855694e-08, 0.5, -0.5, -3.7855173e-08, 0.8660254, 0, -1, -4.371139e-08, 5.6384954, 4.591539, -2.1853912)
-visible = false
-light_energy = 2.0
-
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="." unique_id=380656047]
 transform = Transform3D(0.79505026, -2.6512863e-08, 0.6065436, -0.6065436, -3.4752752e-08, 0.79505026, 0, -1, -4.3711392e-08, 8.059591, 3.2663388, 0)
 light_color = Color(0.81, 0.9113333, 1, 1)
@@ -69,9 +63,6 @@ navigation_mesh = SubResource("NavigationMesh_ariip")
 mesh_library = ExtResource("8_jsw6x")
 cell_size = Vector3(1, 0.5, 1)
 metadata/_editor_floor_ = Vector3(0, -2, 0)
-
-[node name="CameraRig" parent="." unique_id=296487055 instance=ExtResource("2_7t5t0")]
-is_main_camera = true
 
 [node name="DeathZone" parent="." unique_id=1821243704 instance=ExtResource("6_nt8b4")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -5, 0)
