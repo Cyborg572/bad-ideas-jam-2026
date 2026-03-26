@@ -71,6 +71,7 @@ const UNSCORED_JUMPS := [
 @onready var camera_target := $CameraTarget
 @onready var ledge_hook: RayCast3D = $LedgeHook
 @onready var wall_detect: RayCast3D = $WallDetect
+@onready var ceiling_detect: RayCast3D = $CeilingDetect
 @onready var body_collider: CollisionShape3D = $BodyCollider
 @onready var box_collider: CollisionShape3D = $BoxCollider
 @onready var anxiety_timer: Timer = $Timers/AnxietyTimer
@@ -180,14 +181,17 @@ func enter_box() -> void:
 func hide_in_box() -> void:
 	is_hiding = true
 	body_collider.disabled = true
+	camera_target.position.y = 0
 	model.hide()
 	box.slam()
 
 func pop_out() -> void:
-	is_hiding = false
-	body_collider.disabled = false
-	box.pop()
-	model.show()
+	if not ceiling_detect.is_colliding():
+		is_hiding = false
+		body_collider.disabled = false
+		camera_target.position.y = 0.5
+		box.pop()
+		model.show()
 
 ## Checks if Jack is in - or (optionally) is carrying - The Box.
 func has_the_box(ignore_carrying: bool = false) -> bool:
@@ -212,6 +216,11 @@ func _leave_state(from : State, to : State) -> void:
 	if from == to: return
 	#print_debug("leaving ", State.keys()[from])
 	match from:
+		State.CROUCHED:
+			body_collider.disabled = false
+			box_collider.disabled = true
+			box_collider.position = Vector3(0, 0.375, 0)
+			camera_target.position.y = 0.5
 		_:
 			pass
 
@@ -220,6 +229,11 @@ func _enter_state(from : State, to : State) -> void:
 	if from == to: return
 	#print_debug("entering ", State.keys()[to])
 	match to:
+		State.CROUCHED:
+			body_collider.disabled = true
+			box_collider.disabled = false
+			box_collider.position = attachment_points['foot'].position + Vector3(0, 0.125, 0)
+			camera_target.position.y = 0
 		State.GROUNDED:
 			var score_jump: bool = jump_type not in UNSCORED_JUMPS
 			jump_type = JumpType.NONE
@@ -324,6 +338,8 @@ func popToBox(force_camera_jump: bool = false) -> void:
 	is_frozen = true
 	if is_carrying:
 		drop_carried_item(2, PI/2)
+	if state == State.CROUCHED:
+		change_state(State.GROUNDED)
 	position = box.position
 	enter_box()
 	hide_in_box()
@@ -611,12 +627,17 @@ func _physics_process(delta: float) -> void:
 		if is_boxed:
 			var in_pop_window = box.stop_cranking()
 			if in_pop_window:
-				box.detach()
-				leave_box()
-				box.pop()
-				jump_type = JumpType.LAUNCH
-				velocity.y = get_jump_strength() * 2
-				change_state(State.AIRBORN)
+				if not ceiling_detect.is_colliding():
+					box.detach()
+					leave_box()
+					box.pop()
+					jump_type = JumpType.LAUNCH
+					velocity.y = get_jump_strength() * 2
+					change_state(State.AIRBORN)
+				else:
+					velocity.y = 2
+					await box.pop()
+					box.slam()
 		else:
 			if pop_button_timer.time_left > pop_button_timer.wait_time / 3 && distance_to_box > 3:
 				active_camera.align(get_angle_to_box(), 10)
@@ -629,8 +650,13 @@ func _physics_process(delta: float) -> void:
 		hide_in_box()
 
 	if Input.is_action_just_released("Crouch") && is_boxed:
-		if not active_camera.chasing:
+		if not ceiling_detect.is_colliding():
 			pop_out()
+
+	if not Input.is_action_pressed("Crouch") && is_boxed:
+		if is_hiding and not ceiling_detect.is_colliding():
+			pop_out()
+
 	#endregion
 
 	match state:
@@ -696,7 +722,7 @@ func _physics_process(delta: float) -> void:
 						1 / (1.5 / speed)
 					)
 
-			if Input.is_action_just_pressed("Crouch"):
+			if Input.is_action_pressed("Crouch"):
 				if is_carrying:
 					if carried_item == box:
 						is_carrying = false
@@ -807,6 +833,7 @@ func _physics_process(delta: float) -> void:
 				hanging_cooldown <= 0
 				&& ledge_hook.is_colliding()
 				&& not wall_detect.is_colliding()
+				&& not ceiling_detect.is_colliding()
 			):
 				is_hanging = true
 				hanging_cooldown = 1
@@ -850,6 +877,7 @@ func _physics_process(delta: float) -> void:
 				&& is_falling()
 				&& ledge_hook.is_colliding()
 				&& not wall_detect.is_colliding()
+				&& not ceiling_detect.is_colliding()
 			):
 				is_hanging = true
 				hanging_cooldown = 1
@@ -914,10 +942,11 @@ func _physics_process(delta: float) -> void:
 			if speed > 0.01:
 				follow_motion(direction, delta * 6)
 
-			if Input.is_action_just_released("Crouch"):
-				change_state(State.GROUNDED)
+			if not Input.is_action_pressed("Crouch"):
+				if not ceiling_detect.is_colliding():
+					change_state(State.GROUNDED)
 
-			if Input.is_action_pressed("Jump"):
+			if Input.is_action_pressed("Jump") and not ceiling_detect.is_colliding():
 				if speed > 1.5:
 					jump_type = JumpType.LONG
 					velocity += (Vector3.UP + (velocity.normalized() * 0.5)) * get_jump_strength()
