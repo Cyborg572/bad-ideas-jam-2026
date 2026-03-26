@@ -3,6 +3,8 @@ extends Node3D
 
 signal chase_started(target: Node3D)
 signal chase_ended(target: Node3D)
+signal lock_activated
+signal lock_released
 
 enum Shot {
 	Closeup,
@@ -41,6 +43,8 @@ var aligning : bool = false:
 var alignment_target : Vector3 = default_alignment
 var alignment_speed : float = 0.0
 var alignment_one_time : bool = false
+var is_locked : bool = false
+var lock_target : Vector3 = Vector3.ZERO
 var shot_type : Shot = Shot.Normal
 var chasing = false
 var chase_speed = 10
@@ -91,15 +95,18 @@ func end_chase():
 		await GameManager.show_game()
 		chase_ended.emit(target)
 
-
-func set_shot_type(new_shot_type: Shot) -> void:
+func get_shot_distance(new_shot_type: Shot) -> float:
 	match new_shot_type:
 		Shot.Closeup:
-			arm.spring_length = distance_closeup
-		Shot.Normal:
-			arm.spring_length = distance_normal
+			return distance_closeup
 		Shot.Wide:
-			arm.spring_length = distance_wide
+			return distance_wide
+		_, Shot.Normal:
+			return distance_normal
+
+func set_shot_type(new_shot_type: Shot) -> void:
+	if not is_locked:
+		arm.spring_length = get_shot_distance(new_shot_type)
 	shot_type = new_shot_type
 
 
@@ -146,6 +153,19 @@ func cancel_align() -> void:
 	alignment_one_time = false
 
 
+func lock_angle(target_angle: Vector3, lock_shot_type: Shot) -> void:
+	is_locked = true
+	lock_target = target_angle
+	arm.spring_length = get_shot_distance(lock_shot_type)
+	lock_activated.emit()
+
+
+func unlock_angle() -> void:
+	is_locked = false
+	arm.spring_length = get_shot_distance(shot_type)
+	lock_released.emit()
+
+
 func _ready() -> void:
 	if !target: return
 
@@ -172,18 +192,22 @@ func _process(delta: float) -> void:
 	if movement_x || movement_y:
 		cancel_align()
 
-	if aligning:
+	if aligning or is_locked:
+		# Overrides from the lock
+		var destination: Vector3 = lock_target if is_locked else alignment_target
+		var speed: float = 3.0 if is_locked else alignment_speed
+
 		# Get the current and intended rotations as Quaternions
-		var goal = Quaternion.from_euler(alignment_target).normalized()
+		var goal = Quaternion.from_euler(destination).normalized()
 		var current = Quaternion.from_euler(rotation).normalized()
 		var sweep_angle = current.angle_to(goal);
 
-		if alignment_speed <= 0:
+		if speed <= 0:
 			rotation = alignment_target
 		else:
-			rotation = current.slerp(goal, alignment_speed * delta).get_euler()
+			rotation = current.slerp(goal, speed * delta).get_euler()
 
-		if sweep_angle < 0.05 || alignment_one_time:
+		if (not is_locked) and (sweep_angle < 0.05 || alignment_one_time):
 			cancel_align()
 
 	rotation.y -= delta * movement_x * camera_sensitivity
