@@ -71,7 +71,8 @@ func _on_attacking(delta:float):
 
 func _on_patrol_beat() -> void:
 	if state == State.SCANNING:
-		enter_state(State.ATTACKING)
+		#enter_state(State.ATTACKING)
+		enter_state(State.PATROLLING)
 	else:
 		enter_state([State.SCANNING, State.PATROLLING].pick_random())
 
@@ -85,8 +86,8 @@ func _on_target_reached() -> void:
 
 
 func get_new_target_location():
-	var offset_x = randf_range(2, 4) * [-1, 1].pick_random()
-	var offset_z = randf_range(2, 4) * [-1, 1].pick_random()
+	var offset_x = randf_range(1, 2) * [-1, 1].pick_random()
+	var offset_z = randf_range(1, 2) * [-1, 1].pick_random()
 	var target = global_position + Vector3(offset_x, 0, offset_z)
 	var nav_map = nav.get_navigation_map()
 	var safe_target = NavigationServer3D.map_get_closest_point(nav_map, target)
