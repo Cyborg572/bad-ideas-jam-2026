@@ -302,6 +302,7 @@ shape = SubResource("BoxShape3D_x4qbh")
 [node name="Blocker" type="CollisionShape3D" parent="Door" index="0" unique_id=419104042]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.940697e-08, 0.9999999, 0.0124999955)
 shape = SubResource("BoxShape3D_uk55o")
+disabled = true
 
 [node name="ExitTrigger" type="Area3D" parent="." index="3" unique_id=869495014]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
@@ -324,13 +325,12 @@ shape = SubResource("BoxShape3D_6eupa")
 
 [node name="signpost" parent="." index="5" unique_id=265319638 instance=ExtResource("3_7ihh6")]
 transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, -1.375, 0, 0.5)
-visible = false
+image = ExtResource("3_x4qbh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6" unique_id=890806022]
 libraries/ = SubResource("AnimationLibrary_iacjk")
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="7" unique_id=1486675927]
-active = false
 tree_root = SubResource("AnimationNodeStateMachine_mji8m")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")

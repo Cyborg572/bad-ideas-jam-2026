@@ -20,7 +20,8 @@ Todo:
   - [x] Wait for jack
   - [x] Go back without jack
 - [ ] Level progression
-  - [ ] Exits can transport you
+  - [x] Exits can transport you
+  - [x] Have the game manager spawn Jack and TheBox
   - [ ] Track Gems
   - [ ] Gems unlock exits
 - [ ] Better fall recovery

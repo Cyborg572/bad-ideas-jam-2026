@@ -1,3 +1,4 @@
+@tool
 class_name LevelExit
 extends Node3D
 
@@ -13,20 +14,26 @@ extends Node3D
 
 @export_group("Sign", "sign_")
 @export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var sign_enabled : bool = false
-@export var sign_image : Texture2D
+@export var sign_image : Texture2D:
+	set(new_image):
+		sign_image = new_image
+		if signpost and signpost.is_node_ready():
+			signpost.image = sign_image
 
 var is_open = false
 
 @onready var lock_trigger: TriggerZone = $LockTrigger
 @onready var exit_trigger: TriggerZone = $ExitTrigger
 @onready var door: CollisionShape3D = $Door/Blocker
-@onready var signpost: StaticBody3D = $signpost
+@onready var signpost: Sign = $signpost
 @onready var anim: AnimationTree = $AnimationTree
 
 
 func _ready() -> void:
 	if sign_enabled:
 		signpost.show()
+		if not sign_image == null:
+			signpost.change_image(sign_image)
 	else:
 		signpost.hide()
 
@@ -35,9 +42,10 @@ func _ready() -> void:
 	if not lock_enabled:
 		door.disabled = true
 
-	lock_trigger.triggered.connect(_on_lock_triggered)
-	lock_trigger.untriggered.connect(_on_lock_untriggered)
-	exit_trigger.triggered.connect(_on_exit_triggered)
+	if not Engine.is_editor_hint():
+		lock_trigger.triggered.connect(_on_lock_triggered)
+		lock_trigger.untriggered.connect(_on_lock_untriggered)
+		exit_trigger.triggered.connect(_on_exit_triggered)
 
 
 func _on_lock_triggered(_by: Node3D) -> void:
@@ -55,7 +63,7 @@ func _on_lock_untriggered() -> void:
 
 
 func _on_exit_triggered(_by: Node3D) -> void:
-	GameManager.change_level(destination_world, gate_id)
+	GameManager.change_level(destination_world, destination_gate)
 
 
 func open(fast: bool = false) -> void:

@@ -44,10 +44,10 @@ _subresources={
 "use_external/fallback_path": "res://Materials/portal.tres",
 "use_external/path": "uid://cgeng26s28355"
 },
-"stone": {
+"Wood": {
 "use_external/enabled": true,
-"use_external/fallback_path": "res://Materials/stone.tres",
-"use_external/path": "uid://dr4tvpg3c6rsm"
+"use_external/fallback_path": "res://Materials/wood.tres",
+"use_external/path": "uid://bsriwnpv7b48t"
 }
 }
 }
