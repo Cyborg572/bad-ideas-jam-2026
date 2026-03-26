@@ -25,7 +25,12 @@ enum AdjustmentType {
 ## Only applies the bonus once (and then destroys itself)
 @export var single_use: bool = false
 
-@export_subgroup("Adjust on Enter", "enter_")
+@export_group("Secret", "secret_")
+@export_custom(PROPERTY_HINT_GROUP_ENABLE, "") var secret_enabled : bool = false
+@export var secret_name: String = ""
+
+
+@export_group("Adjust on Enter", "enter_")
 ## The type of adjustment to apply when the player enters the zone
 @export var enter_type: AdjustmentType = AdjustmentType.NONE
 ## The amount to adjust by
@@ -33,7 +38,7 @@ enum AdjustmentType {
 ## How many seconds after leaving until the adjustment can apply again.
 @export_range(0.0, 15.0, 0.25, "or_greater", "suffix:s") var enter_cooldown: float = 0.0
 
-@export_subgroup("Adjust on Exit", "exit_")
+@export_group("Adjust on Exit", "exit_")
 ## The type of adjustment to apply when the player leaves the zone
 @export var exit_type: AdjustmentType = AdjustmentType.NONE
 ## The amount to adjust by
@@ -41,7 +46,7 @@ enum AdjustmentType {
 ## How many seconds after leaving until the adjustment can apply again.
 @export_range(0, 15, 0.1, "or_greater", "suffix:s") var exit_cooldown: float = 0.0
 
-@export_subgroup("Constant adjustment", "constant_")
+@export_group("Constant adjustment", "constant_")
 ## The type of adjustment to apply while the player is in the zone
 @export var constant_type: AdjustmentType = AdjustmentType.NONE
 ## The amount to adjust by
@@ -95,6 +100,11 @@ func _on_body_entered(body: Node3D) -> void:
 	if not enter_on_cooldown:
 		start_enter_cooldown()
 		apply_adjustment(enter_type, enter_amount)
+
+	if secret_enabled:
+		if secret_name == "":
+			print_debug("Forgot to name secret in confidence zone: %s" % name)
+		GameManager.claim_secret(secret_name)
 
 	constant_adjustment_ticks = 0
 

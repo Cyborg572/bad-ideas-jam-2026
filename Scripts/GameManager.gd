@@ -7,6 +7,7 @@ signal player_confidence_lost
 signal player_confidence_changed(confidence: float)
 signal distance_to_box_changed(distance: float)
 signal level_changed(new_level: String, gate_id: int)
+signal secret_discovered(secret_name: String)
 
 
 @export var jack_scene: PackedScene = preload("uid://wkiytlqj20xh")
@@ -33,6 +34,8 @@ var active_interaction_point : InteractionPoint
 
 var current_recovery_point := Vector3.ZERO
 var current_recovery_rotation := Vector3.ZERO
+
+var discovered_secrets: Array[String] = []
 
 @export var player_max_health : int = 5:
 	set(new_max_health):
@@ -298,6 +301,17 @@ func box_out_of_bounds() -> void:
 	player_health -= 1
 	reset_confidence(false)
 	jack.popToBox(true)
+
+
+func claim_secret(secret_name: String) -> void:
+	if discovered_secrets.has(secret_name):
+		print("That secret's claimed alread")
+		return
+
+	print("new secret: %s" % secret_name)
+	discovered_secrets.push_back(secret_name)
+	secret_discovered.emit(secret_name)
+
 
 
 func change_level(new_level: String, gate_id: int = 0) -> void:

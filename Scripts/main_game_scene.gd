@@ -21,11 +21,13 @@ var is_hiding_game : bool = false
 @onready var loading_text: RichTextLabel = %Loading
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var sub_viewport: SubViewport = %SubViewport
+@onready var secret_chime: AudioStreamPlayer = $SecretChime
 
 func _ready() -> void:
 	GameManager.main_scene = self
 	GameManager.bg_music_player = $BackgroundMusicPlayer
 	GameManager.level_changed.connect(load_level)
+	GameManager.secret_discovered.connect(_on_secret_discovered)
 
 	# Allow a level to be pre-set in the editor
 	if sub_viewport.get_child_count() > 0:
@@ -39,6 +41,11 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if is_loading:
 		check_load_status()
+
+
+func _on_secret_discovered(_secret_name: String) -> void:
+	print("Ther's a new secret!")
+	secret_chime.play()
 
 
 func load_level(requested_level_path: String, gate_id: int = 0):

@@ -5,6 +5,7 @@
 [ext_resource type="Script" uid="uid://dhkh5118gb0fw" path="res://Scripts/main_viewport.gd" id="2_m2obh"]
 [ext_resource type="AudioStream" uid="uid://2cl3w527mleh" path="res://Music/interactive/melody3_interactive.tres" id="3_4tara"]
 [ext_resource type="PackedScene" uid="uid://y8x8jkr2afcw" path="res://Menus/PauseMenu.tscn" id="3_475tg"]
+[ext_resource type="AudioStream" uid="uid://b4tfkf4xn4qfn" path="res://Music/Pop_short_pizz_faster.ogg" id="4_4tara"]
 [ext_resource type="Script" uid="uid://b6ercbf3yiu46" path="res://Scripts/hud.gd" id="4_8rcjl"]
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="4_ud1bm"]
 [ext_resource type="Texture2D" uid="uid://bjg15frmx0h8c" path="res://Images/Heart.svg" id="5_8rcjl"]
@@ -282,6 +283,11 @@ process_mode = 3
 stream = ExtResource("3_4tara")
 autoplay = true
 bus = &"Music"
+
+[node name="SecretChime" type="AudioStreamPlayer" parent="." unique_id=242344697]
+stream = ExtResource("4_4tara")
+volume_db = 3.0
+bus = &"Sound Effects"
 
 [node name="SubViewportContainer" type="SubViewportContainer" parent="." unique_id=1360691485]
 process_mode = 1
