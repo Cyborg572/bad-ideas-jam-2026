@@ -71,7 +71,7 @@ advance_mode = 2
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_xccby"]
 advance_mode = 2
-advance_expression = "jump_type == JumpType.SPRING"
+advance_expression = "jump_type == JumpType.SPRING and not is_jump_charging"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_lav6f"]
 switch_mode = 2
@@ -217,7 +217,7 @@ states/WallHang/position = Vector2(768, -19)
 states/WallSlide/node = SubResource("AnimationNodeAnimation_hqlk5")
 states/WallSlide/position = Vector2(768, 131)
 transitions = ["Start", "Idle", SubResource("AnimationNodeStateMachineTransition_5y0a1"), "Idle", "Spring", SubResource("AnimationNodeStateMachineTransition_gpdug"), "Idle", "Hiding", SubResource("AnimationNodeStateMachineTransition_e4kmr"), "Hiding", "Idle", SubResource("AnimationNodeStateMachineTransition_226fy"), "Spring", "WallSlide", SubResource("AnimationNodeStateMachineTransition_f0q0w"), "Spring", "WallHang", SubResource("AnimationNodeStateMachineTransition_kn4jy"), "WallSlide", "WallHang", SubResource("AnimationNodeStateMachineTransition_lb8iq"), "Spring", "Idle", SubResource("AnimationNodeStateMachineTransition_pog6f"), "WallSlide", "Idle", SubResource("AnimationNodeStateMachineTransition_l70vr"), "Idle", "Falling", SubResource("AnimationNodeStateMachineTransition_wglff"), "Falling", "WallHang", SubResource("AnimationNodeStateMachineTransition_0dqco"), "Falling", "WallSlide", SubResource("AnimationNodeStateMachineTransition_kfak6"), "Falling", "Idle", SubResource("AnimationNodeStateMachineTransition_q161q"), "WallHang", "Falling", SubResource("AnimationNodeStateMachineTransition_yxumr")]
-graph_offset = Vector2(0, -329)
+graph_offset = Vector2(7, -156)
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_0y8tl"]
 animation = &"Fall"
