@@ -17,7 +17,7 @@ func _on_body_entered(body: Node3D) -> void:
 
 	if jack.is_boxed:
 		if (
-			rotation != Vector3.ZERO
+			(rotation.x != 0.0 or rotation.z != 0.0)
 			and (
 				# Slight offset so the top half of sideways spikes are effective
 				(global_position.y + 1 > jack.global_position.y)
