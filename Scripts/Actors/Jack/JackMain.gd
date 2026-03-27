@@ -106,6 +106,7 @@ var sharp : bool = false
 # Confidence tracker stats
 var jump_start_position := Vector3.ZERO
 var walljump_count: int = 0
+var wallslide_distance: float = 0.0
 # Start the jump with any of the FLIP_JUMP jumps
 var flipped_into_jump: bool = false
 # Need to land on the open box while holding the crouch button
@@ -249,8 +250,8 @@ func _enter_state(from : State, to : State) -> void:
 					landed_in_box = true
 
 			if score_jump:
-				var jump_coolness = caclulate_jump_coolness()
-				GameManager.player_confidence += jump_coolness / 10.0
+				var jump_coolness: float = calculate_jump_coolness()
+				GameManager.player_confidence += jump_coolness
 
 			reset_jump_stats()
 
@@ -507,12 +508,14 @@ func tick_down_confidence() -> void:
 
 
 func reset_jump_stats() -> void:
+	jump_type = JumpType.NONE
 	jump_start_position = Vector3.ZERO
 	walljump_count = 0
+	wallslide_distance = 0.0
 	flipped_into_jump = false
 
 
-func caclulate_jump_coolness() -> int:
+func calculate_jump_coolness() -> int:
 	var jump_distance = position - jump_start_position
 	var jump_height = jump_distance.y
 	var horizontal_distance = Utils.get_ground_speed(jump_distance).length()
@@ -524,7 +527,7 @@ func caclulate_jump_coolness() -> int:
 	var leap_of_faith_bonus: int =  0 if jump_height > -10 else 1 + floor(abs(jump_height) / 10)
 
 	# Multiplier for diving into the box (must be holding crouch)
-	var dive_bonus: int = 2 if landed_in_box else 0
+	var dive_multiplier: int = 2 if landed_in_box else 1
 
 	# Horizontal distance bonus needs to be longer than standard long jump.
 	# 4.5m requires popping into the box to extend the distance, after dipping
@@ -538,7 +541,11 @@ func caclulate_jump_coolness() -> int:
 
 	# Reduce the distance bonus if there was a large loss of height
 	if jump_height < 0:
-		distance_bonus = ceil(distance_bonus / ceil(abs(jump_height)))
+		distance_bonus = ceil(distance_bonus / ceil(abs(jump_height / 2.0)))
+
+	# Wallslide multiplier. Wallslides are cool. Multiplier doubles for every 5
+	# meters of slide!
+	var wallslide_multiplier: int = clamp(1, floor(wallslide_distance / 5) * 2, 16)
 
 	# BIG multiplier for diving directly into the box from a great height
 	var dive_of_faith_multiplier: int = 10 if (
@@ -548,16 +555,18 @@ func caclulate_jump_coolness() -> int:
 	) else 1
 
 	# Multiplier for wall jumps
-	var wall_jump_multiplier: int = clamp(1, walljump_count * 2, 16)
+	var wall_jump_bonus: int = 1 + floor(clamp(1, walljump_count * 0.5, 8))
 
-	# Any jump that starts with a flip is 3 times cooler
-	var flip_multiplier: int = 3 if flipped_into_jump else 1
+	# Any jump that starts with a flip is 3 times cooler, but that's OP so
+	# just double the score
+	var flip_multiplier: int = 2 if flipped_into_jump else 1
 
 	var total: int = height_bonus + leap_of_faith_bonus
-	total += dive_bonus
 	total += distance_bonus
+	total += wall_jump_bonus
+	total *= wallslide_multiplier
+	total *= dive_multiplier
 	total *= dive_of_faith_multiplier
-	total *= wall_jump_multiplier
 	total *= flip_multiplier
 
 	return total
@@ -856,6 +865,7 @@ func _physics_process(delta: float) -> void:
 		State.AIRBORN when is_on_wall_only():
 			var wall_normal := get_wall_normal()
 			var gravity := get_gravity()
+			var is_wall_slide: bool = false
 
 			# Ledge Logic
 			ledge_hook.target_position = wall_normal * -0.25
@@ -872,6 +882,7 @@ func _physics_process(delta: float) -> void:
 				velocity = Vector3.ZERO
 
 			if is_falling() && wall_detect.is_colliding():
+				is_wall_slide = true
 				active_camera.align(Utils.get_best_side_view(wall_normal, active_camera), 5)
 				direction = direction.slide(wall_normal)
 				gravity = ((wall_normal * -1) + (gravity / 10))
@@ -879,6 +890,8 @@ func _physics_process(delta: float) -> void:
 
 			# Handle movement
 			apply_movement(direction, delta)
+			if is_wall_slide:
+				wallslide_distance += speed * delta
 
 			# Apply gravity
 			velocity += gravity * delta

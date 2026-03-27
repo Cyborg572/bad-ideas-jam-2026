@@ -278,6 +278,7 @@ func kill_player() -> void:
 
 func player_out_of_bounds() -> void:
 	jack.velocity = Vector3.ZERO
+	jack.reset_jump_stats()
 	if jack.box.is_on_floor():
 		reset_confidence(false)
 		jack.popToBox(true)
