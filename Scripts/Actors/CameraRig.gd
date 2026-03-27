@@ -72,7 +72,7 @@ func rotate_relative_to_view(direction: Vector3) -> Vector3:
 func start_chase(speed: float = 10, force_speed:bool = false, force_jump: bool = false):
 	if force_speed || chase_speed < speed:
 		chase_speed = speed
-	if not chasing:
+	if not chasing or force_jump:
 		chasing = true
 		chase_started.emit(target)
 		var target_position = get_target_position()
