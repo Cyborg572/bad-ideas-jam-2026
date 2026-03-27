@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://boxmhcvi0fnpv"]
+
+[ext_resource type="PackedScene" uid="uid://cipmwbow1pbb6" path="res://Models/original/spikes.glb" id="1_3n0n5"]
+[ext_resource type="Script" uid="uid://p4pcij4shckl" path="res://Scripts/Actors/spiked_platform.gd" id="2_ohsto"]
+[ext_resource type="Script" uid="uid://iefdlteligvr" path="res://Scripts/Zones/trigger_zone.gd" id="3_fy244"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_wtdbf"]
+size = Vector3(1.8000001, 0.125, 1.8000001)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_ohsto"]
+size = Vector3(2, 0.625, 2)
+
+[node name="spikes" unique_id=1795965154 instance=ExtResource("1_3n0n5")]
+script = ExtResource("2_ohsto")
+
+[node name="TriggerZone" type="Area3D" parent="." index="1" unique_id=719988182]
+unique_name_in_owner = true
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+collision_mask = 2
+script = ExtResource("3_fy244")
+metadata/_custom_type_script = "uid://iefdlteligvr"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerZone" index="0" unique_id=950367080]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 5.9604645e-08, 0.4375, 5.9604645e-08)
+shape = SubResource("BoxShape3D_wtdbf")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=2060685765]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3125, 0)
+shape = SubResource("BoxShape3D_ohsto")

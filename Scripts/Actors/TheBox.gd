@@ -191,10 +191,17 @@ func hold_item(item: Attachable, delta) -> void:
 		item.track(10 * delta, self, 0.2)
 
 
-func is_floor_safe() -> bool:
+func is_floor_solid() -> bool:
 	if floor_detect.is_colliding():
 		var floor_type = floor_detect.get_collider()
 		return Utils.is_solid_ground(floor_type)
+	return false
+
+
+func is_floor_safe() -> bool:
+	if floor_detect.is_colliding():
+		var floor_type = floor_detect.get_collider()
+		return not floor_type is SpikedPlatform
 	return false
 
 
@@ -202,16 +209,16 @@ func _physics_process(delta: float) -> void:
 	super(delta)
 
 	if is_on_floor():
-		if is_floor_safe():
+		if is_floor_solid():
 			last_ground_position = floor_detect.get_collision_point()
 	elif (
 		has_attachment
 		and attachment is Jack
 		and (attachment as Jack).is_on_floor()
 	):
-		if attachment.is_carrying and attachment.carried_item == self and attachment.is_floor_safe():
+		if attachment.is_carrying and attachment.carried_item == self and attachment.is_floor_solid():
 			last_ground_position = attachment.position
-		elif is_floor_safe():
+		elif is_floor_solid():
 			last_ground_position = floor_detect.get_collision_point()
 
 

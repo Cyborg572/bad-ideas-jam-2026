@@ -311,7 +311,7 @@ func is_falling() -> bool:
 	return velocity.y < 0
 
 
-func is_floor_safe() -> bool:
+func is_floor_solid() -> bool:
 	if floor_detect.is_colliding():
 		var floor_type = floor_detect.get_collider()
 		return Utils.is_solid_ground(floor_type)
@@ -619,7 +619,11 @@ func _physics_process(delta: float) -> void:
 			true:
 				if is_hiding:
 					box.start_cranking()
-				elif is_on_floor() and direction.length() == 0:
+				elif (
+						is_on_floor()
+						and direction.length() == 0
+						and box.is_floor_safe()
+					):
 					leave_box()
 					recieve_item(box)
 				else:
