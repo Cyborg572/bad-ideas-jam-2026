@@ -1,0 +1,13 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://b0q8q2g3tmo6a"]
+
+[ext_resource type="AudioStream" uid="uid://bwft2jegc65cm" path="res://Sounds/jack/pain1.ogg" id="1_j230s"]
+[ext_resource type="AudioStream" uid="uid://bs70gvytbr603" path="res://Sounds/jack/pain2.ogg" id="2_pqbnw"]
+[ext_resource type="AudioStream" uid="uid://pptidsuhxjwo" path="res://Sounds/jack/pain3.ogg" id="3_j5kv0"]
+[ext_resource type="AudioStream" uid="uid://7heg67ite582" path="res://Sounds/jack/pain4.ogg" id="4_p7s6h"]
+
+[resource]
+streams_count = 4
+stream_0/stream = ExtResource("1_j230s")
+stream_1/stream = ExtResource("2_pqbnw")
+stream_2/stream = ExtResource("3_j5kv0")
+stream_3/stream = ExtResource("4_p7s6h")

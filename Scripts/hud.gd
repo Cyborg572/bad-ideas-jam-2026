@@ -56,7 +56,7 @@ func _on_health_changed(new_health: int, new_max: int) -> void:
 	health = new_health
 
 
-func _on_confidence_changed(new_value: float) -> void:
+func _on_confidence_changed(new_value: float, _old_value: float) -> void:
 	confidence = new_value
 
 

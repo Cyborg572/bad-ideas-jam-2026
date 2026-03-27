@@ -24,15 +24,11 @@ func _on_body_entered(body: Node3D) -> void:
 				or jack.is_hanging
 			)
 		):
-			hurt_jack()
+			GameManager.hurt_player()
 			var jack_direction = jack.global_position - global_position
 			print(jack_direction)
 			jack.velocity += jack_direction.normalized() * 4
 		return
 
-	hurt_jack()
+	GameManager.hurt_player()
 	jack.popToBox()
-
-
-func hurt_jack() -> void:
-	GameManager.player_health -= 1

@@ -13,7 +13,7 @@ func _ready() -> void:
 func _on_body_entered(body: Node3D) -> void:
 	if body is Jack:
 		GameManager.player_health += 1
-		GameManager.player_confidence += 3
+		GameManager.reward_player(3)
 		animation_player.play("pickup")
 		await animation_player.animation_finished
 		queue_free()

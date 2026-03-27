@@ -1,0 +1,11 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://dcqtgme0ok0ac"]
+
+[ext_resource type="AudioStream" uid="uid://crcs3iku4oerg" path="res://Sounds/jack/panic1.ogg" id="1_g8d2a"]
+[ext_resource type="AudioStream" uid="uid://jrpdkhm3oivw" path="res://Sounds/jack/panic2.ogg" id="2_1waco"]
+[ext_resource type="AudioStream" uid="uid://b1t014kwgikqm" path="res://Sounds/jack/panic3.ogg" id="3_4dwlw"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_g8d2a")
+stream_1/stream = ExtResource("2_1waco")
+stream_2/stream = ExtResource("3_4dwlw")

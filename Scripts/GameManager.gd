@@ -2,9 +2,11 @@ extends Node
 
 signal interaction(interaction_point : InteractionPoint)
 signal player_health_changed(current: int, max: int)
+signal player_damaged
 signal player_health_depleted
 signal player_confidence_lost
-signal player_confidence_changed(confidence: float)
+signal player_rewarded(amount: float)
+signal player_confidence_changed(old_confidence: float, new_confidence: float)
 signal distance_to_box_changed(distance: float)
 signal level_changed(new_level: String, gate_id: int)
 signal secret_discovered(secret_name: String)
@@ -49,14 +51,15 @@ var discovered_secrets: Array[String] = []
 
 		if player_health <= 0:
 			player_health_depleted.emit()
-			kill_player()
+			kill_player.call_deferred()
 
 
 @export var player_base_confidence : float = 50.0
 @export var player_confidence : float = 50.0:
 	set(new_confidence):
+		var old_confidence: float = player_confidence
 		player_confidence = clamp(new_confidence, 0.0, 100.0)
-		player_confidence_changed.emit(player_confidence)
+		player_confidence_changed.emit(player_confidence, old_confidence)
 
 		if player_confidence <= 0:
 			player_confidence_lost.emit()
@@ -260,6 +263,19 @@ func destroy_jack() -> void:
 				jack.box.cranking_stopped.disconnect(_on_crank_stopped)
 
 
+## Give the player some confidence for a job well done
+func reward_player(amount: float = 5) -> void:
+	if amount > 0:
+		player_confidence += amount
+		player_rewarded.emit(amount)
+
+
+func hurt_player(damage: int = 1) -> void:
+	player_health -= damage
+	if player_health > 0:
+		player_damaged.emit()
+
+
 func kill_player() -> void:
 	jack.is_frozen = true
 	main_camera.is_frozen = true
@@ -279,6 +295,9 @@ func kill_player() -> void:
 func player_out_of_bounds() -> void:
 	jack.velocity = Vector3.ZERO
 	jack.reset_jump_stats()
+	main_camera.is_frozen = true
+	jack.sound_effects.play_falling_sound()
+	await jack.sound_effects.falling_sounds.finished
 	if jack.box.is_on_floor():
 		reset_confidence(false)
 		jack.popToBox(true)
@@ -298,6 +317,9 @@ func player_out_of_bounds() -> void:
 
 func box_out_of_bounds() -> void:
 	jack.is_frozen = true
+	main_camera.align(jack.get_angle_to_box(), 10)
+	jack.sound_effects.play_box_loss_sound()
+	await jack.sound_effects.box_loss_sounds.finished
 	await hide_game()
 	jack.box.position = jack.box.get_safe_return_point()
 	jack.box.velocity = Vector3.ZERO

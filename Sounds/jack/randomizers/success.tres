@@ -1,0 +1,15 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://d55ufwt1j1pr"]
+
+[ext_resource type="AudioStream" uid="uid://c53wcd7k68fu2" path="res://Sounds/jack/success1.ogg" id="1_ldhd0"]
+[ext_resource type="AudioStream" uid="uid://bi8cdse0yknla" path="res://Sounds/jack/success2.ogg" id="2_le5bl"]
+[ext_resource type="AudioStream" uid="uid://d4f38eh03feec" path="res://Sounds/jack/success3.ogg" id="3_hva5g"]
+[ext_resource type="AudioStream" uid="uid://drx0nxwyx3oqb" path="res://Sounds/jack/success4.ogg" id="4_hfau0"]
+[ext_resource type="AudioStream" uid="uid://csb86fxjw58sh" path="res://Sounds/jack/success5.ogg" id="5_ktnau"]
+
+[resource]
+streams_count = 5
+stream_0/stream = ExtResource("1_ldhd0")
+stream_1/stream = ExtResource("2_le5bl")
+stream_2/stream = ExtResource("3_hva5g")
+stream_3/stream = ExtResource("4_hfau0")
+stream_4/stream = ExtResource("5_ktnau")

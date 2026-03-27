@@ -5,6 +5,14 @@
 [ext_resource type="Curve" uid="uid://d3e6rncs5c7jm" path="res://Actors/JackJumpChargeCurve.tres" id="3_di1ys"]
 [ext_resource type="Script" uid="uid://b1ntf8csr8ow4" path="res://Scripts/Actors/Jack/InteractionIndicator.gd" id="3_yu5vu"]
 [ext_resource type="PackedScene" uid="uid://bu2rf6sg2q7v2" path="res://Models/jack.tscn" id="4_58ja8"]
+[ext_resource type="AudioStream" uid="uid://b0q8q2g3tmo6a" path="res://Sounds/jack/randomizers/pain.tres" id="6_5g1ux"]
+[ext_resource type="Script" uid="uid://c71mnw1q3srk5" path="res://Scripts/Actors/Jack/sound_effects.gd" id="7_21le6"]
+[ext_resource type="AudioStream" uid="uid://cjrx5a838qdl6" path="res://Sounds/jack/randomizers/jump.tres" id="7_rmggf"]
+[ext_resource type="AudioStream" uid="uid://bl8khmu401gdm" path="res://Sounds/jack/randomizers/falling.tres" id="9_d2afn"]
+[ext_resource type="AudioStream" uid="uid://ciyg662l7igy" path="res://Sounds/jack/randomizers/box_loss.tres" id="10_lat47"]
+[ext_resource type="AudioStream" uid="uid://raidbk7jqe27" path="res://Sounds/jack/randomizers/nervous.tres" id="11_1kurg"]
+[ext_resource type="AudioStream" uid="uid://dcqtgme0ok0ac" path="res://Sounds/jack/randomizers/panic.tres" id="12_fa6cq"]
+[ext_resource type="AudioStream" uid="uid://d55ufwt1j1pr" path="res://Sounds/jack/randomizers/success.tres" id="13_lat47"]
 
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
@@ -140,3 +148,34 @@ editor_description = "Ticks down the player's confidence at a set interval"
 editor_description = "Pop the player if the button is held long enough"
 wait_time = 0.25
 one_shot = true
+
+[node name="SoundEffects" type="Node3D" parent="." unique_id=1498075936]
+script = ExtResource("7_21le6")
+
+[node name="JumpSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=1235325956]
+stream = ExtResource("7_rmggf")
+bus = &"Sound Effects"
+
+[node name="PainSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=1805969599]
+stream = ExtResource("6_5g1ux")
+bus = &"Sound Effects"
+
+[node name="FallingSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=1032803447]
+stream = ExtResource("9_d2afn")
+bus = &"Sound Effects"
+
+[node name="BoxLossSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=1980723176]
+stream = ExtResource("10_lat47")
+bus = &"Sound Effects"
+
+[node name="NervousSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=2036952110]
+stream = ExtResource("11_1kurg")
+bus = &"Sound Effects"
+
+[node name="PanicSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=35903803]
+stream = ExtResource("12_fa6cq")
+bus = &"Sound Effects"
+
+[node name="SuccessSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=1584679200]
+stream = ExtResource("13_lat47")
+bus = &"Sound Effects"

@@ -1,0 +1,9 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://bl8khmu401gdm"]
+
+[ext_resource type="AudioStream" uid="uid://bowe1aie03j3c" path="res://Sounds/jack/falling1.ogg" id="1_p4ane"]
+[ext_resource type="AudioStream" uid="uid://du7wpgtxeo4u5" path="res://Sounds/jack/falling2.ogg" id="2_yy2t6"]
+
+[resource]
+streams_count = 2
+stream_0/stream = ExtResource("1_p4ane")
+stream_1/stream = ExtResource("2_yy2t6")

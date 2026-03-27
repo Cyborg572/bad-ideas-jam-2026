@@ -77,6 +77,7 @@ const UNSCORED_JUMPS := [
 @onready var box_collider: CollisionShape3D = $BoxCollider
 @onready var anxiety_timer: Timer = $Timers/AnxietyTimer
 @onready var pop_button_timer: Timer = $Timers/PopButtonTimer
+@onready var sound_effects: Node3D = $SoundEffects
 #endregion
 
 var state : State = State.GROUNDED
@@ -251,7 +252,7 @@ func _enter_state(from : State, to : State) -> void:
 
 			if score_jump:
 				var jump_coolness: float = calculate_jump_coolness()
-				GameManager.player_confidence += jump_coolness
+				GameManager.reward_player(jump_coolness)
 
 			reset_jump_stats()
 
@@ -430,9 +431,7 @@ func recieve_item(item: Attachable):
 
 
 func get_launched(launch_direction: Vector3, launch_force: float) -> void:
-	change_state(State.AIRBORN)
-	jump_type = JumpType.LAUNCH
-	velocity = launch_direction * launch_force
+	jump(JumpType.LAUNCH, launch_direction * launch_force)
 
 
 func start_charing_jump() -> void:
@@ -480,6 +479,35 @@ func finish_charge_jump() -> float:
 
 	is_jump_charging = false
 	return jump_multiplier
+
+
+func jump(
+	type: JumpType = JumpType.NORMAL,
+	jump_velocity: Variant = get_jump_strength(),
+	additional_velocity: Vector3 = Vector3.ZERO
+) -> void:
+	change_state(State.AIRBORN)
+	jump_type = type
+
+	# Some special casing
+	if jump_type in FLIP_JUMPS:
+		flipped_into_jump = true
+	if jump_type == JumpType.NORMAL:
+		jump_cancelled = false
+	if jump_type == JumpType.WALL:
+		walljump_count += 1
+
+	# jump velocity is set directly, and can be a float or Vector3
+	if jump_velocity is Vector3:
+		velocity = jump_velocity
+	elif jump_velocity is float or jump_velocity is int:
+		velocity.y = jump_velocity
+	else:
+		jump_velocity = get_jump_strength()
+
+	# Additional velocity must be a Vector3, and is added to current
+	velocity += additional_velocity
+	sound_effects.play_jump_sound()
 
 
 func match_face_to_confidence(confidence: float) -> void:
@@ -555,7 +583,7 @@ func calculate_jump_coolness() -> int:
 	) else 1
 
 	# Multiplier for wall jumps
-	var wall_jump_bonus: int = 1 + floor(clamp(1, walljump_count * 0.5, 8))
+	var wall_jump_bonus: int = floor(clamp(0, walljump_count * 0.5, 8))
 
 	# Any jump that starts with a flip is 3 times cooler, but that's OP so
 	# just double the score
@@ -638,15 +666,12 @@ func _physics_process(delta: float) -> void:
 				else:
 					box.detach()
 					leave_box()
-					jump_type = JumpType.POP_OUT
-					velocity.y = get_jump_strength()
-					change_state(State.AIRBORN)
+					jump(JumpType.POP_OUT)
 
 			false when is_carrying && carried_item == box:
 				is_carrying = false
 				anim.set("parameters/Carrying/blend_amount", 0)
-				jump_type = JumpType.POP_IN
-				velocity.y = get_jump_strength()
+				jump(JumpType.POP_IN)
 				popToBox()
 			false when box:
 				if distance_to_box < 1:
@@ -666,9 +691,7 @@ func _physics_process(delta: float) -> void:
 					box.detach()
 					leave_box()
 					box.pop()
-					jump_type = JumpType.LAUNCH
-					velocity.y = get_jump_strength() * 2
-					change_state(State.AIRBORN)
+					jump(JumpType.LAUNCH, get_jump_strength() * 2)
 				else:
 					velocity.y = 2
 					await box.pop()
@@ -719,17 +742,16 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_just_released("Jump"):
 				if is_hiding:
 					var jump_multiplier := finish_charge_jump()
-					var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+					#var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+					var launch_height: float = get_jump_strength() * jump_multiplier
 					var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
-					jump_type = JumpType.HOP
-					velocity += (launch_direction + launch_height) / 2
+					jump(JumpType.HOP, launch_height / 2, launch_direction / 2)
 					cap_speed()
 				else:
 					var jump_multiplier := finish_charge_jump()
-					var launch_height := Vector3.UP * get_jump_strength() * jump_multiplier
+					var launch_height: float = get_jump_strength() * jump_multiplier
 					var launch_direction : Vector3 = direction * get_move_speed() * jump_multiplier
-					jump_type = JumpType.SPRING
-					velocity += launch_direction + launch_height
+					jump(JumpType.SPRING, launch_height, launch_direction)
 					cap_speed()
 
 		State.GROUNDED:
@@ -780,12 +802,9 @@ func _physics_process(delta: float) -> void:
 			# Handle jump.
 			if Input.is_action_just_pressed("Jump"):
 				if (can_flip):
-					jump_type = JumpType.SIDE_FLIP
-					velocity = Vector3.UP * (get_jump_strength() * 1.5)
+					jump(JumpType.SIDE_FLIP, Vector3.UP * (get_jump_strength() * 1.5))
 				else:
-					jump_type = JumpType.NORMAL
-					jump_cancelled = false
-					velocity.y = get_jump_strength()
+					jump()
 
 			if Input.is_action_just_pressed("Attack") && is_carrying:
 				drop_carried_item(3, PI/4)
@@ -836,23 +855,20 @@ func _physics_process(delta: float) -> void:
 
 				is_hanging = false
 				if wall_dot > 0.8:
-					jump_type = JumpType.LEDGE_AWAY
-					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
+					jump(JumpType.LEDGE_AWAY, get_jump_strength(), wall_normal * 2)
 					follow_motion(wall_normal, 60 * delta)
 				else:
-					jump_type = JumpType.LEDGE_TOWARDS
-					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * -0.5)
+					jump(JumpType.LEDGE_TOWARDS, get_jump_strength(), wall_normal * -0.5)
 
 			# Handle boxed jump
 			elif Input.is_action_just_released("Jump") && is_boxed:
 				var jump_multiplier := finish_charge_jump()
-				var launch_height := (Vector3.UP * get_jump_strength() * jump_multiplier)
+				var launch_height: float = get_jump_strength() * jump_multiplier
 				var launch_direction :=  + (wall_normal * -0.5)
 
 				hanging_cooldown = 1
 				is_hanging = false
-				jump_type = JumpType.LEDGE_LAUNCH
-				velocity = launch_direction + launch_height
+				jump(JumpType.LEDGE_LAUNCH, launch_height, launch_direction)
 
 			# Move along ledge
 			else:
@@ -900,12 +916,9 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_just_pressed("Jump"):
 				active_camera.align(Utils.get_best_side_view(wall_normal, active_camera), 10)
 				if is_boxed:
-					jump_type = JumpType.WALL
-					velocity = wall_normal
+					jump(JumpType.WALL, wall_normal)
 				else:
-					jump_type = JumpType.WALL
-					walljump_count += 1
-					velocity = (get_jump_strength() * Vector3.UP) + (wall_normal * 2)
+					jump(JumpType.WALL, get_jump_strength(), wall_normal * 2)
 					follow_motion(wall_normal, 60 * delta)
 
 		State.AIRBORN:
@@ -993,11 +1006,10 @@ func _physics_process(delta: float) -> void:
 
 			if Input.is_action_pressed("Jump") and not ceiling_detect.is_colliding():
 				if speed > 1.5:
-					jump_type = JumpType.LONG
-					velocity += (Vector3.UP + (velocity.normalized() * 0.5)) * get_jump_strength()
+					var jump_direction := Vector3.UP + (velocity.normalized() * 0.5)
+					jump(JumpType.LONG, 0, jump_direction * get_jump_strength())
 				else:
-					jump_type = JumpType.BACK_FLIP
-					velocity = Vector3.UP  * (get_jump_strength() * 1.5)
+					jump(JumpType.BACK_FLIP, get_jump_strength() * 1.5)
 
 		State.ARMED when aiming:
 			print("Aiming!")
@@ -1008,7 +1020,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 
-func _on_player_confidence_changed(confidence: float) -> void:
+func _on_player_confidence_changed(confidence: float, _old_confidence: float) -> void:
 	match_face_to_confidence(confidence)
 
 

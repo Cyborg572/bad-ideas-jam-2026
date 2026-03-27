@@ -1,0 +1,11 @@
+[gd_resource type="AudioStreamRandomizer" format=3 uid="uid://raidbk7jqe27"]
+
+[ext_resource type="AudioStream" uid="uid://b224fr31mf5wg" path="res://Sounds/jack/nervous1.ogg" id="1_yqu0m"]
+[ext_resource type="AudioStream" uid="uid://do2dkrnkgojqd" path="res://Sounds/jack/nervous2.ogg" id="2_f2ghj"]
+[ext_resource type="AudioStream" uid="uid://5llde0y0dp7p" path="res://Sounds/jack/nervous3.ogg" id="3_x821k"]
+
+[resource]
+streams_count = 3
+stream_0/stream = ExtResource("1_yqu0m")
+stream_1/stream = ExtResource("2_f2ghj")
+stream_2/stream = ExtResource("3_x821k")
