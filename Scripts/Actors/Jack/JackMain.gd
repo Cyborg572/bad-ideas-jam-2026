@@ -674,12 +674,8 @@ func _physics_process(delta: float) -> void:
 				jump(JumpType.POP_IN)
 				popToBox()
 			false when box:
-				if distance_to_box < 1:
-					box.toggle_open()
-				else:
-					box.close()
-				if not box.is_open:
-					pop_button_timer.start()
+				box.toggle_open()
+				pop_button_timer.start()
 			_:
 				pass
 
