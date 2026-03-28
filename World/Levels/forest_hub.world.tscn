@@ -2,7 +2,9 @@
 
 [ext_resource type="PackedScene" uid="uid://beh0218hb3sxt" path="res://World/level_template.tscn" id="1_gclfr"]
 [ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="2_hhsys"]
+[ext_resource type="AudioStream" uid="uid://4j1gx70urogv" path="res://Music/interactive/melody2_interactive.tres" id="2_jbien"]
 [ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="3_hi3ln"]
+[ext_resource type="AudioStream" uid="uid://bjfaiwv7x2b54" path="res://Music/Pop_goes_weasel_mel2_280bpm.ogg" id="3_yhupi"]
 [ext_resource type="PackedScene" uid="uid://x286tq72vcnv" path="res://Models/original/worlds/forest_hub/boss_wall.glb" id="4_4w7al"]
 [ext_resource type="PackedScene" uid="uid://c6vje4jp3hxc3" path="res://Models/original/worlds/forest_hub/level_exit_cover.glb" id="4_h0onf"]
 [ext_resource type="Script" uid="uid://efge2y8tfd36" path="res://Scripts/Actors/moving_platform.gd" id="4_tdsrh"]
@@ -54,6 +56,9 @@ size = Vector3(1, 6.5, 0.75)
 size = Vector3(18.25, 10.75, 1)
 
 [node name="forest_hub" unique_id=1740911666 instance=ExtResource("1_gclfr")]
+title = "The Glade"
+background_music = ExtResource("2_jbien")
+cranking_sound = ExtResource("3_yhupi")
 
 [node name="DirectionalLight3D" parent="." index="1" unique_id=380656047]
 transform = Transform3D(0.79505026, -8.9586365e-09, 0.60654354, -0.60654354, -2.651286e-08, 0.79505026, 8.9586365e-09, -1, -2.651286e-08, 8.059591, 3.2663388, 0)
@@ -82,25 +87,35 @@ omni_range = 10.045
 
 [node name="exit_world1" parent="Gates" index="0" unique_id=2125747710 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -38.5, 0, 1.75)
+gate_id = 1
+destination_world = "uid://c66deceqdwy18"
 
 [node name="level_exit_cover" parent="Gates/exit_world1" index="8" unique_id=1692784233 instance=ExtResource("4_h0onf")]
 
 [node name="exit_world2" parent="Gates" index="1" unique_id=1583817992 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -3, -8)
+gate_id = 2
+destination_world = "uid://bedr1rqakjlna"
 
-[node name="exit_tutorial" parent="Gates" index="2" unique_id=1350551983 instance=ExtResource("3_hi3ln")]
-transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 19.000006, 12)
-gate_id = 1
-
-[node name="level_exit_cover" parent="Gates/exit_tutorial" index="8" unique_id=590568574 instance=ExtResource("4_h0onf")]
-
-[node name="exit_world3" parent="Gates" index="3" unique_id=1753961271 instance=ExtResource("3_hi3ln")]
+[node name="exit_world3" parent="Gates" index="2" unique_id=1753961271 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.75, 2.5, -27.75)
+gate_id = 3
+destination_world = "uid://dlfi5o7ls16y8"
 
 [node name="level_exit_cover" parent="Gates/exit_world3" index="8" unique_id=627373951 instance=ExtResource("4_h0onf")]
 
-[node name="exit_boss" parent="Gates" index="4" unique_id=854688300 instance=ExtResource("3_hi3ln")]
+[node name="exit_boss" parent="Gates" index="3" unique_id=854688300 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -33)
+gate_id = 4
+destination_world = "uid://dm01aug2lxdb5"
+
+[node name="exit_tutorial" parent="Gates" index="4" unique_id=1350551983 instance=ExtResource("3_hi3ln")]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 19.000006, 12)
+gate_id = -1
+destination_world = "uid://dqk2r40v804fr"
+destination_gate = 1
+
+[node name="level_exit_cover" parent="Gates/exit_tutorial" index="8" unique_id=590568574 instance=ExtResource("4_h0onf")]
 
 [node name="floating_island3" parent="." index="9" unique_id=2112176503 groups=["navigation_mesh_source_group"] instance=ExtResource("12_2h80x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -36.75, -3, 1.5)

@@ -3,7 +3,6 @@
 [ext_resource type="Theme" uid="uid://cnaxn7u3n0m3n" path="res://World/UITheme.tres" id="1_q6i1d"]
 [ext_resource type="Script" uid="uid://bmiv4qpi33mcj" path="res://Scripts/main_game_scene.gd" id="2_4tara"]
 [ext_resource type="Script" uid="uid://dhkh5118gb0fw" path="res://Scripts/main_viewport.gd" id="2_m2obh"]
-[ext_resource type="AudioStream" uid="uid://2cl3w527mleh" path="res://Music/interactive/melody3_interactive.tres" id="3_4tara"]
 [ext_resource type="PackedScene" uid="uid://y8x8jkr2afcw" path="res://Menus/PauseMenu.tscn" id="3_475tg"]
 [ext_resource type="AudioStream" uid="uid://b4tfkf4xn4qfn" path="res://Music/Pop_short_pizz_faster.ogg" id="4_4tara"]
 [ext_resource type="Script" uid="uid://b6ercbf3yiu46" path="res://Scripts/hud.gd" id="4_8rcjl"]
@@ -276,12 +275,9 @@ grow_vertical = 2
 theme = ExtResource("1_q6i1d")
 script = ExtResource("2_4tara")
 starting_level = "uid://dqk2r40v804fr"
-starting_level_gate = 1
 
 [node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1958800623]
 process_mode = 3
-stream = ExtResource("3_4tara")
-autoplay = true
 bus = &"Music"
 
 [node name="SecretChime" type="AudioStreamPlayer" parent="." unique_id=242344697]

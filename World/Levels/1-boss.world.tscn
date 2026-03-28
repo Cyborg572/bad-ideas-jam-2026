@@ -1,0 +1,25 @@
+[gd_scene format=3 uid="uid://dm01aug2lxdb5"]
+
+[ext_resource type="PackedScene" uid="uid://beh0218hb3sxt" path="res://World/level_template.tscn" id="1_esmw3"]
+[ext_resource type="AudioStream" uid="uid://itn3ilfqri0u" path="res://Music/Melody4_boss_combined.ogg" id="2_r5fpx"]
+[ext_resource type="PackedScene" uid="uid://dftk271cwh1j3" path="res://Models/original/worlds/forest_hub/floating_island.glb" id="2_xj4dr"]
+[ext_resource type="AudioStream" uid="uid://bjfaiwv7x2b54" path="res://Music/Pop_goes_weasel_mel2_280bpm.ogg" id="3_a1bbe"]
+[ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="3_r5fpx"]
+[ext_resource type="PackedScene" uid="uid://c6vje4jp3hxc3" path="res://Models/original/worlds/forest_hub/level_exit_cover.glb" id="4_a1bbe"]
+
+[node name="level_template" unique_id=1740911666 instance=ExtResource("1_esmw3")]
+title = "Spikus Battle"
+level_number = -1
+entrance_gate = 1
+background_music = ExtResource("2_r5fpx")
+cranking_sound = ExtResource("3_a1bbe")
+
+[node name="floating_island" parent="." index="6" unique_id=2112176503 instance=ExtResource("2_xj4dr")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
+
+[node name="forest_level_exit" parent="." index="7" unique_id=2125747710 instance=ExtResource("3_r5fpx")]
+transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 1.5)
+gate_id = 1
+destination_gate = 4
+
+[node name="level_exit_cover" parent="forest_level_exit" index="8" unique_id=1692784233 instance=ExtResource("4_a1bbe")]

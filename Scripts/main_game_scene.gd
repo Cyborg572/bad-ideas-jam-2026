@@ -22,6 +22,7 @@ var is_hiding_game : bool = false
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var sub_viewport: SubViewport = %SubViewport
 @onready var secret_chime: AudioStreamPlayer = $SecretChime
+@onready var background_music_player: AudioStreamPlayer = $BackgroundMusicPlayer
 
 func _ready() -> void:
 	GameManager.main_scene = self
@@ -49,6 +50,11 @@ func _on_secret_discovered(_secret_name: String) -> void:
 
 
 func load_level(requested_level_path: String, gate_id: int = 0):
+	if background_music_player.has_stream_playback():
+		var music: AudioStreamPlayback = background_music_player.get_stream_playback()
+		if music is AudioStreamPlaybackInteractive:
+			music.switch_to_clip_by_name("silence")
+
 	fade_out()
 
 	if not loading_text.visible:
@@ -96,8 +102,15 @@ func finish_loading_level() -> void:
 		get_tree().quit()
 	packed_level = packed_level as PackedScene
 	active_level = packed_level.instantiate()
-	active_level.entrance_gate = level_gate_id
+	if not level_gate_id == 0:
+		active_level.entrance_gate = level_gate_id
+
 	sub_viewport.add_child(active_level)
+	background_music_player.stream = active_level.background_music
+	background_music_player.play()
+	var music: AudioStreamPlayback = background_music_player.get_stream_playback()
+	#if music is AudioStreamPlaybackInteractive:
+			#music.switch_to_clip_by_name("boxed")
 	anim.play_backwards("start_loading")
 	await anim.animation_finished
 	level_loaded.emit(active_level)

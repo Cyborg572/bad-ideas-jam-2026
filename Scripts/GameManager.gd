@@ -174,6 +174,9 @@ func spawn_jack():
 	active_level.add_child(the_box)
 	active_level.add_child(main_camera)
 
+	# Set the cranking music
+	the_box.cranking_song = main_scene.active_level.cranking_sound
+
 	# Position everything
 	var spawn_point = active_level.get_active_spawn_point()
 	the_box.position = spawn_point.global_position
@@ -212,6 +215,7 @@ func spawn_jack():
 	await the_box.settled
 	jack.position = the_box.position
 
+	# TODO: Only close locked gates
 	if spawn_point is LevelExit:
 		spawn_point.close()
 
