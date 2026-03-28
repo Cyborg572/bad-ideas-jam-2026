@@ -1,0 +1,107 @@
+[gd_scene format=3 uid="uid://pbnithi5e6ud"]
+
+[ext_resource type="PackedScene" uid="uid://c55i5creb483s" path="res://Models/original/weasel.glb" id="1_hfv3f"]
+[ext_resource type="Script" uid="uid://c644wmuy733yv" path="res://Scripts/Actors/weasle.gd" id="2_5prxx"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="3_5prxx"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_cwh11"]
+height = 1.0
+radius = 0.75
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_hfv3f"]
+radius = 2.5
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_5prxx"]
+animation = &"appear"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_cwh11"]
+animation = &"chat"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_726ww"]
+animation = &"disappear"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_vpswa"]
+animation = &"hide"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_rylg6"]
+animation = &"idle"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_0fk4u"]
+advance_mode = 2
+advance_expression = "hiding"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_5prxx"]
+advance_mode = 2
+advance_expression = "not hiding
+"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_cwh11"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_726ww"]
+xfade_time = 0.1
+advance_mode = 2
+advance_expression = "chatting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vpswa"]
+xfade_time = 0.1
+advance_mode = 2
+advance_expression = "not chatting"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_rylg6"]
+xfade_time = 0.1
+advance_mode = 2
+advance_expression = "hiding"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_y85nu"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_k5fwq"]
+advance_mode = 2
+advance_expression = "not hiding"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_5prxx"]
+states/appear/node = SubResource("AnimationNodeAnimation_5prxx")
+states/appear/position = Vector2(355, 100)
+states/chat/node = SubResource("AnimationNodeAnimation_cwh11")
+states/chat/position = Vector2(625, -42)
+states/disappear/node = SubResource("AnimationNodeAnimation_726ww")
+states/disappear/position = Vector2(529, 100)
+states/hide/node = SubResource("AnimationNodeAnimation_vpswa")
+states/hide/position = Vector2(355, 206)
+states/idle/node = SubResource("AnimationNodeAnimation_rylg6")
+states/idle/position = Vector2(355, -20)
+transitions = ["Start", "hide", SubResource("AnimationNodeStateMachineTransition_0fk4u"), "hide", "appear", SubResource("AnimationNodeStateMachineTransition_5prxx"), "appear", "idle", SubResource("AnimationNodeStateMachineTransition_cwh11"), "idle", "chat", SubResource("AnimationNodeStateMachineTransition_726ww"), "chat", "idle", SubResource("AnimationNodeStateMachineTransition_vpswa"), "idle", "disappear", SubResource("AnimationNodeStateMachineTransition_rylg6"), "disappear", "hide", SubResource("AnimationNodeStateMachineTransition_y85nu"), "Start", "idle", SubResource("AnimationNodeStateMachineTransition_k5fwq")]
+graph_offset = Vector2(25, -121)
+
+[node name="weasel" unique_id=230894949 instance=ExtResource("1_hfv3f")]
+script = ExtResource("2_5prxx")
+
+[node name="InteractionPoint" type="Area3D" parent="." index="2" unique_id=1943150269]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("3_5prxx")
+type = 2
+require_focus = true
+pointer_position = Vector3(0, 1.5, -0.25)
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" index="1" unique_id=226361520]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CylinderShape3D_cwh11")
+
+[node name="TriggerZone" type="Area3D" parent="." index="3" unique_id=1014247186]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="TriggerZone" index="0" unique_id=991358921]
+shape = SubResource("SphereShape3D_hfv3f")
+
+[node name="vanishTimer" type="Timer" parent="." index="4" unique_id=1682859831]
+wait_time = 1.5
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="5" unique_id=1442033915 groups=["weasels"]]
+active = false
+tree_root = SubResource("AnimationNodeStateMachine_5prxx")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")

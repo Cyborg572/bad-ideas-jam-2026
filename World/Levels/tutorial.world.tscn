@@ -6,6 +6,7 @@
 [ext_resource type="MeshLibrary" uid="uid://clf0iphvuyght" path="res://Models/forrest_tiles.meshlib" id="6_0ch6b"]
 [ext_resource type="PackedScene" uid="uid://ckqitw5vxo83v" path="res://Actors/death_zone.tscn" id="7_13yra"]
 [ext_resource type="PackedScene" uid="uid://bokohmujw272q" path="res://Actors/Pickups/mullberry.tscn" id="8_2580x"]
+[ext_resource type="PackedScene" uid="uid://pbnithi5e6ud" path="res://Actors/weasel.tscn" id="10_p5poa"]
 [ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Scripts/Actors/Attachable.gd" id="12_ojlqv"]
 [ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="12_v2mee"]
 [ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="16_d4yy2"]
@@ -159,8 +160,17 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10.25, 0.75, -6.25)
 [node name="signpost" parent="Signage" unique_id=265319638 instance=ExtResource("12_v2mee")]
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -2.5, 0.75, -6)
 
-[node name="signpost2" parent="Signage" unique_id=1164020887 instance=ExtResource("12_v2mee")]
-transform = Transform3D(0.81056327, 0, 0.58565104, 0, 1, 0, -0.58565104, 0, 0.81056327, 2.38373, 0.76503974, 2.5819774)
-
 [node name="signpost3" parent="Signage" unique_id=776866091 instance=ExtResource("12_v2mee")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0.75, -1.75)
+
+[node name="weasel" parent="." unique_id=1950583917 instance=ExtResource("10_p5poa")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0.75, -1)
+
+[node name="weasel2" parent="." unique_id=975088876 instance=ExtResource("10_p5poa")]
+transform = Transform3D(0.9659258, 0, 0.25881904, 0, 1, 0, -0.25881904, 0, 0.9659258, -2.25, 0.75, -5)
+
+[node name="weasel3" parent="." unique_id=372194759 instance=ExtResource("10_p5poa")]
+transform = Transform3D(0.9659258, 0, 0.25881904, 0, 1, 0, -0.25881904, 0, 0.9659258, 3.5, 0.75, -24.5)
+
+[node name="weasel4" parent="." unique_id=25626124 instance=ExtResource("10_p5poa")]
+transform = Transform3D(0.9659258, 0, 0.25881904, 0, 1, 0, -0.25881904, 0, 0.9659258, -12, 0.25, -24.5)
