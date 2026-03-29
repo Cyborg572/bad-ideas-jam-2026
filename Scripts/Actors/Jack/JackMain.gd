@@ -968,7 +968,6 @@ func _physics_process(delta: float) -> void:
 			# Apply gravity
 			velocity += gravity * delta
 
-			# TODO: This should be looking at jump type
 			var flipping = jump_type in FLIP_JUMPS
 			apply_movement(direction, delta, 1.5 if flipping else 1.0)
 			#if flipping:

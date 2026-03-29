@@ -5,7 +5,7 @@ signal attached(attachable: Attachable, target : Node3D)
 signal detached(attachable: Attachable, target : Node3D)
 
 @export var has_attachment : bool = false
-@export var attachment : PhysicsBody3D
+@export var attachment : Node3D
 
 var attachment_point : Node3D = Node3D.new()
 var interaction_point : InteractionPoint
@@ -38,8 +38,9 @@ func attach(target : Node3D):
 	attachment = target
 	velocity = Vector3.ZERO
 	interaction_point.disable()
-	attachment.add_collision_exception_with(self)
-	add_collision_exception_with(attachment)
+	if attachment is PhysicsBody3D:
+		attachment.add_collision_exception_with(self)
+		add_collision_exception_with(attachment)
 	_attach(target)
 
 	attached.emit(self, target)
@@ -79,6 +80,9 @@ func detach():
 
 
 func clear_extra_collision_exceptions(all : bool = false) -> void:
+	if not attachment is PhysicsBody3D:
+		return
+
 	for body in get_collision_exceptions():
 		if body != attachment || all:
 			body.remove_collision_exception_with(self)
@@ -181,7 +185,7 @@ func _physics_process(delta: float) -> void:
 			if passing:
 				if interaction_point.disabled:
 					interaction_point.enable()
-				if attachment:
+				if attachment and attachment is PhysicsBody3D:
 					attachment.remove_collision_exception_with(self)
 					remove_collision_exception_with(attachment)
 					clear_extra_collision_exceptions(true)

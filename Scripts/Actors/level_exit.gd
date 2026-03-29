@@ -31,11 +31,11 @@ var is_open = false
 
 func _ready() -> void:
 	if sign_enabled:
-		signpost.show()
+		signpost.enable()
 		if not sign_image == null:
 			signpost.change_image(sign_image)
 	else:
-		signpost.hide()
+		signpost.disable()
 
 	anim.active = true
 

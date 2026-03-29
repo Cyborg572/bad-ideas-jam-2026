@@ -29,6 +29,7 @@ func _ready() -> void:
 	GameManager.bg_music_player = $BackgroundMusicPlayer
 	GameManager.level_changed.connect(load_level)
 	GameManager.secret_discovered.connect(_on_secret_discovered)
+	GameManager.goal_achieved.connect(_on_goal_achieved)
 
 	# Allow a level to be pre-set in the editor
 	if sub_viewport.get_child_count() > 0:
@@ -50,6 +51,10 @@ func _process(_delta: float) -> void:
 
 func _on_secret_discovered(_secret_name: String) -> void:
 	print("Ther's a new secret!")
+	secret_chime.play()
+
+
+func _on_goal_achieved() -> void:
 	secret_chime.play()
 
 
@@ -114,9 +119,6 @@ func finish_loading_level() -> void:
 	sub_viewport.add_child(active_level)
 	background_music_player.stream = active_level.background_music
 	background_music_player.play()
-	var music: AudioStreamPlayback = background_music_player.get_stream_playback()
-	#if music is AudioStreamPlaybackInteractive:
-			#music.switch_to_clip_by_name("boxed")
 	anim.play_backwards("start_loading")
 	await anim.animation_finished
 	level_loaded.emit(active_level)

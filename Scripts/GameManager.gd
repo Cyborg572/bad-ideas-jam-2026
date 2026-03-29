@@ -10,6 +10,7 @@ signal player_confidence_changed(old_confidence: float, new_confidence: float)
 signal distance_to_box_changed(distance: float)
 signal level_changed(new_level: String, gate_id: int)
 signal secret_discovered(secret_name: String)
+signal goal_achieved
 
 
 @export var jack_scene: PackedScene = preload("uid://wkiytlqj20xh")
@@ -338,14 +339,17 @@ func box_out_of_bounds() -> void:
 
 
 func claim_secret(secret_name: String) -> void:
-	if discovered_secrets.has(secret_name):
+	if active_level.level_state.is_secret_discovered(secret_name):
 		print("That secret's claimed alread")
 		return
 
 	print("new secret: %s" % secret_name)
-	discovered_secrets.push_back(secret_name)
+	active_level.level_state.discover_secret(secret_name)
 	secret_discovered.emit(secret_name)
 
+
+func achieve_goal() -> void:
+	goal_achieved.emit()
 
 
 func change_level(new_level: String, gate_id: int = 0) -> void:

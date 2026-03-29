@@ -1,0 +1,230 @@
+[gd_scene format=3 uid="uid://bnu7b8l8k0n3t"]
+
+[ext_resource type="PackedScene" uid="uid://urxay7fu4u7t" path="res://Models/original/gem_plinth.glb" id="1_qvuwk"]
+[ext_resource type="PackedScene" uid="uid://b7xm6nsbk44dh" path="res://Actors/sign.tscn" id="2_cw8bq"]
+[ext_resource type="Script" uid="uid://jryot0uufmb1" path="res://Scripts/Actors/gem_plinth.gd" id="2_q3yj1"]
+[ext_resource type="Texture2D" uid="uid://47kc60tchf8f" path="res://Images/signs/8_shards.png" id="3_kr8e1"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="4_kr8e1"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_q3yj1"]
+height = 0.5
+
+[sub_resource type="Animation" id="Animation_q3yj1"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FakeGem:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FakeGem:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0.19999999, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FakeGem:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_3ta4t"]
+resource_name = "hidden"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FakeGem:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FakeGem:scale")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.25),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.1, 0.1, 0.1), Vector3(0.100000024, 0.100000024, 0.100000024)]
+}
+
+[sub_resource type="Animation" id="Animation_koq8y"]
+resource_name = "reveal"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FakeGem:scale")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.100000024, 0.100000024, 0.100000024), Vector3(1, 1, 1)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FakeGem:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.19999999, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_mbipy"]
+resource_name = "spin"
+length = 6.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("FakeGem:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 6.2831855, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("FakeGem:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 3.0000002, 6),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 0,
+"values": [Vector3(0, 0.19999999, 0), Vector3(0, 0.17, 0), Vector3(0, 0.19999999, 0)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("FakeGem:scale")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 6),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(1, 1, 1), Vector3(1, 1, 1)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_koq8y"]
+_data = {
+&"RESET": SubResource("Animation_q3yj1"),
+&"hidden": SubResource("Animation_3ta4t"),
+&"reveal": SubResource("Animation_koq8y"),
+&"spin": SubResource("Animation_mbipy")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_q3yj1"]
+animation = &"hidden"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_3ta4t"]
+animation = &"reveal"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mbipy"]
+animation = &"spin"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_koq8y"]
+advance_mode = 2
+advance_expression = "lock_enabled"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ekkyw"]
+priority = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a5rpa"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fm67w"]
+advance_mode = 2
+advance_expression = "not locked"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_q3yj1"]
+advance_mode = 2
+advance_expression = "locked"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7c6tt"]
+states/Start/position = Vector2(186, 148)
+states/hidden/node = SubResource("AnimationNodeAnimation_q3yj1")
+states/hidden/position = Vector2(385, 297)
+states/reveal/node = SubResource("AnimationNodeAnimation_3ta4t")
+states/reveal/position = Vector2(543, 157)
+states/spin/node = SubResource("AnimationNodeAnimation_mbipy")
+states/spin/position = Vector2(385, 61)
+transitions = ["Start", "hidden", SubResource("AnimationNodeStateMachineTransition_koq8y"), "Start", "spin", SubResource("AnimationNodeStateMachineTransition_ekkyw"), "reveal", "spin", SubResource("AnimationNodeStateMachineTransition_a5rpa"), "hidden", "reveal", SubResource("AnimationNodeStateMachineTransition_fm67w"), "spin", "hidden", SubResource("AnimationNodeStateMachineTransition_q3yj1")]
+graph_offset = Vector2(0, 25)
+
+[node name="gem_plinth" unique_id=1603351441 instance=ExtResource("1_qvuwk")]
+script = ExtResource("2_q3yj1")
+gem_id = 1
+
+[node name="AttachmentPoint" type="Node3D" parent="FakeGem" parent_id_path=PackedInt32Array(1825114597) index="0" unique_id=2097087633]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+
+[node name="signpost" parent="." index="2" unique_id=265319638 instance=ExtResource("2_cw8bq")]
+transform = Transform3D(0.99999994, 0, 0, 0, 1, 0, 0, 0, 0.99999994, -0.75, 0, 0)
+visible = false
+image = ExtResource("3_kr8e1")
+message_text = "This Gem has been broken! Collect all 8 shards to restore it."
+
+[node name="InteractionPoint" type="Area3D" parent="." index="3" unique_id=994882829]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("4_kr8e1")
+type = 5
+disabled = true
+require_focus = true
+pointer_position = Vector3(0, 0.6, 0)
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" index="1" unique_id=1505042433]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("CylinderShape3D_q3yj1")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="4" unique_id=899228343]
+libraries/ = SubResource("AnimationLibrary_koq8y")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="5" unique_id=2047239371]
+active = false
+tree_root = SubResource("AnimationNodeStateMachine_7c6tt")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")

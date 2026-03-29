@@ -2,6 +2,7 @@
 class_name Sign
 extends StaticBody3D
 
+@export var enabled : bool = true
 
 @export var image : Texture2D:
 	set(new_image):
@@ -17,12 +18,18 @@ var display : Material
 
 @onready var model: MeshInstance3D = $Cylinder
 @onready var interaction_point: InteractionPoint = $InteractionPoint
+@onready var collision_shape_3d: CollisionShape3D = $CollisionShape3D
 
 func _ready() -> void:
 	if message_enabled:
 		interaction_point.enable()
 	else:
 		interaction_point.disable()
+
+	if enabled:
+		enable()
+	else:
+		disable()
 
 	display = model.get_surface_override_material(2)
 	display.albedo_texture = image
@@ -31,3 +38,16 @@ func _ready() -> void:
 func change_image(new_image: Texture2D) -> void:
 	image = new_image
 	display.albedo_texture = image
+
+
+func disable() -> void:
+	hide()
+	collision_shape_3d.disabled = true
+	interaction_point.disable()
+
+
+func enable() -> void:
+	show()
+	collision_shape_3d.disabled = false
+	if message_enabled:
+		interaction_point.enable()

@@ -104,4 +104,5 @@ func toggle_paused() -> void:
 	if is_paused:
 		resume()
 	else:
+		update_status_display()
 		pause()

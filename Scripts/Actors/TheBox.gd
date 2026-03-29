@@ -168,6 +168,10 @@ func would_recieve_item(_item: Attachable) -> bool:
 
 
 func recieve_item(item: Attachable) -> bool:
+	if item is Gem:
+		item.claim()
+		return true
+
 	inventory.push_back(item)
 	item.get_parent().remove_child(item)
 	return true
@@ -250,14 +254,6 @@ func get_interaction_type(point: InteractionPoint) -> InteractionPoint.Interacti
 			return InteractionPoint.InteractionType.dispenser
 		_:
 			return InteractionPoint.InteractionType.attachable
-
-
-func _on_interaction_point_interaction(point: InteractionPoint) -> void:
-	var jack : Jack = GameManager.jack
-	if point.type != InteractionPoint.InteractionType.custom:
-		return
-
-	give_item(jack)
 
 
 func _on_anim_complete(_animation: String):
