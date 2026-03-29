@@ -1,6 +1,7 @@
 extends Control
 
 @export var start_button: Button
+@export var continue_button: Button
 @export var main_scene: PackedScene
 @export var credits_scene: PackedScene
 
@@ -9,7 +10,12 @@ extends Control
 @onready var the_box: TheBox = $HBoxContainer/SubViewportContainer/SubViewport/Node3D/TheBox
 
 func _ready() -> void:
-	start_button.grab_focus.call_deferred()
+	if GameManager.game_state.has_saved_game():
+		continue_button.disabled = false
+		continue_button.grab_focus.call_deferred()
+	else:
+		continue_button.disabled = true
+		start_button.grab_focus.call_deferred()
 	jack.animation_tree.process_mode = Node.PROCESS_MODE_DISABLED
 	jack.anim.play("SideFlip")
 	jack.anim.seek(0.38, true)
@@ -34,3 +40,8 @@ func _on_credits_button_pressed() -> void:
 
 func _on_quit_button_pressed() -> void:
 	get_tree().quit()
+
+
+func _on_continue_button_pressed() -> void:
+	GameManager.game_state.load_game()
+	get_tree().change_scene_to_packed(main_scene)

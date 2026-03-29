@@ -3,7 +3,7 @@ extends Control
 
 
 signal level_loading
-signal level_loaded(level_scene)
+signal level_loaded(level_scene: Level)
 signal fade_out_finished
 signal fade_in_finished
 
@@ -36,7 +36,11 @@ func _ready() -> void:
 		anim.play_backwards("fade_out")
 
 	if active_level == null:
-		load_level(starting_level, starting_level_gate)
+		var current_level_path = GameManager.game_state.get_scene_file_path()
+		if current_level_path != "":
+			load_level(current_level_path, GameManager.game_state.get_active_gate_id())
+		else:
+			load_level(starting_level, starting_level_gate)
 
 
 func _process(_delta: float) -> void:
@@ -97,13 +101,15 @@ func unload_current_level() -> void:
 
 func finish_loading_level() -> void:
 	var packed_level = ResourceLoader.load_threaded_get(level_path)
+
+	GameManager.game_state.set_scene_file_path(level_path)
+	GameManager.game_state.set_active_gate_id(level_gate_id)
+
 	if not packed_level is PackedScene:
 		push_error("Error: \"%s\" is not a scene" % level_path)
 		get_tree().quit()
 	packed_level = packed_level as PackedScene
 	active_level = packed_level.instantiate()
-	if not level_gate_id == 0:
-		active_level.entrance_gate = level_gate_id
 
 	sub_viewport.add_child(active_level)
 	background_music_player.stream = active_level.background_music

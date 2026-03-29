@@ -1,4 +1,19 @@
+class_name GemShard
 extends Node3D
+
+enum ShardId {
+	NONE,
+	SHARD_1,
+	SHARD_2,
+	SHARD_3,
+	SHARD_4,
+	SHARD_5,
+	SHARD_6,
+	SHARD_7,
+	SHARD_8,
+}
+
+@export var shard_id: ShardId = ShardId.NONE
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var area_3d: Area3D = $Area3D

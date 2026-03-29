@@ -18,14 +18,30 @@ extends Node3D
 @export var cranking_sound : AudioStream
 
 
-# Called when the node enters the scene tree for the first time.
+var level_reference: PlayerState.LevelReference
+var level_state: PlayerState.LevelData
+var collected_mullberries: int = 0
+
+
+func _init() -> void:
+	level_reference = PlayerState.LevelReference.new(world, level_number)
+	level_state = GameManager.game_state.get_level_data(level_reference)
+	if GameManager.game_state.get_active_gate_id() != 0:
+		entrance_gate = GameManager.game_state.get_active_gate_id()
+
+
 func _ready() -> void:
-	pass # Replace with function body.
+	var berries = get_tree().get_nodes_in_group("berries")
+	level_state.set_mullberry_total(berries.size())
+	for berry in berries:
+		if berry is Mullberry:
+			berry.collected.connect(_on_mullberry_collected)
 
 
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(_delta: float) -> void:
-	pass
+func get_title() -> String:
+	if level_number > 0:
+		return "%d-%d: %s" % [world, level_number, title]
+	return title
 
 
 func get_active_spawn_point(_use_checkpoint: bool = true) -> Node3D:
@@ -44,3 +60,8 @@ func get_gate_by_id(gate_id: int) -> Variant:
 				return gate
 
 	return default
+
+
+func _on_mullberry_collected() -> void:
+	collected_mullberries += 1
+	level_state.set_mullberry_record(collected_mullberries)

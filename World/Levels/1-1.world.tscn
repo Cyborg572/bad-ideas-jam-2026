@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="3_fv7m6"]
 [ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="3_rfrm0"]
 [ext_resource type="PackedScene" uid="uid://c6vje4jp3hxc3" path="res://Models/original/worlds/forest_hub/level_exit_cover.glb" id="4_fv7m6"]
+[ext_resource type="PackedScene" uid="uid://bnu7b8l8k0n3t" path="res://Actors/gem_plinth.tscn" id="7_5flrb"]
 
 [node name="level_template" unique_id=1740911666 instance=ExtResource("1_x6d46")]
 title = "Setting Out"
@@ -13,6 +14,9 @@ level_number = 1
 entrance_gate = 1
 background_music = ExtResource("2_rfrm0")
 cranking_sound = ExtResource("3_fv7m6")
+
+[node name="GridMap" parent="." index="3" unique_id=1376894822]
+metadata/_editor_floor_ = Vector3(0, 0, 0)
 
 [node name="floating_island" parent="." index="6" unique_id=2112176503 instance=ExtResource("2_sakjt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
@@ -23,3 +27,6 @@ gate_id = 1
 destination_gate = 1
 
 [node name="level_exit_cover" parent="forest_level_exit" index="8" unique_id=1692784233 instance=ExtResource("4_fv7m6")]
+
+[node name="gem_plinth" parent="." index="8" unique_id=1603351441 instance=ExtResource("7_5flrb")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 0, -2.5)

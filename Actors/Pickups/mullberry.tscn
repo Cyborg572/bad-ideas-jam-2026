@@ -122,7 +122,7 @@ _data = {
 &"pickup": SubResource("Animation_srfdy")
 }
 
-[node name="mullberry" unique_id=475435490 instance=ExtResource("1_vkxbp")]
+[node name="mullberry" unique_id=475435490 groups=["berries"] instance=ExtResource("1_vkxbp")]
 script = ExtResource("2_fhpyp")
 
 [node name="Berry3" parent="." index="0" unique_id=1617289120]

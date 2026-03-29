@@ -16,6 +16,9 @@ signal secret_discovered(secret_name: String)
 @export var the_box_scene: PackedScene = preload("uid://cu1llcu6fuf5h")
 @export var camera_scene: PackedScene = preload("uid://duykwhism24sd")
 
+# The current game state
+var game_state = PlayerState.new()
+
 # Things managed by the main world scene
 var active_level: Level = null
 var fade_in_signal: Signal
@@ -86,6 +89,7 @@ var discovered_secrets: Array[String] = []
 @onready var audio_bus_dialog: int = AudioServer.get_bus_index("Dialog")
 @onready var audio_dialog_volume: float = AudioServer.get_bus_volume_linear(audio_bus_dialog)
 #endregion
+
 
 func _on_jack_boxed() -> void:
 	# Make the music more confident

@@ -22,11 +22,11 @@ Todo:
 - [ ] Level progression
   - [x] Exits can transport you
   - [x] Have the game manager spawn Jack and TheBox
-  - [ ] Track Gems
+  - [x] Track Gems
   - [ ] Gems unlock exits
-- [ ] Better fall recovery
-  - [ ] Use a ray-cast to better detect the last ledge position
-  - [ ] Don't set the last ledge position on moving platforms
+- [x] Better fall recovery
+  - [x] Use ~~a ray-cast~~ the nav mesh to better detect the last ledge position
+  - [x] Don't set the last ledge position on moving platforms
 - [ ] Switches
 	- [x] Trigger zones
 	- [ ] Weight triggers
@@ -39,11 +39,12 @@ Todo:
   - [ ] Others?
 - [ ] Hazzards
   - [ ] Flame/Lazer/water jets?
+  - [x] Spikes!
 - [ ] The Mallet
-- [ ] Add Berry counter to UI
+- [x] Add Berry counter to UI
 - [ ] Allow viewing box contents
 - [x] Advanced animations
-- [ ] Set the current song from the level data
+- [x] Set the current song from the level data
 
 3D Models I need:
 
@@ -60,8 +61,7 @@ Todo:
 
 Bugs:
 
-- Edge grabs on low ledges
-- Pickup and throw when hiding
+- Can pause while loading (doesn't stop loading - not anymore)
 - Moving on ledges breaks when you move too fast (especially while boxed)
 - detaching mid ledge launch leaves the box collider in the wrong place
 - Need a special jack model for the main menu

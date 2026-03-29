@@ -387,3 +387,5 @@ horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1342893220]
 libraries/ = SubResource("AnimationLibrary_4tara")
+
+[connection signal="level_loaded" from="." to="PauseMenu" method="_on_main_level_loaded"]

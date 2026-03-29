@@ -32,7 +32,7 @@ size = Vector3(5, 5, 5)
 
 [sub_resource type="WorldBoundaryShape3D" id="WorldBoundaryShape3D_m16r1"]
 
-[node name="MainMenu" type="Control" unique_id=1220054263 node_paths=PackedStringArray("start_button")]
+[node name="MainMenu" type="Control" unique_id=1220054263 node_paths=PackedStringArray("start_button", "continue_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -42,6 +42,7 @@ grow_vertical = 2
 theme = ExtResource("1_3g7qx")
 script = ExtResource("1_r8dbq")
 start_button = NodePath("HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Start Button")
+continue_button = NodePath("HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Continue Button")
 main_scene = ExtResource("2_7ihqj")
 credits_scene = ExtResource("3_n6o36")
 
@@ -86,10 +87,19 @@ bbcode_enabled = true
 text = "[b]Bouncing Back[/b]"
 fit_content = true
 
+[node name="Continue Button" type="Button" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=1942241300]
+layout_mode = 2
+focus_neighbor_bottom = NodePath("../Start Button")
+focus_next = NodePath("../Start Button")
+disabled = true
+text = "Continue"
+
 [node name="Start Button" type="Button" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=777100360]
 layout_mode = 2
+focus_neighbor_top = NodePath("../Continue Button")
 focus_neighbor_bottom = NodePath("../Options Button")
 focus_next = NodePath("../Options Button")
+focus_previous = NodePath("../Continue Button")
 text = "New Game"
 
 [node name="Options Button" type="Button" parent="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer" unique_id=1534645383]
@@ -172,6 +182,7 @@ spot_range = 7.9091744
 [node name="Jack" parent="HBoxContainer/SubViewportContainer/SubViewport/Node3D" unique_id=1820938000 instance=ExtResource("7_1txdl")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, -0.34121752, 0.57929564, -1.6488105)
 
+[connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Continue Button" to="." method="_on_continue_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Start Button" to="." method="_on_start_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Options Button" to="." method="_on_options_button_pressed"]
 [connection signal="pressed" from="HBoxContainer/PanelContainer/MarginContainer2/VBoxContainer/Credits Button" to="." method="_on_credits_button_pressed"]

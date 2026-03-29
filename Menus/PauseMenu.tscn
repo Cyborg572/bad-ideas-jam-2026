@@ -3,8 +3,25 @@
 [ext_resource type="Theme" uid="uid://cnaxn7u3n0m3n" path="res://World/UITheme.tres" id="1_o0cs5"]
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="2_hnfxo"]
 [ext_resource type="Script" uid="uid://dq2qy304piwko" path="res://Scripts/Menus/PauseMenu.gd" id="2_wpn1c"]
+[ext_resource type="Texture2D" uid="uid://vjumsl78kygi" path="res://Images/gem_slot.png" id="4_t2718"]
+[ext_resource type="Texture2D" uid="uid://b3of830p3jrhj" path="res://Images/gem.png" id="5_57vwi"]
+[ext_resource type="Texture2D" uid="uid://c7k88bxyum2wl" path="res://Images/gem_shard_slot.png" id="5_m3dqc"]
+[ext_resource type="Texture2D" uid="uid://7ogls6ang3sg" path="res://Images/gem_shard.png" id="7_dnm8b"]
 
 [sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_o0cs5"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_hnfxo"]
+bg_color = Color(1, 0.8923333, 0.81, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_wpn1c"]
+font = ExtResource("2_hnfxo")
+font_size = 36
+font_color = Color(0.31, 0.13433334, 0, 1)
+
+[sub_resource type="LabelSettings" id="LabelSettings_t2718"]
+font = ExtResource("2_hnfxo")
+font_size = 24
+font_color = Color(0.31, 0.13433334, 0, 1)
 
 [sub_resource type="Animation" id="Animation_hnfxo"]
 resource_name = "HideMenu"
@@ -115,56 +132,485 @@ theme_override_constants/margin_top = 64
 theme_override_constants/margin_right = 256
 theme_override_constants/margin_bottom = 64
 
-[node name="PanelContainer" type="PanelContainer" parent="MarginContainer" unique_id=983862184]
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer" unique_id=1036842430]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="PanelContainer" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=983862184]
+custom_minimum_size = Vector2(200, 0)
 layout_mode = 2
 
-[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/PanelContainer" unique_id=328516818]
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/PanelContainer" unique_id=328516818]
 layout_mode = 2
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer" unique_id=1805299870]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer" unique_id=1805299870]
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="Menu Title" type="Label" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=852986826]
+[node name="Menu Title" type="Label" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=852986826]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("2_hnfxo")
 theme_override_font_sizes/font_size = 48
 text = "Pause"
 horizontal_alignment = 1
 
-[node name="HSeparator" type="HSeparator" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=904779118]
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=904779118]
 layout_mode = 2
 theme_override_constants/separation = 64
 theme_override_styles/separator = SubResource("StyleBoxEmpty_o0cs5")
 
-[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=772035543]
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer" unique_id=772035543]
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 
-[node name="ContinueButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1618240616]
+[node name="ContinueButton" type="Button" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=1618240616]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Continue"
 
-[node name="OptionsButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=152963523]
+[node name="SaveButton" type="Button" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=2073834609]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Save"
+
+[node name="OptionsButton" type="Button" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=152963523]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 disabled = true
 text = "Options"
 
-[node name="MainMenuButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=417177620]
+[node name="MainMenuButton" type="Button" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=417177620]
+unique_name_in_owner = true
 layout_mode = 2
 text = "Main Menu"
 
-[node name="QuitButton" type="Button" parent="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=400735461]
+[node name="QuitButton" type="Button" parent="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer" unique_id=400735461]
+unique_name_in_owner = true
 layout_mode = 2
 size_flags_vertical = 4
 text = "Quit"
 
+[node name="LevelSummary" type="PanelContainer" parent="MarginContainer/HBoxContainer" unique_id=817701984]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_styles/panel = SubResource("StyleBoxFlat_hnfxo")
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/HBoxContainer/LevelSummary" unique_id=1836986087]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer" unique_id=835727536]
+layout_mode = 2
+
+[node name="LevelTitle" type="Label" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer" unique_id=1583192379]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Level Title Here"
+label_settings = SubResource("LabelSettings_wpn1c")
+horizontal_alignment = 1
+
+[node name="HSeparator" type="HSeparator" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer" unique_id=761911091]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Gems" type="Control" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer" unique_id=854769526]
+custom_minimum_size = Vector2(201, 165)
+layout_mode = 2
+size_flags_horizontal = 4
+
+[node name="GemSlot1" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems" unique_id=905258901]
+layout_mode = 1
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("4_t2718")
+stretch_mode = 4
+
+[node name="Gem1" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems" unique_id=1276015096]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_right = 64.0
+offset_bottom = 64.0
+texture = ExtResource("5_57vwi")
+stretch_mode = 4
+
+[node name="GemSlot2" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems" unique_id=1278970931]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_bottom = 64.0
+grow_horizontal = 0
+texture = ExtResource("4_t2718")
+stretch_mode = 3
+
+[node name="Gem2" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems" unique_id=1263190752]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -64.0
+offset_bottom = 64.0
+grow_horizontal = 0
+texture = ExtResource("5_57vwi")
+stretch_mode = 3
+
+[node name="ShardGemSlots" type="Control" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems" unique_id=1712804215]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -128.0
+offset_right = 64.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="shardSlot1" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=864394948]
+layout_mode = 1
+offset_left = 13.0
+offset_top = 9.0
+offset_right = 45.0
+offset_bottom = 41.0
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="shardSlot2" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=1908299457]
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="shardSlot3" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=579573701]
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -42.0
+offset_top = 8.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 0
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="shardSlot4" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=2045391142]
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_bottom = 32.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="shardSlot5" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=724902450]
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -43.0
+offset_top = -39.0
+offset_right = -11.0
+offset_bottom = -7.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="shardSlot6" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=1016583575]
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="shardSlot7" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=228317194]
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -44.0
+offset_right = 48.0
+offset_bottom = -12.0
+grow_vertical = 0
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="shardSlot8" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=1343237592]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_vertical = 2
+texture = ExtResource("5_m3dqc")
+stretch_mode = 3
+
+[node name="Gem3" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGemSlots" unique_id=1687026313]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("4_t2718")
+stretch_mode = 3
+
+[node name="ShardGem" type="Control" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems" unique_id=401340698]
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -64.0
+offset_top = -128.0
+offset_right = 64.0
+grow_horizontal = 2
+grow_vertical = 0
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="shard1" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=52305513]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+offset_left = 13.0
+offset_top = 9.0
+offset_right = 45.0
+offset_bottom = 41.0
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="shard2" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=802055166]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="shard3" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=611797720]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 1
+anchor_left = 1.0
+anchor_right = 1.0
+offset_left = -42.0
+offset_top = 8.0
+offset_right = -10.0
+offset_bottom = 40.0
+grow_horizontal = 0
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="shard4" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=804489401]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 6
+anchor_left = 1.0
+anchor_top = 0.5
+anchor_right = 1.0
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_bottom = 32.0
+grow_horizontal = 0
+grow_vertical = 2
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="shard5" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=1289944307]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 3
+anchor_left = 1.0
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_left = -43.0
+offset_top = -39.0
+offset_right = -11.0
+offset_bottom = -7.0
+grow_horizontal = 0
+grow_vertical = 0
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="shard6" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=924110384]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+grow_horizontal = 2
+grow_vertical = 0
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="shard7" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=1784141965]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 2
+anchor_top = 1.0
+anchor_bottom = 1.0
+offset_left = 16.0
+offset_top = -44.0
+offset_right = 48.0
+offset_bottom = -12.0
+grow_vertical = 0
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="shard8" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=19757579]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_vertical = 2
+texture = ExtResource("7_dnm8b")
+stretch_mode = 3
+
+[node name="Gem3" type="TextureRect" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gems/ShardGem" unique_id=145154225]
+unique_name_in_owner = true
+visible = false
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -32.0
+offset_top = -32.0
+offset_right = 32.0
+offset_bottom = 32.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = ExtResource("5_57vwi")
+stretch_mode = 3
+
+[node name="BerryDisplay" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer" unique_id=2098895538]
+layout_mode = 2
+
+[node name="BerryLabel" type="Label" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/BerryDisplay" unique_id=1314068699]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Mullberries"
+label_settings = SubResource("LabelSettings_t2718")
+
+[node name="BerryCounter" type="Label" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/BerryDisplay" unique_id=1957603337]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "0/100"
+label_settings = SubResource("LabelSettings_t2718")
+horizontal_alignment = 2
+
+[node name="BerryRecord" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer" unique_id=286977086]
+layout_mode = 2
+
+[node name="RecordLabel" type="Label" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/BerryRecord" unique_id=322869678]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Record"
+label_settings = SubResource("LabelSettings_t2718")
+
+[node name="RecordCounter" type="Label" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/BerryRecord" unique_id=1597924860]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "0/100"
+label_settings = SubResource("LabelSettings_t2718")
+horizontal_alignment = 2
+
+[node name="HSeparator2" type="HSeparator" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer" unique_id=1631073775]
+layout_mode = 2
+theme_override_constants/separation = 32
+
+[node name="Gem Counter" type="HBoxContainer" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer" unique_id=1955822171]
+layout_mode = 2
+
+[node name="GemLabel" type="Label" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gem Counter" unique_id=198719957]
+layout_mode = 2
+size_flags_horizontal = 3
+text = "Gems"
+label_settings = SubResource("LabelSettings_t2718")
+
+[node name="GemCounter" type="Label" parent="MarginContainer/HBoxContainer/LevelSummary/MarginContainer/VBoxContainer/Gem Counter" unique_id=1374777744]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(100, 0)
+layout_mode = 2
+text = "0"
+label_settings = SubResource("LabelSettings_t2718")
+horizontal_alignment = 2
+
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=304871669]
 libraries/ = SubResource("AnimationLibrary_t2718")
 
-[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
-[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
-[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
-[connection signal="pressed" from="MarginContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/ContinueButton" to="." method="_on_continue_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/SaveButton" to="." method="_on_save_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/OptionsButton" to="." method="_on_options_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
+[connection signal="pressed" from="MarginContainer/HBoxContainer/PanelContainer/MarginContainer/VBoxContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
