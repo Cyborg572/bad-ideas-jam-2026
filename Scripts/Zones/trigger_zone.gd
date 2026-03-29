@@ -5,6 +5,8 @@ signal triggered(triggering_node: Node3D)
 signal retriggered(triggering_node: Node3D)
 signal untriggered()
 
+@export var chime: bool = false
+@export var single_use: bool = false
 
 @export_group("Triggered by", "trigger_by_")
 @export var trigger_by_jack_in_the_box: bool = true
@@ -88,13 +90,15 @@ func trigger() -> void:
 	var triggerer: Node3D = occupants.back()
 	if not is_triggered:
 		is_triggered = true
+		if chime:
+			GameManager.achieve_goal()
 		triggered.emit(triggerer)
 	else:
 		retriggered.emit(triggerer)
 
 
 func untrigger() -> void:
-	if is_triggered:
+	if is_triggered and not single_use:
 		is_triggered = false
 		untriggered.emit()
 

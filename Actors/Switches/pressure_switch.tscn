@@ -1,0 +1,177 @@
+[gd_scene format=3 uid="uid://dens0ustatvy5"]
+
+[ext_resource type="PackedScene" uid="uid://dgkb4js86s75" path="res://Models/original/pressure_switch.glb" id="1_dalts"]
+[ext_resource type="Script" uid="uid://iefdlteligvr" path="res://Scripts/Zones/trigger_zone.gd" id="2_qjjxp"]
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dalts"]
+points = PackedVector3Array(0.04753204, -0.00792563, 0.50793654, -0.04753204, -0.00792563, -0.50793654, -0.12698413, -0.00792563, -0.4920262, -0.3709805, 0.099554285, -0.1483922, 0.38324744, 0.099203065, -0.08837778, 0.50793654, -0.00792563, -0.04753204, -0.50793654, -0.00792563, 0.04753204, -0.1483922, 0.099554285, 0.3709805, 0.2951431, 0.099267066, 0.26564726, 0.1483922, 0.099554285, -0.3709805, 0.3491318, -0.00792563, -0.3809524, -0.3491318, -0.00792563, 0.3809524, 0.3809524, -0.00792563, 0.3491318, -0.37098008, 0.099554226, 0.14839204, -0.3809524, -0.00792563, -0.3491318, -0.14839204, 0.099554226, -0.37098008, 0.14839204, 0.099554226, 0.37098008, 0.3709805, 0.099554285, 0.1483922, 0.4761159, -0.00792563, 0.20633678, 0.20633678, -0.00792563, -0.4761159, -0.4761159, -0.00792563, -0.20633678, -0.20633678, -0.00792563, 0.4761159, 0.35435936, 0.09928634, -0.17713344, 0.4761159, -0.00792563, -0.20633678, 0.20633678, -0.00792563, 0.4761159, -0.4761159, -0.00792563, 0.20633678, -0.29514438, 0.0992673, 0.26564842, -0.2951431, 0.099267066, -0.26564726, 0.29514438, 0.0992673, -0.26564842, -0.20633678, -0.00792563, -0.4761159, 0.08837796, 0.09920317, -0.3832482, -0.08837796, 0.09920317, 0.3832482)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_qjjxp"]
+points = PackedVector3Array(-0.24236093, 6.938894e-18, 0.22217476, -0.18884535, 0.11666667, -0.2999391, 0.13130523, 0, -0.30298284, -0.21105017, 0.11666667, 0.2888715, 0.22217476, -1.3877788e-17, 0.24236096, -0.3029828, 0, -0.13130523, -0.34434867, 0.10555229, 0.055546854, 0.28880185, 0.10555229, -0.1999826, 0.3232323, 6.938894e-18, -0.03024766, 0.28880185, 0.11666667, 0.21105021, 0.096296035, 0.060895666, 0.33203676, -0.13124192, 0, -0.30298284, -0.030247644, 0, 0.32323232, 0.029577427, 0.099999994, -0.31606996, -0.29993904, 0.11666667, -0.18884538, -0.04440962, 0.11666667, 0.34441835, -0.3179888, 0.018457273, 0.13780846, 0.3029828, 0, 0.13130523, 0.34441835, 0.11666667, 0.04440964, 0.23334514, 0.018430766, -0.25454625, -0.34220633, 0.039515678, -0.032023225, -0.22217473, -6.938894e-18, -0.24236096, -0.13124192, 0, 0.30298284, 0.35555553, 0.10555229, -0.033272427, 0.3029828, 0, -0.13130523, 0.12839569, 0.099999994, -0.29626918, -0.030247644, 0, -0.32323232, -0.3232323, 6.938894e-18, 0.03024766, 0.13130523, 0, 0.30298284, -0.34434867, 0.10555229, -0.066614464, -0.25491405, 0.01837712, 0.23368233, 0.3232323, 6.938894e-18, 0.03024766)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_l3unj"]
+height = 0.2
+radius = 0.25
+
+[sub_resource type="Animation" id="Animation_4a1ht"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_qjjxp"]
+resource_name = "press"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.05, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sm2qs"]
+resource_name = "pressed"
+length = 0.25
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_l3unj"]
+resource_name = "release"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0, 0), Vector3(0, 0.05, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_sje16"]
+resource_name = "released"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Button:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0, 0.05, 0), Vector3(0, 0.05, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_sje16"]
+_data = {
+&"RESET": SubResource("Animation_4a1ht"),
+&"press": SubResource("Animation_qjjxp"),
+&"pressed": SubResource("Animation_sm2qs"),
+&"release": SubResource("Animation_l3unj"),
+&"released": SubResource("Animation_sje16")
+}
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_qjjxp"]
+animation = &"press"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_l3unj"]
+animation = &"pressed"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_4a1ht"]
+animation = &"release"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_sm2qs"]
+animation = &"released"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sje16"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_unq27"]
+switch_mode = 2
+advance_mode = 2
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1j7gm"]
+advance_mode = 2
+advance_expression = "not is_triggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_r04aq"]
+advance_mode = 2
+advance_expression = "is_triggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_26qv6"]
+advance_mode = 2
+advance_expression = "is_triggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_m00j6"]
+advance_mode = 2
+advance_expression = "not is_triggered"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_dw0bc"]
+states/Start/position = Vector2(532, 72)
+states/press/node = SubResource("AnimationNodeAnimation_qjjxp")
+states/press/position = Vector2(409, -15)
+states/pressed/node = SubResource("AnimationNodeAnimation_l3unj")
+states/pressed/position = Vector2(635, -8)
+states/release/node = SubResource("AnimationNodeAnimation_4a1ht")
+states/release/position = Vector2(657, 156)
+states/released/node = SubResource("AnimationNodeAnimation_sm2qs")
+states/released/position = Vector2(422, 156)
+transitions = ["press", "pressed", SubResource("AnimationNodeStateMachineTransition_sje16"), "release", "released", SubResource("AnimationNodeStateMachineTransition_unq27"), "pressed", "release", SubResource("AnimationNodeStateMachineTransition_1j7gm"), "released", "press", SubResource("AnimationNodeStateMachineTransition_r04aq"), "Start", "pressed", SubResource("AnimationNodeStateMachineTransition_26qv6"), "Start", "released", SubResource("AnimationNodeStateMachineTransition_m00j6")]
+graph_offset = Vector2(-8, -59)
+
+[node name="pressure_switch" unique_id=694650205 instance=ExtResource("1_dalts")]
+script = ExtResource("2_qjjxp")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Plate" parent_id_path=PackedInt32Array(1509799466) index="0" unique_id=1512610552]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Plate/StaticBody3D" index="0" unique_id=663857507]
+shape = SubResource("ConvexPolygonShape3D_dalts")
+
+[node name="StaticBody3D" type="StaticBody3D" parent="Button" parent_id_path=PackedInt32Array(1179413980) index="0" unique_id=2110497267]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Button/StaticBody3D" index="0" unique_id=644913421]
+shape = SubResource("ConvexPolygonShape3D_qjjxp")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="2" unique_id=2016266428]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.099999994, 0)
+shape = SubResource("CylinderShape3D_l3unj")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="3" unique_id=398935191]
+libraries/ = SubResource("AnimationLibrary_sje16")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="4" unique_id=166148944]
+tree_root = SubResource("AnimationNodeStateMachine_dw0bc")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")

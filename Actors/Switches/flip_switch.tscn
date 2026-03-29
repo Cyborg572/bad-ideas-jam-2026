@@ -1,0 +1,130 @@
+[gd_scene format=3 uid="uid://rc6g1i84nd84"]
+
+[ext_resource type="PackedScene" uid="uid://b1sd5pvq1ylkq" path="res://Models/original/flip_switch.glb" id="1_bct5q"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="2_gor6v"]
+[ext_resource type="Script" uid="uid://bm1ud6qacgjxd" path="res://Scripts/Actors/flip_switch.gd" id="2_i7pwh"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_bct5q"]
+radius = 0.125
+height = 1.0
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_i7pwh"]
+height = 1.0
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_i7pwh"]
+animation = &"off"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_pntrh"]
+animation = &"on"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_nhw54"]
+advance_mode = 2
+advance_expression = "is_triggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_prqd5"]
+advance_mode = 2
+advance_expression = "not is_triggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_p7k20"]
+xfade_time = 0.1
+advance_mode = 2
+advance_expression = "is_triggered"
+
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_sskkr"]
+xfade_time = 0.1
+advance_mode = 2
+advance_expression = "not is_triggered"
+
+[sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_i7pwh"]
+states/off/node = SubResource("AnimationNodeAnimation_i7pwh")
+states/off/position = Vector2(498, 45)
+states/on/node = SubResource("AnimationNodeAnimation_pntrh")
+states/on/position = Vector2(498, 187)
+transitions = ["Start", "on", SubResource("AnimationNodeStateMachineTransition_nhw54"), "Start", "off", SubResource("AnimationNodeStateMachineTransition_prqd5"), "off", "on", SubResource("AnimationNodeStateMachineTransition_p7k20"), "on", "off", SubResource("AnimationNodeStateMachineTransition_sskkr")]
+
+[sub_resource type="Animation" id="Animation_gor6v"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("switch:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector3(2.3561945, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_i7pwh"]
+resource_name = "off"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("switch:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(0.78539807, 0, 0), Vector3(0.785398, 0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_pntrh"]
+resource_name = "on"
+length = 0.25
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("switch:rotation")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.23333335),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector3(2.3561945, 0, 0), Vector3(2.3561945, 0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nhw54"]
+_data = {
+&"RESET": SubResource("Animation_gor6v"),
+&"off": SubResource("Animation_i7pwh"),
+&"on": SubResource("Animation_pntrh")
+}
+
+[node name="flip_switch" unique_id=395103641 instance=ExtResource("1_bct5q")]
+script = ExtResource("2_i7pwh")
+
+[node name="switch" parent="." index="1" unique_id=1152781389]
+transform = Transform3D(1, 0, 0, 0, -0.70710677, -0.70710677, 0, 0.70710677, -0.70710677, 0, 0.75, 0)
+
+[node name="StaticBody3D" type="StaticBody3D" parent="." index="2" unique_id=1098486352]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D" index="0" unique_id=798693431]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
+shape = SubResource("CapsuleShape3D_bct5q")
+
+[node name="InteractionPoint" type="Area3D" parent="." index="3" unique_id=1898780738]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("2_gor6v")
+type = 3
+require_focus = true
+pointer_position = Vector3(0, 1.1, 0)
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" index="1" unique_id=1140240166]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0.25)
+shape = SubResource("CylinderShape3D_i7pwh")
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="4" unique_id=2091497728]
+tree_root = SubResource("AnimationNodeStateMachine_i7pwh")
+advance_expression_base_node = NodePath("..")
+anim_player = NodePath("../AnimationPlayer")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="." index="5" unique_id=18243231]
+libraries/ = SubResource("AnimationLibrary_nhw54")

@@ -1,0 +1,60 @@
+[remap]
+
+importer="scene"
+importer_version=1
+type="PackedScene"
+uid="uid://dgkb4js86s75"
+path="res://.godot/imported/pressure_switch.glb-59f22fa4bcd84715cd2bbbbbbd5f3d81.scn"
+
+[deps]
+
+source_file="res://Models/original/pressure_switch.glb"
+dest_files=["res://.godot/imported/pressure_switch.glb-59f22fa4bcd84715cd2bbbbbbd5f3d81.scn"]
+
+[params]
+
+nodes/root_type="Area3D"
+nodes/root_name=""
+nodes/root_script=null
+nodes/apply_root_scale=true
+nodes/root_scale=1.0
+nodes/import_as_skeleton_bones=false
+nodes/use_name_suffixes=true
+nodes/use_node_type_suffixes=true
+meshes/ensure_tangents=true
+meshes/generate_lods=true
+meshes/create_shadow_meshes=true
+meshes/light_baking=1
+meshes/lightmap_texel_size=0.2
+meshes/force_disable_compression=false
+skins/use_named_skins=true
+animation/import=true
+animation/fps=30
+animation/trimming=false
+animation/remove_immutable_tracks=true
+animation/import_rest_as_RESET=false
+import_script/path=""
+materials/extract=0
+materials/extract_format=0
+materials/extract_path=""
+_subresources={
+"materials": {
+"Statue": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/statue.tres",
+"use_external/path": "uid://cq4pdwjpdei46"
+},
+"Wood": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/wood.tres",
+"use_external/path": "uid://bsriwnpv7b48t"
+},
+"lightWood": {
+"use_external/enabled": true,
+"use_external/fallback_path": "res://Materials/light_wood.tres",
+"use_external/path": "uid://dux8yw0mh3x4s"
+}
+}
+}
+gltf/naming_version=2
+gltf/embedded_image_handling=1
