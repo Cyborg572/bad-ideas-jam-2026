@@ -27,6 +27,7 @@ func _ready() -> void:
 
 
 func _on_start_button_pressed() -> void:
+	GameManager.game_state.creat_blank_player_state()
 	get_tree().change_scene_to_packed(main_scene)
 
 

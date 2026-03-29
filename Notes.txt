@@ -62,6 +62,7 @@ Todo:
 Bugs:
 
 - Can pause while loading (doesn't stop loading - not anymore)
+- Edge grabs on low ledges <- The raycasts exist now, but aren't being used
 - Moving on ledges breaks when you move too fast (especially while boxed)
 - detaching mid ledge launch leaves the box collider in the wrong place
 - Need a special jack model for the main menu
