@@ -33,7 +33,11 @@ var speed : float = 1
 ## For one-way trips, this starts when the player steps off the platform[br]
 ## For round trips, this acts as a buffer if the player quickly steps off and
 ## back on.
-@export_range(0.0, 5.0, 0.1, "or_greater", "suffix:s") var delay : float = 1.0
+@export_range(0.1, 5.0, 0.1, "or_greater", "suffix:s") var delay : float = 1.0
+
+
+## Another trigger to use instead of the platform's built-in triggers
+@export var external_trigger: Node3D
 
 var platform_position : RemoteTransform3D = RemoteTransform3D.new()
 var platform : Platform
@@ -49,6 +53,10 @@ func _ready() -> void:
 	delay_timer.one_shot = true
 	delay_timer.timeout.connect(_on_delay_timer_timeout)
 	add_child(delay_timer)
+
+	if external_trigger and external_trigger.has_signal(&"triggered"):
+		external_trigger.triggered.connect(_on_external_trigger_triggered)
+		external_trigger.untriggered.connect(_on_external_trigger_untriggered)
 
 	if trip_type == TripType.AUTO:
 		moving = true
@@ -66,6 +74,16 @@ func _process(delta: float) -> void:
 		progress += delta * (speed if not reverse else -speed)
 
 
+func is_active() -> bool:
+	if external_trigger and "is_triggered" in external_trigger:
+		return external_trigger.is_triggered
+
+	if platform:
+		return platform.has_passenger()
+
+	return false
+
+
 func setup_platform() -> void:
 	var path_parent = get_parent().get_parent()
 
@@ -76,8 +94,9 @@ func setup_platform() -> void:
 			platform = child
 			platform.reparent.call_deferred(path_parent)
 			platform_position.remote_path = platform_position.get_path_to(platform)
-			platform.boarded.connect(_on_platform_boarded)
-			platform.vacated.connect(_on_platform_vacated)
+			if not external_trigger:
+				platform.boarded.connect(_on_platform_boarded)
+				platform.vacated.connect(_on_platform_vacated)
 			break
 
 
@@ -85,15 +104,15 @@ func should_move_automatically() -> bool:
 	match trip_type:
 		TripType.AUTO:
 			return true
-		TripType.ROUND_TRIP when platform.has_passenger():
+		TripType.ROUND_TRIP when is_active():
 			return true
-		TripType.ONE_WAY when at_path_terminus() and not platform.has_passenger():
+		TripType.ONE_WAY when at_path_terminus() and not is_active():
 			return true
-		TripType.ONE_WAY when at_path_start() and platform.has_passenger():
+		TripType.ONE_WAY when at_path_start() and is_active():
 			return true
-		TripType.TRANSIT when platform.has_passenger():
+		TripType.TRANSIT when is_active():
 			return true
-		TripType.RATCHET when at_path_terminus() and not platform.has_passenger():
+		TripType.RATCHET when at_path_terminus() and not is_active():
 			return true
 		_:
 			return false
@@ -118,9 +137,26 @@ func at_either_end_of_path(consider_direction: bool = false) -> bool:
 
 
 func _on_platform_boarded(_by: Node3D, _is_trigger: bool) -> void:
-	#if not is_trigger:
-		#return
+	start_trip()
 
+
+func _on_external_trigger_triggered(_by: Node3D) -> void:
+	start_trip()
+
+
+func _on_platform_vacated() -> void:
+	end_trip()
+
+
+func _on_external_trigger_untriggered() -> void:
+	end_trip()
+
+
+func _on_delay_timer_timeout() -> void:
+	moving = true
+
+
+func start_trip() -> void:
 	match trip_type:
 		TripType.AUTO:
 			pass
@@ -138,7 +174,8 @@ func _on_platform_boarded(_by: Node3D, _is_trigger: bool) -> void:
 			pass
 
 
-func _on_platform_vacated() -> void:
+
+func end_trip() -> void:
 	match trip_type:
 		TripType.AUTO:
 			pass
@@ -159,7 +196,3 @@ func _on_platform_vacated() -> void:
 			delay_timer.stop()
 		_:
 			pass
-
-
-func _on_delay_timer_timeout() -> void:
-	moving = true
