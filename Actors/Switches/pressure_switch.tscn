@@ -154,12 +154,12 @@ graph_offset = Vector2(-8, -59)
 [node name="pressure_switch" unique_id=694650205 instance=ExtResource("1_dalts")]
 script = ExtResource("2_qjjxp")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Plate" parent_id_path=PackedInt32Array(1509799466) index="0" unique_id=1512610552]
+[node name="StaticBody3D" type="StaticBody3D" parent="Plate" parent_id_path=PackedInt32Array(691674794) index="0" unique_id=1512610552]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Plate/StaticBody3D" index="0" unique_id=663857507]
 shape = SubResource("ConvexPolygonShape3D_dalts")
 
-[node name="StaticBody3D" type="StaticBody3D" parent="Button" parent_id_path=PackedInt32Array(1179413980) index="0" unique_id=2110497267]
+[node name="StaticBody3D" type="StaticBody3D" parent="Button" parent_id_path=PackedInt32Array(459510781) index="0" unique_id=2110497267]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Button/StaticBody3D" index="0" unique_id=644913421]
 shape = SubResource("ConvexPolygonShape3D_qjjxp")
