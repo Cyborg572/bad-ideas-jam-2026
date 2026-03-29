@@ -1,4 +1,3 @@
-@tool
 class_name GemPlinth
 extends Node3D
 
