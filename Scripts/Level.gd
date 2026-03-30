@@ -23,14 +23,12 @@ var level_state: PlayerState.LevelData
 var collected_mullberries: int = 0
 
 
-func _init() -> void:
+func _ready() -> void:
 	level_reference = PlayerState.LevelReference.new(world, level_number)
 	level_state = GameManager.game_state.get_level_data(level_reference)
 	if GameManager.game_state.get_active_gate_id() != 0:
 		entrance_gate = GameManager.game_state.get_active_gate_id()
 
-
-func _ready() -> void:
 	var berries = get_tree().get_nodes_in_group("berries")
 	level_state.set_mullberry_total(berries.size())
 	for berry in berries:

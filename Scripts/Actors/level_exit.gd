@@ -50,8 +50,8 @@ func _ready() -> void:
 	GameManager.level_ready.connect(_on_level_ready, CONNECT_ONE_SHOT)
 
 
-func _on_level_ready(_level: Level) -> void:
-	if is_locked():
+func _on_level_ready(level: Level) -> void:
+	if is_locked() and not level.entrance_gate == gate_id:
 		close()
 
 

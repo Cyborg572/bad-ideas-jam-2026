@@ -88,16 +88,17 @@ func change_interaction_type(type: InteractionPoint.InteractionType) -> void:
 
 func lock() -> void:
 	locked = true
-	interaction_point.disabled = true
+	interaction_point.disable()
 
 
 func unlock() -> void:
 	locked = false
-	interaction_point.disabled = false
 	if gem == null and not gem_claimed:
 		spawn_gem()
+		interaction_point.enable()
 	elif gem_claimed:
 		fake_gem.show()
+		interaction_point.disable()
 
 
 func would_receive_item(_item: Attachable) -> bool:

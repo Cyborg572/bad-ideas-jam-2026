@@ -239,8 +239,8 @@ func spawn_jack():
 	jack.position = the_box.position
 
 	# TODO: Only close locked gates
-	#if spawn_point is LevelExit:
-		#spawn_point.close()
+	if spawn_point is LevelExit and spawn_point.is_locked():
+		spawn_point.close()
 
 	# Start!
 	jack.is_frozen = false

@@ -9,10 +9,13 @@
 [ext_resource type="PackedScene" uid="uid://c6vje4jp3hxc3" path="res://Models/original/worlds/forest_hub/level_exit_cover.glb" id="4_h0onf"]
 [ext_resource type="Script" uid="uid://efge2y8tfd36" path="res://Scripts/Actors/moving_platform.gd" id="4_tdsrh"]
 [ext_resource type="PackedScene" uid="uid://tbek3xcg2lo" path="res://Actors/forest_platform.tscn" id="5_4w7al"]
+[ext_resource type="Texture2D" uid="uid://d1agy3dnxk8nw" path="res://Images/signs/1_gem.png" id="6_sjrkk"]
 [ext_resource type="PackedScene" uid="uid://efwbxtfj4kdk" path="res://Models/original/worlds/forest_hub/east_mountain.glb" id="7_racov"]
 [ext_resource type="Script" uid="uid://ba2byxdo5cmmb" path="res://Scripts/Zones/confidence_zone.gd" id="8_nt8lu"]
 [ext_resource type="PackedScene" uid="uid://c3i3rd5cvecgp" path="res://Models/original/worlds/forest_hub/shade_tree.glb" id="8_srw2c"]
+[ext_resource type="Texture2D" uid="uid://hvvv4cynajmm" path="res://Images/signs/3_gems.png" id="8_vib1g"]
 [ext_resource type="Texture2D" uid="uid://xt46ymsft6r" path="res://Images/signs/alert.png" id="10_06d4k"]
+[ext_resource type="Texture2D" uid="uid://ca4d45pqyt04y" path="res://Images/signs/2_gems.png" id="10_urvtv"]
 [ext_resource type="PackedScene" uid="uid://bnipp2chg4u4v" path="res://Actors/enemies/hedgehog.tscn" id="11_yor5b"]
 [ext_resource type="PackedScene" uid="uid://dftk271cwh1j3" path="res://Models/original/worlds/forest_hub/floating_island.glb" id="12_2h80x"]
 [ext_resource type="PackedScene" uid="uid://bv1tnbwi2d5c3" path="res://Models/original/worlds/forest_hub/west_mountain.glb" id="15_mxftt"]
@@ -112,6 +115,9 @@ omni_range = 10.045
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -38.5, 0, 1.75)
 gate_id = 1
 destination_world = "uid://c66deceqdwy18"
+lock_enabled = true
+lock_gem_count = 1
+sign_image = ExtResource("6_sjrkk")
 
 [node name="level_exit_cover" parent="Gates/exit_world1" index="8" unique_id=1692784233 instance=ExtResource("4_h0onf")]
 
@@ -119,11 +125,17 @@ destination_world = "uid://c66deceqdwy18"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -3, -8)
 gate_id = 2
 destination_world = "uid://bedr1rqakjlna"
+lock_enabled = true
+lock_gem_count = 2
+sign_image = ExtResource("10_urvtv")
 
 [node name="exit_world3" parent="Gates" index="2" unique_id=1753961271 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.75, 2.5, -27.75)
 gate_id = 3
 destination_world = "uid://dlfi5o7ls16y8"
+lock_enabled = true
+lock_gem_count = 2
+sign_image = ExtResource("10_urvtv")
 
 [node name="level_exit_cover" parent="Gates/exit_world3" index="8" unique_id=627373951 instance=ExtResource("4_h0onf")]
 
@@ -131,12 +143,18 @@ destination_world = "uid://dlfi5o7ls16y8"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -33)
 gate_id = 4
 destination_world = "uid://dm01aug2lxdb5"
+lock_enabled = true
+lock_gem_count = 3
+sign_image = ExtResource("8_vib1g")
 
 [node name="exit_tutorial" parent="Gates" index="4" unique_id=1350551983 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 0, 19.000006, 12)
 gate_id = -1
 destination_world = "uid://dqk2r40v804fr"
 destination_gate = 1
+lock_enabled = true
+lock_gem_count = 2
+sign_image = ExtResource("10_urvtv")
 
 [node name="level_exit_cover" parent="Gates/exit_tutorial" index="8" unique_id=590568574 instance=ExtResource("4_h0onf")]
 

@@ -6,9 +6,11 @@
 [ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="3_7vfka"]
 [ext_resource type="AudioStream" uid="uid://ybsju0vob7va" path="res://Music/Pop_goes_weasel_mel3_280bpm.ogg" id="3_dw7nw"]
 [ext_resource type="PackedScene" uid="uid://c6vje4jp3hxc3" path="res://Models/original/worlds/forest_hub/level_exit_cover.glb" id="4_dw7nw"]
+[ext_resource type="PackedScene" uid="uid://bnu7b8l8k0n3t" path="res://Actors/gem_plinth.tscn" id="7_dw7nw"]
 
 [node name="level_template" unique_id=1740911666 instance=ExtResource("1_gni03")]
 title = "The Deep Woods"
+world = 2
 level_number = 2
 entrance_gate = 1
 background_music = ExtResource("2_7vfka")
@@ -23,3 +25,7 @@ gate_id = 1
 destination_gate = 2
 
 [node name="level_exit_cover" parent="forest_level_exit" index="8" unique_id=1692784233 instance=ExtResource("4_dw7nw")]
+
+[node name="gem_plinth" parent="." index="8" unique_id=1603351441 instance=ExtResource("7_dw7nw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -2.75)
+gem_id = 2
