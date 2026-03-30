@@ -11,7 +11,7 @@ enum InteractionType {
 	## The object can be picked up.
 	attachable,
 
-	## The object is a sign (or speaking NPC)
+	## The object is a sign
 	sign,
 
 	## The object is switch
@@ -22,6 +22,40 @@ enum InteractionType {
 
 	## The object provides an attachable object to hold
 	dispenser,
+
+	## The object is a speaking NPC
+	npc,
+}
+
+var hints: Dictionary[InteractionType, HintViewer.Hint] = {
+	InteractionType.custom: HintViewer.Hint.new(
+		HintViewer.Controls.INTERACT,
+		"Interact", HintViewer.PASSIVE_HINT_DURATION
+	),
+	InteractionType.attachable: HintViewer.Hint.new(
+		HintViewer.Controls.INTERACT,
+		"Pick Up", HintViewer.PASSIVE_HINT_DURATION
+	),
+	InteractionType.sign: HintViewer.Hint.new(
+		HintViewer.Controls.INTERACT,
+		"Read", HintViewer.PASSIVE_HINT_DURATION
+	),
+	InteractionType.npc: HintViewer.Hint.new(
+		HintViewer.Controls.INTERACT,
+		"Speak", HintViewer.PASSIVE_HINT_DURATION
+	),
+	InteractionType.switch: HintViewer.Hint.new(
+		HintViewer.Controls.INTERACT,
+		"Switch", HintViewer.PASSIVE_HINT_DURATION
+	),
+	InteractionType.carrier: HintViewer.Hint.new(
+		HintViewer.Controls.INTERACT,
+		"Place inside", HintViewer.PASSIVE_HINT_DURATION
+	),
+	InteractionType.dispenser: HintViewer.Hint.new(
+		HintViewer.Controls.INTERACT,
+		"Take", HintViewer.PASSIVE_HINT_DURATION
+	),
 }
 
 ## What kind of interaction's are triggerd by this interaction point.
@@ -97,6 +131,7 @@ func _process(_delta: float) -> void:
 
 
 func interact() -> void:
+	GameManager.hint_viewer.remove_hint(hints[type])
 	interaction.emit(self)
 
 
@@ -121,11 +156,13 @@ func enable() -> void:
 
 ## Mark this interaction point as the currently focused point
 func activate() -> void:
+	GameManager.hint_viewer.show_hint(hints[type])
 	active = true
 
 
 ## Clear this interaction point as the currently focused point
 func deactivate() -> void:
+	GameManager.hint_viewer.remove_hint(hints[type])
 	active = false
 
 

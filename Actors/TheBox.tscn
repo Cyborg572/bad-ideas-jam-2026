@@ -4,6 +4,7 @@
 [ext_resource type="AudioStream" uid="uid://c138pdxab2q7r" path="res://Music/Pop_goes_wease_musicboxl.ogg" id="2_ltv4v"]
 [ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="2_wbnku"]
 [ext_resource type="AudioStream" uid="uid://cvpm487i2ktja" path="res://Sounds/pop-out.ogg" id="4_sldcg"]
+[ext_resource type="AudioStream" uid="uid://u252h1bt5nma" path="res://Sounds/gem_deposit.ogg" id="5_8v5c7"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_n05s6"]
 size = Vector3(0.25, 0.25, 0.25)
@@ -176,6 +177,11 @@ bus = &"Sound Effects"
 
 [node name="PopSound" type="AudioStreamPlayer3D" parent="." unique_id=1013826770]
 stream = ExtResource("4_sldcg")
+volume_db = -3.0
+bus = &"Sound Effects"
+
+[node name="GemSound" type="AudioStreamPlayer3D" parent="." unique_id=1265336206]
+stream = ExtResource("5_8v5c7")
 bus = &"Sound Effects"
 
 [node name="FloorDetect" type="RayCast3D" parent="." unique_id=1485713467]

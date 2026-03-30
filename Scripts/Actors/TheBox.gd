@@ -21,6 +21,7 @@ var cranking_pop_window_end : float = 4.2
 @onready var anim: AnimationPlayer = $AnimationPlayer
 @onready var crank_audio: AudioStreamPlayer3D = $CrankAudio
 @onready var pop_sound: AudioStreamPlayer3D = $PopSound
+@onready var gem_sound: AudioStreamPlayer3D = $GemSound
 @onready var collisions_enabled : bool = true
 @onready var closed_collider: CollisionShape3D = $ClosedCollider
 @onready var open_collider: CollisionShape3D = $OpenCollider
@@ -170,6 +171,7 @@ func would_recieve_item(_item: Attachable) -> bool:
 func recieve_item(item: Attachable) -> bool:
 	if item is Gem:
 		item.claim()
+		gem_sound.play()
 		return true
 
 	inventory.push_back(item)

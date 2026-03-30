@@ -8,6 +8,10 @@
 [ext_resource type="Script" uid="uid://b6ercbf3yiu46" path="res://Scripts/hud.gd" id="4_8rcjl"]
 [ext_resource type="FontFile" uid="uid://cqtfs2t8um0c8" path="res://Fonts/super_wonder/Super Wonder.ttf" id="4_ud1bm"]
 [ext_resource type="Texture2D" uid="uid://bjg15frmx0h8c" path="res://Images/Heart.svg" id="5_8rcjl"]
+[ext_resource type="Texture2D" uid="uid://bews8monvsc1j" path="res://Images/portraits/jack_portrait.png" id="9_4tara"]
+[ext_resource type="Script" uid="uid://b3konmheaac1h" path="res://Scripts/dialog_viewer.gd" id="9_ay062"]
+[ext_resource type="Texture2D" uid="uid://bgjdc7yufkx2b" path="res://Images/controls/interact.png" id="10_wc48y"]
+[ext_resource type="Script" uid="uid://dw4i3ittc05nd" path="res://Scripts/hint_viewer.gd" id="12_h26ud"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_8rcjl"]
 bg_color = Color(0.3019608, 0.003921569, 0.32941177, 0.41568628)
@@ -264,6 +268,54 @@ _data = {
 &"start_loading": SubResource("Animation_wc48y")
 }
 
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_p6vff"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+bg_color = Color(0, 0, 0, 0.627451)
+border_color = Color(0.8, 0.8, 0.8, 0.72156864)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="LabelSettings" id="LabelSettings_iaqjh"]
+font = ExtResource("4_ud1bm")
+font_size = 32
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_h26ud"]
+content_margin_left = 32.0
+content_margin_top = 32.0
+content_margin_right = 32.0
+content_margin_bottom = 32.0
+bg_color = Color(0, 0, 0, 0.8509804)
+border_width_left = 4
+border_width_top = 4
+border_width_right = 4
+border_width_bottom = 4
+border_color = Color(0.8, 0.8, 0.8, 0.72156864)
+corner_radius_top_left = 4
+corner_radius_top_right = 4
+corner_radius_bottom_right = 4
+corner_radius_bottom_left = 4
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_h26ud"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_p6vff"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_iaqjh"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_23amd"]
+
+[sub_resource type="StyleBoxEmpty" id="StyleBoxEmpty_f5swg"]
+
+[sub_resource type="InputEventAction" id="InputEventAction_h26ud"]
+action = &"Interact"
+
+[sub_resource type="Shortcut" id="Shortcut_p6vff"]
+events = [SubResource("InputEventAction_h26ud")]
+
 [node name="Main" type="Control" unique_id=645567632]
 process_mode = 3
 layout_mode = 3
@@ -275,6 +327,7 @@ grow_vertical = 2
 theme = ExtResource("1_q6i1d")
 script = ExtResource("2_4tara")
 starting_level = "uid://dqk2r40v804fr"
+starting_level_gate = null
 
 [node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1958800623]
 process_mode = 3
@@ -357,9 +410,6 @@ value = 50.0
 rounded = true
 show_percentage = false
 
-[node name="PauseMenu" parent="." unique_id=793828353 instance=ExtResource("3_475tg")]
-layout_mode = 1
-
 [node name="ScreenCover" type="PanelContainer" parent="." unique_id=1238175788]
 unique_name_in_owner = true
 layout_mode = 1
@@ -380,8 +430,8 @@ anchors_preset = -1
 anchor_top = 0.5
 anchor_right = 1.0
 anchor_bottom = 0.5
-offset_top = 108.0
-offset_bottom = 158.0
+offset_top = 324.0
+offset_bottom = 374.0
 grow_horizontal = 2
 grow_vertical = 2
 size_flags_vertical = 4
@@ -392,5 +442,111 @@ horizontal_alignment = 1
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1342893220]
 libraries/ = SubResource("AnimationLibrary_4tara")
+
+[node name="HintViewer" type="PanelContainer" parent="." unique_id=401744124]
+unique_name_in_owner = true
+process_mode = 1
+visible = false
+layout_mode = 1
+anchors_preset = -1
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_top = -98.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_p6vff")
+script = ExtResource("12_h26ud")
+
+[node name="HintMessage" type="HBoxContainer" parent="HintViewer" unique_id=1309267168]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 32
+alignment = 1
+
+[node name="hintControl" type="TextureRect" parent="HintViewer/HintMessage" unique_id=1106509661]
+unique_name_in_owner = true
+layout_mode = 2
+texture = ExtResource("10_wc48y")
+stretch_mode = 2
+
+[node name="hintText" type="Label" parent="HintViewer/HintMessage" unique_id=1581672907]
+unique_name_in_owner = true
+layout_mode = 2
+text = "Interact"
+label_settings = SubResource("LabelSettings_iaqjh")
+
+[node name="HintTimer" type="Timer" parent="HintViewer" unique_id=1747397235]
+unique_name_in_owner = true
+wait_time = 15.0
+
+[node name="DialogViewer" type="PanelContainer" parent="." unique_id=200449012]
+unique_name_in_owner = true
+visible = false
+custom_minimum_size = Vector2(0, 320)
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.75
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -544.0
+offset_top = -190.0
+offset_right = 544.0
+offset_bottom = -32.0
+grow_horizontal = 2
+grow_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_h26ud")
+script = ExtResource("9_ay062")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="DialogViewer" unique_id=1005215190]
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="DialogViewer/VBoxContainer" unique_id=1935908224]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/separation = 32
+
+[node name="DialogPortrait" type="TextureRect" parent="DialogViewer/VBoxContainer/HBoxContainer" unique_id=568726887]
+unique_name_in_owner = true
+custom_minimum_size = Vector2(128, 128)
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+texture = ExtResource("9_4tara")
+expand_mode = 3
+stretch_mode = 4
+
+[node name="DialogText" type="RichTextLabel" parent="DialogViewer/VBoxContainer/HBoxContainer" unique_id=1735022295]
+unique_name_in_owner = true
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_font_sizes/normal_font_size = 24
+theme_override_font_sizes/bold_font_size = 24
+theme_override_font_sizes/bold_italics_font_size = 24
+theme_override_font_sizes/italics_font_size = 24
+theme_override_font_sizes/mono_font_size = 24
+bbcode_enabled = true
+text = "this is some text that you need to know"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="DialogViewer/VBoxContainer" unique_id=1798892080]
+layout_mode = 2
+alignment = 1
+
+[node name="DialogContinue" type="Button" parent="DialogViewer/VBoxContainer/HBoxContainer2" unique_id=1809878931]
+unique_name_in_owner = true
+layout_mode = 2
+theme_override_styles/normal = SubResource("StyleBoxEmpty_h26ud")
+theme_override_styles/pressed = SubResource("StyleBoxEmpty_p6vff")
+theme_override_styles/hover = SubResource("StyleBoxEmpty_iaqjh")
+theme_override_styles/disabled = SubResource("StyleBoxEmpty_23amd")
+theme_override_styles/focus = SubResource("StyleBoxEmpty_f5swg")
+shortcut = SubResource("Shortcut_p6vff")
+text = "Next"
+icon = ExtResource("10_wc48y")
+
+[node name="PauseMenu" parent="." unique_id=793828353 instance=ExtResource("3_475tg")]
+layout_mode = 1
 
 [connection signal="level_loaded" from="." to="PauseMenu" method="_on_main_level_loaded"]

@@ -18,7 +18,6 @@ func _ready() -> void:
 
 
 func _on_player_rewarded(amount: float) -> void:
-	print("Player earned: ", amount)
 	var odds: int = 100
 
 	if amount > 5:
@@ -28,12 +27,8 @@ func _on_player_rewarded(amount: float) -> void:
 	else:
 		return
 
-	print("Odds are ", odds)
 	if randi() % odds == 0:
-		print("play it!")
 		play_success_sound()
-	else:
-		print("meh")
 
 
 func _on_confidence_changed(new: float, old: float) -> void:

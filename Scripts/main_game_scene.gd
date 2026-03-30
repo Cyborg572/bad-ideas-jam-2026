@@ -23,10 +23,14 @@ var is_hiding_game : bool = false
 @onready var sub_viewport: SubViewport = %SubViewport
 @onready var secret_chime: AudioStreamPlayer = $SecretChime
 @onready var background_music_player: AudioStreamPlayer = $BackgroundMusicPlayer
+@onready var dialog_viewer: DialogViewer = %DialogViewer
+@onready var hint_viewer: HintViewer = %HintViewer
 
 func _ready() -> void:
 	GameManager.main_scene = self
 	GameManager.bg_music_player = $BackgroundMusicPlayer
+	GameManager.dialog_viewer = dialog_viewer
+	GameManager.hint_viewer = hint_viewer
 	GameManager.level_changed.connect(load_level)
 	GameManager.secret_discovered.connect(_on_secret_discovered)
 	GameManager.goal_achieved.connect(_on_goal_achieved)

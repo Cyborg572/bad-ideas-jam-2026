@@ -23,6 +23,7 @@ var display : Material
 func _ready() -> void:
 	if message_enabled:
 		interaction_point.enable()
+		interaction_point.interaction.connect(_on_interaction)
 	else:
 		interaction_point.disable()
 
@@ -33,6 +34,10 @@ func _ready() -> void:
 
 	display = model.get_surface_override_material(2)
 	display.albedo_texture = image
+
+
+func _on_interaction(_point: InteractionPoint) -> void:
+	GameManager.show_message(image, message_text)
 
 
 func change_image(new_image: Texture2D) -> void:

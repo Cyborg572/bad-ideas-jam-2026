@@ -39,7 +39,8 @@ func _ready() -> void:
 
 	if not is_gem_claimed():
 		fake_gem.hide()
-		spawn_gem.call_deferred()
+		if not locked:
+			spawn_gem.call_deferred()
 	else:
 		lock()
 
@@ -104,6 +105,8 @@ func lock() -> void:
 func unlock() -> void:
 	locked = false
 	interaction_point.disabled = false
+	if gem == null:
+		spawn_gem()
 
 
 func would_receive_item(_item: Attachable) -> bool:

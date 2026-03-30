@@ -605,6 +605,9 @@ func _physics_process(delta: float) -> void:
 	if is_frozen:
 		return
 
+	if GameManager.dialog_active:
+		return
+
 	var direction = get_direction()
 	distance_to_box = (box.position - position).length()
 	GameManager.distance_to_box = distance_to_box
@@ -629,7 +632,7 @@ func _physics_process(delta: float) -> void:
 	if Input.is_action_just_pressed("camera_reset"):
 		active_camera.align(rotation.y, 10)
 
-	if Input.is_action_just_pressed("Interact"):
+	if Input.is_action_just_pressed("Interact") and not GameManager.dialog_active:
 		var can_interact : bool = false
 		var is_pickup : bool = false
 		var types := InteractionPoint.InteractionType
@@ -660,6 +663,7 @@ func _physics_process(delta: float) -> void:
 						is_on_floor()
 						and direction.length() == 0
 						and box.is_floor_safe()
+						and not is_carrying
 					):
 					leave_box()
 					recieve_item(box)

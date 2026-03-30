@@ -9,6 +9,7 @@ signal player_rewarded(amount: float)
 signal player_confidence_changed(old_confidence: float, new_confidence: float)
 signal distance_to_box_changed(distance: float)
 signal level_changed(new_level: String, gate_id: int)
+signal level_ready(level: Level)
 signal secret_discovered(secret_name: String)
 signal goal_achieved
 
@@ -25,6 +26,8 @@ var active_level: Level = null
 var fade_in_signal: Signal
 var fade_out_signal: Signal
 var bg_music_player: AudioStreamPlayer = null
+var dialog_viewer: DialogViewer
+var hint_viewer: HintViewer
 var main_scene: MainScene = null:
 	set(value):
 		main_scene = value
@@ -42,6 +45,9 @@ var current_recovery_point := Vector3.ZERO
 var current_recovery_rotation := Vector3.ZERO
 
 var discovered_secrets: Array[String] = []
+
+var dialog_cooldown: Timer = Timer.new()
+var dialog_active: bool = false
 
 @export var player_max_health : int = 5:
 	set(new_max_health):
@@ -92,6 +98,13 @@ var discovered_secrets: Array[String] = []
 #endregion
 
 
+func _ready() -> void:
+	add_child(dialog_cooldown)
+	dialog_cooldown.one_shot = true
+	dialog_cooldown.wait_time = 0.25
+	dialog_cooldown.timeout.connect(_on_dialog_cooldown)
+
+
 func _on_jack_boxed() -> void:
 	# Make the music more confident
 	if bg_music_player:
@@ -125,6 +138,11 @@ func _on_level_loaded(level_scene: Node3D) -> void:
 	if jack == null:
 		create_jack()
 	spawn_jack()
+	level_ready.emit(active_level)
+
+
+func _on_dialog_cooldown() -> void:
+	dialog_active = false
 
 
 #region Interaction Points
@@ -357,6 +375,21 @@ func change_level(new_level: String, gate_id: int = 0) -> void:
 	await main_scene.fade_out()
 	despawn_jack()
 	level_changed.emit(new_level, gate_id)
+
+
+func show_message(image: Texture2D, message: String) -> void:
+	dialog_cooldown.stop()
+	dialog_active = true
+	await dialog_viewer.show_message(image, message)
+	dialog_cooldown.start()
+
+
+func show_dialog(dialog: Array[DialogMessage]) -> void:
+	dialog_cooldown.stop()
+	dialog_active = true
+	for message in dialog:
+		await dialog_viewer.show_message(message.portrait, message.text)
+	dialog_cooldown.start()
 
 
 func hide_game() -> void:

@@ -79,11 +79,43 @@ graph_offset = Vector2(25, -121)
 [node name="weasel" unique_id=230894949 instance=ExtResource("1_hfv3f")]
 script = ExtResource("2_5prxx")
 
+[node name="Skeleton3D" parent="Armature" parent_id_path=PackedInt32Array(1567288446) index="0" unique_id=1910357170]
+bones/0/position = Vector3(0, -1, -0.29999995)
+bones/1/rotation = Quaternion(1.5914472e-08, 0.69999474, 0.71414804, 1.4986417e-08)
+bones/2/rotation = Quaternion(-2.5290062e-06, 4.371139e-08, 1.10604275e-13, 1)
+bones/3/rotation = Quaternion(4.296191e-06, 2.5318234e-15, -2.8301786e-17, 1)
+bones/4/rotation = Quaternion(0.019098563, 1.1974649e-16, 2.6565655e-17, 0.9998176)
+bones/5/rotation = Quaternion(0.0020269835, 1.0346269e-15, 1.1952889e-17, 0.999998)
+bones/6/rotation = Quaternion(-0.0011069013, 1.19209226e-07, -1.3195267e-10, 0.9999994)
+bones/7/rotation = Quaternion(0.5049742, 0.5049743, 0.49497584, -0.4949757)
+bones/8/rotation = Quaternion(0.43940502, -0.534301, -0.37994373, 0.61407536)
+bones/9/rotation = Quaternion(-0.0025448427, 8.582161e-08, 1.742839e-08, 0.99999684)
+bones/10/rotation = Quaternion(0.09660077, 0.05504089, 0.0053502447, 0.9937858)
+bones/11/position = Vector3(0.23977324, 0.44785285, -0.0069669015)
+bones/12/rotation = Quaternion(0.5049743, -0.50497425, -0.49497566, -0.49497584)
+bones/13/rotation = Quaternion(0.43940502, 0.534301, 0.37994373, 0.61407536)
+bones/14/rotation = Quaternion(-0.0025448427, -7.8855905e-08, -1.0163273e-08, 0.99999684)
+bones/15/rotation = Quaternion(0.09660077, -0.05504088, -0.0053502372, 0.9937858)
+bones/16/position = Vector3(-0.23977324, 0.44785285, -0.0069670086)
+bones/18/rotation = Quaternion(-0.35624325, 1.11387884e-07, -5.8042517e-08, 0.9343932)
+bones/19/position = Vector3(0.09843612, 0.097142085, -0.14382584)
+bones/20/position = Vector3(-0.09843606, 0.09714208, -0.1438259)
+bones/21/rotation = Quaternion(-3.0908623e-08, 0.7071068, -0.7071068, 3.0908623e-08)
+bones/22/rotation = Quaternion(-0.0011680722, 2.183506e-08, -2.5298552e-10, 0.99999934)
+bones/23/rotation = Quaternion(0.0022002778, -1.4217827e-14, 5.24587e-10, 0.9999976)
+bones/24/rotation = Quaternion(-0.0005750151, -3.5528805e-15, -1.3709432e-10, 0.9999998)
+bones/25/rotation = Quaternion(-0.0041432213, -4.446351e-15, -9.878205e-10, 0.9999914)
+bones/26/rotation = Quaternion(0.007886835, -1.19205616e-07, 9.401848e-10, 0.99996895)
+bones/27/rotation = Quaternion(-0.004440806, 1.4235083e-14, 5.803003e-16, 0.99999017)
+bones/28/rotation = Quaternion(-0.00061867316, 4.2118643e-18, -1.8645977e-19, 0.9999998)
+bones/29/rotation = Quaternion(-0.0020193271, 7.0827193e-15, 3.054895e-17, 0.999998)
+bones/33/position = Vector3(0, -0.4000001, 2.3283064e-10)
+
 [node name="InteractionPoint" type="Area3D" parent="." index="2" unique_id=1943150269]
 collision_layer = 2
 collision_mask = 4
 script = ExtResource("3_5prxx")
-type = 2
+type = 6
 require_focus = true
 pointer_position = Vector3(0, 1.5, -0.25)
 metadata/_custom_type_script = "uid://bq67yvae5bmfy"
