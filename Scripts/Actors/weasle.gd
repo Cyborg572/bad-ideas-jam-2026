@@ -50,12 +50,10 @@ func _process(_delta: float) -> void:
 
 
 func _on_interaction(_point: InteractionPoint) -> void:
-	print("Interaction!!")
 	chat()
 
 
 func _on_animation_started(anim_name: StringName) -> void:
-	print("Animation started: ", anim_name)
 	if anim_name == &"hide":
 		hide()
 	else:

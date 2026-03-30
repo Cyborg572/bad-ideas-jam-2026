@@ -75,14 +75,16 @@ func load_level(requested_level_path: String, gate_id: int = 0):
 		await anim.animation_finished
 
 
-	is_loading = true
+
 	level_loading.emit()
 
 	if not active_level == null:
-		unload_current_level()
+		await unload_current_level()
 
+	is_loading = true
 	level_path = requested_level_path
 	level_gate_id = gate_id
+	print("Loading ", level_path)
 	ResourceLoader.load_threaded_request(level_path)
 
 
@@ -105,7 +107,8 @@ func check_load_status() -> void:
 
 
 func unload_current_level() -> void:
-	sub_viewport.remove_child(active_level)
+	active_level.queue_free()
+	await active_level.tree_exited
 
 
 func finish_loading_level() -> void:

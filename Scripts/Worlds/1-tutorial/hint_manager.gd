@@ -68,7 +68,11 @@ func _process(_delta: float) -> void:
 		hint_viewer.show_hint(hints.deposit_gem)
 
 
-func _on_start_tutorial(_level: Level) -> void:
+func _on_start_tutorial(level: Level) -> void:
+	if level.level_state.is_gem_collected(Gem.GemID.GEM_1):
+		queue_free()
+		return
+
 	await GameManager.jack.popped
 	$"../Weasels/IntroWeasel".chat()
 	GameManager.jack.popped.connect(_on_jack_popped, CONNECT_ONE_SHOT)

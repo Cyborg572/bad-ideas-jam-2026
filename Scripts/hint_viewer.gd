@@ -41,7 +41,7 @@ func _ready() -> void:
 
 func _process(_delta: float) -> void:
 	if GameManager.dialog_viewer.visible:
-		if is_hint_showing:
+		if is_hint_showing and not hints.has(current_hint):
 			print("Stashing hint")
 			hints.push_front(current_hint)
 			print("The stash: ", hints)

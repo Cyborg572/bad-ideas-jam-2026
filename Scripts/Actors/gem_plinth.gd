@@ -14,6 +14,8 @@ extends Node3D
 
 var locked: bool = true
 var gem: Gem
+var active_level: Level
+var gem_claimed: bool = false
 var gem_scene: PackedScene = preload("uid://detj4tonpd81q")
 
 @onready var signpost: Sign = $signpost
@@ -29,6 +31,20 @@ func _ready() -> void:
 	else:
 		signpost.disable()
 
+	anim.active = true
+	interaction_point.interaction.connect(_on_interaction)
+	GameManager.level_ready.connect(_on_level_ready)
+
+
+func _on_level_ready(level: Level) -> void:
+	active_level = level
+	gem_claimed = level.level_state.is_gem_collected(gem_id)
+
+	if gem_claimed:
+		fake_gem.show()
+	else:
+		fake_gem.hide()
+
 	if lock_enabled:
 		lock()
 		if not lock_trigger == null:
@@ -37,21 +53,10 @@ func _ready() -> void:
 	else:
 		unlock()
 
-	if not is_gem_claimed():
-		fake_gem.hide()
-		if not locked:
-			spawn_gem.call_deferred()
-	else:
-		lock()
-
-	anim.active = true
-	interaction_point.interaction.connect(_on_interaction)
-
 
 func _on_unlock_trigger(_by: Node3D) -> void:
 	GameManager.achieve_goal()
-	if not is_gem_claimed():
-		unlock()
+	unlock()
 
 
 func _on_interaction(point: InteractionPoint) -> void:
@@ -81,22 +86,6 @@ func change_interaction_type(type: InteractionPoint.InteractionType) -> void:
 	interaction_point.type = type
 
 
-func get_active_level() -> Level:
-	if GameManager.active_level:
-		return GameManager.active_level
-
-	var candidate : Node3D = self
-	while candidate and not candidate is Level:
-		candidate = candidate.get_parent()
-
-	return candidate
-
-
-func is_gem_claimed() -> bool:
-	var active_level: Level = get_active_level()
-	return active_level.level_state.is_gem_collected(gem_id)
-
-
 func lock() -> void:
 	locked = true
 	interaction_point.disabled = true
@@ -105,8 +94,10 @@ func lock() -> void:
 func unlock() -> void:
 	locked = false
 	interaction_point.disabled = false
-	if gem == null:
+	if gem == null and not gem_claimed:
 		spawn_gem()
+	elif gem_claimed:
+		fake_gem.show()
 
 
 func would_receive_item(_item: Attachable) -> bool:
@@ -132,7 +123,9 @@ func spawn_gem() -> void:
 	gem = gem_scene.instantiate()
 	gem.gem_id = gem_id
 
-	add_sibling(gem)
+	add_sibling.call_deferred(gem)
+	await gem.ready
+
 	gem.attach(self)
 
 	gem.claimed.connect(_on_gem_claimed)

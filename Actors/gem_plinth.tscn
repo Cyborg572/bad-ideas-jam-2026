@@ -163,14 +163,6 @@ animation = &"reveal"
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_mbipy"]
 animation = &"spin"
 
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_koq8y"]
-advance_mode = 2
-advance_expression = "lock_enabled"
-
-[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_ekkyw"]
-priority = 2
-advance_mode = 2
-
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_a5rpa"]
 switch_mode = 2
 advance_mode = 2
@@ -183,6 +175,9 @@ advance_expression = "not locked"
 advance_mode = 2
 advance_expression = "locked"
 
+[sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_koq8y"]
+advance_mode = 2
+
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_7c6tt"]
 states/Start/position = Vector2(186, 148)
 states/hidden/node = SubResource("AnimationNodeAnimation_q3yj1")
@@ -191,17 +186,14 @@ states/reveal/node = SubResource("AnimationNodeAnimation_3ta4t")
 states/reveal/position = Vector2(543, 157)
 states/spin/node = SubResource("AnimationNodeAnimation_mbipy")
 states/spin/position = Vector2(385, 61)
-transitions = ["Start", "hidden", SubResource("AnimationNodeStateMachineTransition_koq8y"), "Start", "spin", SubResource("AnimationNodeStateMachineTransition_ekkyw"), "reveal", "spin", SubResource("AnimationNodeStateMachineTransition_a5rpa"), "hidden", "reveal", SubResource("AnimationNodeStateMachineTransition_fm67w"), "spin", "hidden", SubResource("AnimationNodeStateMachineTransition_q3yj1")]
+transitions = ["reveal", "spin", SubResource("AnimationNodeStateMachineTransition_a5rpa"), "hidden", "reveal", SubResource("AnimationNodeStateMachineTransition_fm67w"), "spin", "hidden", SubResource("AnimationNodeStateMachineTransition_q3yj1"), "Start", "hidden", SubResource("AnimationNodeStateMachineTransition_koq8y")]
 graph_offset = Vector2(0, 25)
 
 [node name="gem_plinth" unique_id=1603351441 instance=ExtResource("1_qvuwk")]
 script = ExtResource("2_q3yj1")
 gem_id = 1
 
-[node name="FakeGem" parent="." index="1" unique_id=1825114597]
-visible = false
-
-[node name="AttachmentPoint" type="Node3D" parent="FakeGem" index="0" unique_id=2097087633]
+[node name="AttachmentPoint" type="Node3D" parent="FakeGem" parent_id_path=PackedInt32Array(1825114597) index="0" unique_id=2097087633]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 
 [node name="signpost" parent="." index="2" unique_id=265319638 instance=ExtResource("2_cw8bq")]
@@ -228,6 +220,7 @@ shape = SubResource("CylinderShape3D_q3yj1")
 libraries/ = SubResource("AnimationLibrary_koq8y")
 
 [node name="AnimationTree" type="AnimationTree" parent="." index="5" unique_id=2047239371]
+active = false
 tree_root = SubResource("AnimationNodeStateMachine_7c6tt")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")

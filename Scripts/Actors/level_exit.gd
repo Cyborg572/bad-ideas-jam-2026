@@ -47,23 +47,38 @@ func _ready() -> void:
 		lock_trigger.untriggered.connect(_on_lock_untriggered)
 		exit_trigger.triggered.connect(_on_exit_triggered)
 
+	GameManager.level_ready.connect(_on_level_ready, CONNECT_ONE_SHOT)
+
+
+func _on_level_ready(_level: Level) -> void:
+	if is_locked():
+		close()
+
 
 func _on_lock_triggered(_by: Node3D) -> void:
-	print("Triggered! Checking lock...")
-	if not lock_enabled:
-		print("Not locked. Opening")
+	if not is_locked():
 		open()
-	else:
-		print("Locked.")
 
 
 func _on_lock_untriggered() -> void:
-	print("Closing.")
 	close()
 
 
 func _on_exit_triggered(_by: Node3D) -> void:
 	GameManager.change_level(destination_world, destination_gate)
+
+
+func is_locked() -> bool:
+	if not lock_enabled:
+		return false
+
+	if not GameManager.active_level.level_state.is_gem_collected(Gem.GemID.GEM_1):
+		return true
+
+	if GameManager.game_state.player_state.total_gems < lock_gem_count:
+		return true
+
+	return false
 
 
 func open(fast: bool = false) -> void:

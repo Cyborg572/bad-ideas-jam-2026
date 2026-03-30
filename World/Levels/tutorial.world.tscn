@@ -322,6 +322,7 @@ navigation_mesh = SubResource("NavigationMesh_flq6b")
 transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -17, 0.25, -27)
 gate_id = 1
 destination_gate = -1
+lock_enabled = true
 
 [node name="Berries" type="Node3D" parent="." unique_id=1148951546]
 

@@ -15,5 +15,6 @@ enum GemID {
 
 func claim() -> void:
 	GameManager.active_level.level_state.collect_gem(gem_id)
+	GameManager.game_state.player_state.total_gems += 1
 	claimed.emit()
 	queue_free()
