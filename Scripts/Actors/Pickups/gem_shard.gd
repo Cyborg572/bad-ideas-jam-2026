@@ -18,10 +18,18 @@ enum ShardId {
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var area_3d: Area3D = $Area3D
 
+var host_level: Level
 
 func _ready() -> void:
 	animation_player.play("spin")
 	area_3d.body_entered.connect(_on_body_entered)
+	GameManager.level_ready.connect(_on_level_ready)
+
+
+func _on_level_ready(level: Level):
+	host_level = level
+	if level.level_state.is_gem_shard_collected(shard_id):
+		queue_free()
 
 
 func _on_body_entered(body: Node3D) -> void:
@@ -29,5 +37,6 @@ func _on_body_entered(body: Node3D) -> void:
 		GameManager.player_health += 1
 		GameManager.player_confidence += 3
 		animation_player.play("pickup")
+		host_level.level_state.collect_gem_shard(shard_id)
 		await animation_player.animation_finished
 		queue_free()

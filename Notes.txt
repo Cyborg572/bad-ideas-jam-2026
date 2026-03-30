@@ -5,9 +5,9 @@ Possible alternate Color Scheme: https://paletton.com/#uid=74T0u0krfqpgWxClOsJtj
 
 
 Super priority for publish:
-	- [ ] Lock Gates
-	- [ ] Gem Shard tracking
-	- [ ] Gems in hub world
+	- [x] Lock Gates
+	- [x] Gem Shard tracking
+	- [x] Gems in hub world
 	- [ ] Level 1
 	- [ ] The BOSSS
 	- [ ] Poof particles

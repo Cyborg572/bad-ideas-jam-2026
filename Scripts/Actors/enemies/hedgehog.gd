@@ -1,3 +1,4 @@
+class_name Hedgehog
 extends CharacterBody3D
 
 const SPEED = 1

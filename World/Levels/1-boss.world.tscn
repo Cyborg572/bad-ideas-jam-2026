@@ -6,6 +6,7 @@
 [ext_resource type="AudioStream" uid="uid://bjfaiwv7x2b54" path="res://Music/Pop_goes_weasel_mel2_280bpm.ogg" id="3_a1bbe"]
 [ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="3_r5fpx"]
 [ext_resource type="PackedScene" uid="uid://c6vje4jp3hxc3" path="res://Models/original/worlds/forest_hub/level_exit_cover.glb" id="4_a1bbe"]
+[ext_resource type="PackedScene" uid="uid://bq0yw3o3o2121" path="res://Actors/Bosses/Spikus.tscn" id="7_a1bbe"]
 
 [node name="level_template" unique_id=1740911666 instance=ExtResource("1_esmw3")]
 title = "Spikus Battle"
@@ -23,3 +24,6 @@ gate_id = 1
 destination_gate = 4
 
 [node name="level_exit_cover" parent="forest_level_exit" index="8" unique_id=1692784233 instance=ExtResource("4_a1bbe")]
+
+[node name="Spikus" parent="." index="8" unique_id=1940827871 instance=ExtResource("7_a1bbe")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -16)
