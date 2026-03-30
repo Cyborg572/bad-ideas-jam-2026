@@ -34,6 +34,7 @@ var is_open : bool = false
 var is_cranking : bool = false
 var inventory : Array[Attachable] = []
 var is_settled = false
+var portrait: Texture2D = preload("uid://c12utyrj20dlb")
 
 # Tracking last safe location
 var last_ground_position := Vector3.ZERO

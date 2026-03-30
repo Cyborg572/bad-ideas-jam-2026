@@ -28,18 +28,18 @@ Todo:
 - [x] Moving platforms
   - [x] Wait for jack
   - [x] Go back without jack
-- [ ] Level progression
+- [x] Level progression
   - [x] Exits can transport you
   - [x] Have the game manager spawn Jack and TheBox
   - [x] Track Gems
-  - [ ] Gems unlock exits
+  - [x] Gems unlock exits
 - [x] Better fall recovery
   - [x] Use ~~a ray-cast~~ the nav mesh to better detect the last ledge position
   - [x] Don't set the last ledge position on moving platforms
-- [ ] Switches
+- [x] Switches
 	- [x] Trigger zones
-	- [ ] Weight triggers
-	- [ ] Interaction triggers
+	- [x] Weight triggers
+	- [x] Interaction triggers
 - [ ] Enemies
   - [ ] Hedgehog
 	- [x] Movement AI

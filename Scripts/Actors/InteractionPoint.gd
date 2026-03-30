@@ -38,7 +38,7 @@ var hints: Dictionary[InteractionType, HintViewer.Hint] = {
 	),
 	InteractionType.sign: HintViewer.Hint.new(
 		HintViewer.Controls.INTERACT,
-		"Read", HintViewer.PASSIVE_HINT_DURATION
+		"Check", HintViewer.PASSIVE_HINT_DURATION
 	),
 	InteractionType.npc: HintViewer.Hint.new(
 		HintViewer.Controls.INTERACT,

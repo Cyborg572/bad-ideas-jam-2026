@@ -1047,5 +1047,8 @@ func _on_global_interaction(interaction_point : InteractionPoint):
 				target.give_item(self)
 		types.custom:
 			print("Do some kind of custom interaction???")
+		types.sign:
+			if interaction_point.get_parent() == box:
+				GameManager.show_message(box.portrait, "The Box is currently empty")
 		_:
 			print("New interaction. Type: ", types.keys()[interaction_point.type])
