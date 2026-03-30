@@ -1,6 +1,8 @@
 class_name GemShard
 extends Node3D
 
+signal collected(shard_id: GemShard.ShardId)
+
 enum ShardId {
 	NONE,
 	SHARD_1,
@@ -24,6 +26,7 @@ func _ready() -> void:
 	animation_player.play("spin")
 	area_3d.body_entered.connect(_on_body_entered)
 	GameManager.level_ready.connect(_on_level_ready)
+	add_to_group("gem_shards")
 
 
 func _on_level_ready(level: Level):
@@ -39,4 +42,5 @@ func _on_body_entered(body: Node3D) -> void:
 		animation_player.play("pickup")
 		host_level.level_state.collect_gem_shard(shard_id)
 		await animation_player.animation_finished
+		collected.emit(shard_id)
 		queue_free()

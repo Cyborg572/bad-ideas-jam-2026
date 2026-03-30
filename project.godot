@@ -38,6 +38,7 @@ navigation_mesh_source_group=""
 level_gates=""
 weasels="All the weasel instances"
 berries="All the mullberries in the level"
+gem_shards="The collectable gem shards"
 
 [input]
 

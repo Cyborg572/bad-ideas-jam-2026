@@ -53,6 +53,23 @@ func _on_level_ready(level: Level) -> void:
 	else:
 		unlock()
 
+	if gem_id == Gem.GemID.GEM_3:
+		var shards: Array[Node] = get_tree().get_nodes_in_group("gem_shards")
+		for shard in shards:
+			if shard is GemShard:
+				shard.collected.connect(_on_gem_shard_collected)
+		if are_shards_all_collected():
+			unlock()
+		else:
+			lock()
+
+
+func _on_gem_shard_collected(_shard_id: GemShard.ShardId) -> void:
+	if are_shards_all_collected():
+		GameManager.achieve_goal()
+		GameManager.show_message(signpost.image, "You've collected all 8 gem shards! Come get your prize")
+		unlock()
+
 
 func _on_unlock_trigger(_by: Node3D) -> void:
 	GameManager.achieve_goal()
@@ -80,6 +97,15 @@ func _on_interaction(point: InteractionPoint) -> void:
 
 func _on_gem_claimed() -> void:
 	lock()
+
+
+func are_shards_all_collected() -> bool:
+	for shard_id in GemShard.ShardId.values():
+		if shard_id == GemShard.ShardId.NONE:
+			continue
+		if not active_level.level_state.is_gem_shard_collected(shard_id):
+			return false
+	return true
 
 
 func change_interaction_type(type: InteractionPoint.InteractionType) -> void:
