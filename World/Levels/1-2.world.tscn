@@ -23,9 +23,13 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -3, 0)
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, 0, 0, 1.5)
 gate_id = 1
 destination_gate = 2
+lock_enabled = true
 
 [node name="level_exit_cover" parent="forest_level_exit" index="8" unique_id=1692784233 instance=ExtResource("4_dw7nw")]
 
 [node name="gem_plinth" parent="." index="8" unique_id=1603351441 instance=ExtResource("7_dw7nw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -2.75)
+
+[node name="gem_plinth2" parent="." index="9" unique_id=1922465779 instance=ExtResource("7_dw7nw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2.75)
 gem_id = 2

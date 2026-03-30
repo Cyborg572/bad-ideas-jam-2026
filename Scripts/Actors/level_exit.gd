@@ -72,10 +72,10 @@ func is_locked() -> bool:
 	if not lock_enabled:
 		return false
 
-	if not GameManager.active_level.level_state.is_gem_collected(Gem.GemID.GEM_1):
-		return true
+	if lock_gem_count > 0 and GameManager.game_state.player_state.total_gems >= lock_gem_count:
+		return false
 
-	if GameManager.game_state.player_state.total_gems < lock_gem_count:
+	if not GameManager.active_level.level_state.is_gem_collected(Gem.GemID.GEM_1):
 		return true
 
 	return false

@@ -325,6 +325,7 @@ shape = SubResource("BoxShape3D_6eupa")
 
 [node name="signpost" parent="." index="5" unique_id=265319638 instance=ExtResource("3_7ihh6")]
 transform = Transform3D(0.8660254, 0, 0.5, 0, 1, 0, -0.5, 0, 0.8660254, -1.375, 0, 0.5)
+enabled = true
 image = ExtResource("3_x4qbh")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="6" unique_id=890806022]
