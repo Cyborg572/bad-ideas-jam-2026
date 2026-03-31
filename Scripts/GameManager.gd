@@ -193,9 +193,9 @@ func reset_confidence(keep_extra: bool = true) -> void:
 
 
 func spawn_jack():
-	active_level.add_child(jack)
-	active_level.add_child(the_box)
-	active_level.add_child(main_camera)
+	active_level.get_child(0).add_sibling(jack)
+	jack.add_sibling(the_box)
+	the_box.add_sibling(main_camera)
 
 	# Set the cranking music
 	the_box.cranking_song = main_scene.active_level.cranking_sound

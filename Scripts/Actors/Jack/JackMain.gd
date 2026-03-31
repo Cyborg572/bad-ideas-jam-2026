@@ -116,6 +116,11 @@ var flipped_into_jump: bool = false
 var landed_in_box: bool = false
 
 
+var hints: Dictionary[StringName, HintViewer.Hint] = {
+	throw = HintViewer.Hint.new(HintViewer.Controls.ATTACK, "Throw")
+}
+
+
 func _ready() -> void:
 	set_active_camera(GameManager.main_camera)
 	GameManager.interaction.connect(_on_global_interaction)
@@ -443,6 +448,8 @@ func recieve_item(item: Attachable):
 	if carried_item == box:
 		got_box.emit()
 		carried_item.close()
+	elif not carried_item is Gem:
+		GameManager.hint_viewer.show_hint(hints.throw)
 
 
 func get_launched(launch_direction: Vector3, launch_force: float) -> void:

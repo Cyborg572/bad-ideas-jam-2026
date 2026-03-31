@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://cauwobkh8mskm" path="res://Actors/level_exit.tscn" id="3_wp66f"]
 [ext_resource type="PackedScene" uid="uid://c6vje4jp3hxc3" path="res://Models/original/worlds/forest_hub/level_exit_cover.glb" id="4_fasc1"]
 
-[node name="level_template" unique_id=1740911666 instance=ExtResource("1_yeru2")]
+[node name="level_template2" unique_id=1740911666 instance=ExtResource("1_yeru2")]
 title = "Timber"
 level_number = 3
 entrance_gate = 1

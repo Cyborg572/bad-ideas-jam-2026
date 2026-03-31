@@ -22,6 +22,8 @@ var cranking_pop_window_end : float = 4.2
 @onready var crank_audio: AudioStreamPlayer3D = $CrankAudio
 @onready var pop_sound: AudioStreamPlayer3D = $PopSound
 @onready var gem_sound: AudioStreamPlayer3D = $GemSound
+@onready var close_sound: AudioStreamPlayer3D = $CloseSound
+@onready var slam_sound: AudioStreamPlayer3D = $SlamSound
 @onready var collisions_enabled : bool = true
 @onready var closed_collider: CollisionShape3D = $ClosedCollider
 @onready var open_collider: CollisionShape3D = $OpenCollider
@@ -93,6 +95,10 @@ func close(fast : bool = false) -> void:
 		anim.speed_scale = 10
 	anim.play_backwards("Open")
 	await  anim.animation_finished
+	if fast:
+		slam_sound.play()
+	else:
+		close_sound.play()
 
 
 func slam() -> void:
