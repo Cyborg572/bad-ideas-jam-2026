@@ -36,6 +36,233 @@ vertices = PackedVector3Array(-0.5, 1.8784547, -25.75, -0.25, 1.8784547, -23.25,
 polygons = [PackedInt32Array(1, 0, 2), PackedInt32Array(2, 0, 3), PackedInt32Array(4, 3, 0), PackedInt32Array(4, 5, 3), PackedInt32Array(7, 6, 0), PackedInt32Array(0, 6, 4), PackedInt32Array(10, 9, 8), PackedInt32Array(13, 12, 11), PackedInt32Array(11, 10, 13), PackedInt32Array(13, 10, 8), PackedInt32Array(15, 14, 16), PackedInt32Array(16, 14, 17), PackedInt32Array(19, 18, 20), PackedInt32Array(20, 18, 22), PackedInt32Array(20, 22, 21), PackedInt32Array(17, 14, 23), PackedInt32Array(24, 18, 25), PackedInt32Array(25, 18, 19), PackedInt32Array(28, 27, 21), PackedInt32Array(21, 27, 26), PackedInt32Array(30, 29, 27), PackedInt32Array(27, 29, 26), PackedInt32Array(23, 20, 17), PackedInt32Array(17, 20, 21), PackedInt32Array(21, 22, 28), PackedInt32Array(15, 16, 31), PackedInt32Array(31, 16, 32), PackedInt32Array(25, 33, 24), PackedInt32Array(24, 33, 34), PackedInt32Array(33, 31, 34), PackedInt32Array(34, 31, 29), PackedInt32Array(29, 31, 32), PackedInt32Array(29, 30, 34), PackedInt32Array(35, 37, 36), PackedInt32Array(40, 39, 38), PackedInt32Array(41, 40, 42), PackedInt32Array(42, 40, 43), PackedInt32Array(46, 45, 44), PackedInt32Array(48, 47, 46), PackedInt32Array(38, 47, 40), PackedInt32Array(40, 47, 43), PackedInt32Array(43, 47, 48), PackedInt32Array(35, 49, 37), PackedInt32Array(37, 49, 50), PackedInt32Array(52, 48, 51), PackedInt32Array(51, 48, 46), PackedInt32Array(51, 46, 44), PackedInt32Array(49, 53, 50), PackedInt32Array(50, 53, 51), PackedInt32Array(51, 53, 52), PackedInt32Array(57, 56, 54), PackedInt32Array(54, 56, 55), PackedInt32Array(61, 60, 58), PackedInt32Array(58, 60, 59), PackedInt32Array(64, 63, 62), PackedInt32Array(66, 65, 62), PackedInt32Array(62, 65, 64), PackedInt32Array(69, 68, 67), PackedInt32Array(69, 67, 70), PackedInt32Array(73, 72, 71), PackedInt32Array(75, 74, 71), PackedInt32Array(71, 74, 73), PackedInt32Array(77, 76, 78), PackedInt32Array(78, 76, 79), PackedInt32Array(79, 76, 80), PackedInt32Array(82, 81, 80), PackedInt32Array(80, 81, 83), PackedInt32Array(79, 80, 84), PackedInt32Array(84, 80, 83), PackedInt32Array(84, 83, 85), PackedInt32Array(76, 86, 80), PackedInt32Array(83, 87, 85), PackedInt32Array(89, 88, 90), PackedInt32Array(90, 88, 91), PackedInt32Array(93, 92, 94), PackedInt32Array(94, 92, 90), PackedInt32Array(97, 96, 95), PackedInt32Array(95, 96, 91), PackedInt32Array(95, 99, 97), PackedInt32Array(97, 99, 98), PackedInt32Array(100, 94, 101), PackedInt32Array(101, 94, 96), PackedInt32Array(96, 94, 91), PackedInt32Array(91, 94, 90), PackedInt32Array(104, 103, 102), PackedInt32Array(104, 102, 105), PackedInt32Array(105, 102, 106), PackedInt32Array(109, 106, 107), PackedInt32Array(107, 106, 108), PackedInt32Array(109, 105, 106), PackedInt32Array(110, 107, 111), PackedInt32Array(111, 107, 108), PackedInt32Array(115, 114, 112), PackedInt32Array(112, 114, 113), PackedInt32Array(118, 117, 116), PackedInt32Array(103, 119, 102), PackedInt32Array(102, 119, 120), PackedInt32Array(120, 119, 118), PackedInt32Array(120, 118, 116), PackedInt32Array(110, 111, 119), PackedInt32Array(119, 111, 118), PackedInt32Array(122, 121, 123), PackedInt32Array(123, 121, 125), PackedInt32Array(123, 125, 124), PackedInt32Array(127, 126, 128), PackedInt32Array(128, 126, 129), PackedInt32Array(132, 131, 130), PackedInt32Array(134, 133, 135), PackedInt32Array(135, 133, 136), PackedInt32Array(138, 137, 139), PackedInt32Array(139, 137, 140), PackedInt32Array(140, 143, 141), PackedInt32Array(141, 143, 142), PackedInt32Array(145, 144, 133), PackedInt32Array(133, 144, 146), PackedInt32Array(148, 147, 149), PackedInt32Array(149, 147, 150), PackedInt32Array(151, 150, 152), PackedInt32Array(152, 150, 153), PackedInt32Array(153, 150, 145), PackedInt32Array(144, 145, 147), PackedInt32Array(147, 145, 150), PackedInt32Array(143, 140, 154), PackedInt32Array(154, 140, 153), PackedInt32Array(153, 140, 137), PackedInt32Array(153, 137, 152), PackedInt32Array(156, 155, 146), PackedInt32Array(146, 155, 157), PackedInt32Array(155, 158, 157), PackedInt32Array(146, 136, 133), PackedInt32Array(146, 157, 136), PackedInt32Array(161, 160, 159), PackedInt32Array(163, 162, 164), PackedInt32Array(164, 162, 165), PackedInt32Array(89, 166, 88), PackedInt32Array(88, 166, 162), PackedInt32Array(170, 169, 167), PackedInt32Array(167, 169, 168), PackedInt32Array(165, 162, 166), PackedInt32Array(172, 171, 173), PackedInt32Array(173, 171, 174), PackedInt32Array(169, 170, 166), PackedInt32Array(166, 170, 165), PackedInt32Array(165, 170, 171), PackedInt32Array(171, 170, 174), PackedInt32Array(176, 175, 177), PackedInt32Array(177, 175, 178), PackedInt32Array(178, 175, 179), PackedInt32Array(181, 180, 182), PackedInt32Array(182, 180, 183), PackedInt32Array(175, 184, 179), PackedInt32Array(179, 184, 101), PackedInt32Array(101, 184, 185), PackedInt32Array(101, 185, 100), PackedInt32Array(183, 180, 186), PackedInt32Array(190, 189, 187), PackedInt32Array(187, 189, 188), PackedInt32Array(192, 191, 190), PackedInt32Array(194, 193, 191), PackedInt32Array(191, 193, 190), PackedInt32Array(186, 184, 183), PackedInt32Array(187, 185, 190), PackedInt32Array(190, 185, 192), PackedInt32Array(192, 185, 186), PackedInt32Array(186, 185, 184), PackedInt32Array(176, 177, 195), PackedInt32Array(195, 177, 196), PackedInt32Array(181, 182, 197), PackedInt32Array(197, 182, 198), PackedInt32Array(197, 198, 196), PackedInt32Array(198, 195, 196), PackedInt32Array(201, 200, 199), PackedInt32Array(204, 203, 202), PackedInt32Array(208, 207, 205), PackedInt32Array(205, 207, 206), PackedInt32Array(210, 209, 211), PackedInt32Array(211, 209, 213), PackedInt32Array(211, 213, 212), PackedInt32Array(214, 188, 189), PackedInt32Array(167, 168, 215), PackedInt32Array(93, 214, 92), PackedInt32Array(92, 214, 215), PackedInt32Array(214, 189, 215), PackedInt32Array(215, 189, 167), PackedInt32Array(167, 189, 217), PackedInt32Array(167, 217, 216), PackedInt32Array(220, 219, 218), PackedInt32Array(223, 222, 221)]
 geometry_source_geometry_mode = 2
 
+[sub_resource type="Resource" id="Resource_ek2u1"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Oh good! You made it through the gate in one piece."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_sjrkk"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "Was... was  there a chance I wouldn't?"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_vib1g"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Don't worry about that. The important thing is we've made it to the heart of this part of the forrest. Follow me down and I'll give you the tour."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_6vbog"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "That was some pretty fancy jumping. Colour me impressed"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_goxuo"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "It's so peaceful up here, I feel like I can relax for a bit."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_urvtv"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Not afraid of heights, I see. That's one thing I guess."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_y37ga"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "I'm mostly spring."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_562hf"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "[i]Fascinating[/i]. Okay, quick tour. Welcome to the Glade! It's a bit of a central hub to the rest of this part of the forest. "
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_od18p"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Straight ahead, up the steps, against that foreboding cliff wall is the gate to Ol' Spikus"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_i0jg4"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "Ol' Spikus?"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_xfmpq"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "He's the spirit that guards this part of woods."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_7vgug"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "Oh, good, a guardian spirit, sounds helpful."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_2mvpb"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "[shake rate=20.0 level=5 connected=1]Yeeeah[/shake]. Think less \"Guardian spirit\" and more \"Angry ghost warden what wants to impale you\""
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_y64br"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Anyway, go look around for some Gems, I'll let you know if I see anything interesting."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_i20dt"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Ugh. I don't like this part of the forest, but there's gems through the gate down there. And more creepy forest."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_kip1i"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Whatch out for the ghosthogs. They've made their shells out of shards of gems."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_735n7"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "I saw a sign about a broken gem. Did they break it? They sound dangerous."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_p6u18"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "They are dangerous, but nah, something else broke the gem, they just stole bits. I bet if you could squish 'em you could steal them back."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_pnu7b"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "I bet if you chucked a rock at one of these guys, you could slow 'em down for a bit."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_hsiur"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "Sounds mean"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_uwmu6"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Oh, and they're being so nice to you.
+
+Hey! Maybe you could throw your [i]box[/i] at them. That'd show 'em."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_t6ymo"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "That's not funny."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_xpwmb"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "That gate over there is probably your best bet to start looking for Gems. I think you need more gems than you have to open the others."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_dedl7"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Hey, kiddo, would you say you're an agile guy? When you're not in that box, I mean."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_web06"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "I guess, yeah?"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_0l1x3"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Oh good! There's a gem way up the side of this wall, looks like some shards too. Hop to it, I'll watch your box."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_rioiw"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Wanna know a secret? There's a hidden tunnel in this wall, right behind me."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_ifu43"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "It's not even locked or nothin'. Just hard to see. If you climb up through it, there's another gate hiding in there."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_p12u7"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "See! What'd I tell ya. A gate and even some of thos mullberries you keep gorging yourself on."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_irfdi"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "They're my comfort food."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_0ifwi"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Well, you're in luck, they come back every time you go through a gate."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_i7vj6"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Huh. I had no idea this was back here. Who's giving who the tour now?"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_ha2f4"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "Here it is, the gate to Ol' Spikus' layer. Once you've got a few gems we can head on through."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_iu2wo"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("23_xfpy3")
+text = "And then sneak past him and go home?"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_v31o3"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "[shake rate=20.0 level=5 connected=1]Ah hahaha[/shake] no wonder you're dressed like a jester, that's hilarious."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_3afrp"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "No. You're going to kick his but and then we'll be out of [i]this[/i] part of the forest, and into even worse parts! "
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_8y0h6"]
+script = ExtResource("21_msk2n")
+portrait = ExtResource("22_1uwbu")
+text = "This isn't over until we kick that big, mean bird to the curb."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_i7vj6"]
+size = Vector3(3.75, 1, 2.75)
+
 [sub_resource type="Curve3D" id="Curve3D_racov"]
 _data = {
 "points": PackedVector3Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, -12, 0, 0),
@@ -65,24 +292,6 @@ size = Vector3(1, 6.5, 0.75)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_5enw3"]
 size = Vector3(18.25, 10.75, 1)
-
-[sub_resource type="Resource" id="Resource_ek2u1"]
-script = ExtResource("21_msk2n")
-portrait = ExtResource("22_1uwbu")
-text = "Oh good! You made it through the gate in one piece."
-metadata/_custom_type_script = "uid://cxeq256h0bwgt"
-
-[sub_resource type="Resource" id="Resource_sjrkk"]
-script = ExtResource("21_msk2n")
-portrait = ExtResource("23_xfpy3")
-text = "Was... was  there a change I wouldn't?"
-metadata/_custom_type_script = "uid://cxeq256h0bwgt"
-
-[sub_resource type="Resource" id="Resource_vib1g"]
-script = ExtResource("21_msk2n")
-portrait = ExtResource("22_1uwbu")
-text = "Don't worry about that. The important thing is we've made it to the heart of this part of the forrest. Follow me down and I'll give you the tour."
-metadata/_custom_type_script = "uid://cxeq256h0bwgt"
 
 [node name="forest_hub" unique_id=1740911666 instance=ExtResource("1_gclfr")]
 title = "The Glade"
@@ -158,10 +367,86 @@ sign_image = ExtResource("10_urvtv")
 
 [node name="level_exit_cover" parent="Gates/exit_tutorial" index="8" unique_id=590568574 instance=ExtResource("4_h0onf")]
 
-[node name="floating_island3" parent="." index="8" unique_id=2112176503 groups=["navigation_mesh_source_group"] instance=ExtResource("12_2h80x")]
+[node name="Weasels" type="Node3D" parent="." index="8" unique_id=1119062279]
+
+[node name="WelcomeWeasel" parent="Weasels" index="0" unique_id=230894949 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 19, 8.25)
+weasel_id = "hub_intro"
+one_shot = true
+hide_automaticaly = true
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_ek2u1"), SubResource("Resource_sjrkk"), SubResource("Resource_vib1g")])
+
+[node name="FloatingIsleWeasel" parent="Weasels" index="1" unique_id=1656197923 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 19, -6.75)
+weasel_id = "floating_isle"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_6vbog"), SubResource("Resource_goxuo")])
+
+[node name="TourWeasel" parent="Weasels" index="2" unique_id=1212519887 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1)
+weasel_id = "hub_tour"
+one_shot = true
+hide_automaticaly = true
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_urvtv"), SubResource("Resource_y37ga"), SubResource("Resource_562hf"), SubResource("Resource_od18p"), SubResource("Resource_i0jg4"), SubResource("Resource_xfmpq"), SubResource("Resource_7vgug"), SubResource("Resource_2mvpb"), SubResource("Resource_y64br")])
+
+[node name="TourWeasel2" parent="Weasels" index="3" unique_id=1431137764 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 9.25, 0, 0.5)
+weasel_id = "creepy_forest_intro"
+one_shot = true
+hide_automaticaly = true
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_i20dt"), SubResource("Resource_kip1i"), SubResource("Resource_735n7"), SubResource("Resource_p6u18")])
+
+[node name="RockWeasel" parent="Weasels" index="4" unique_id=1606705093 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 9.5)
+weasel_id = "hub_rocks"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_pnu7b"), SubResource("Resource_hsiur"), SubResource("Resource_uwmu6"), SubResource("Resource_t6ymo")])
+
+[node name="TourWeasel3" parent="Weasels" index="5" unique_id=82376014 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -9.25, 0, 1.25)
+weasel_id = "level_1"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_xpwmb")])
+
+[node name="WallWeasel" parent="Weasels" index="6" unique_id=882749869 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -16, 0.5, -11.75)
+weasel_id = "wall_jump"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_dedl7"), SubResource("Resource_web06"), SubResource("Resource_0l1x3")])
+
+[node name="WallWeasel2" parent="Weasels" index="7" unique_id=1663702650 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -25.5, 0.5, -13.25)
+weasel_id = "level_2"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_rioiw"), SubResource("Resource_ifu43")])
+
+[node name="WallWeasel3" parent="Weasels" index="8" unique_id=1185663269 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -23.5, 2.25, -18.5)
+weasel_id = "level_2_part2"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_p12u7"), SubResource("Resource_irfdi"), SubResource("Resource_0ifwi")])
+
+[node name="WallWeasel4" parent="Weasels" index="9" unique_id=856164209 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -26.75, 4.5, -17.5)
+weasel_id = "wall_shard_cave"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_i7vj6")])
+
+[node name="SpikusWeasel" parent="Weasels" index="10" unique_id=769556102 instance=ExtResource("20_clacf")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.5, -31)
+weasel_id = "spikus"
+dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_ha2f4"), SubResource("Resource_iu2wo"), SubResource("Resource_v31o3"), SubResource("Resource_3afrp"), SubResource("Resource_8y0h6")])
+
+[node name="ConfidenceZone2" type="Area3D" parent="." index="9" unique_id=1725325114]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 2.75, -20.75)
+script = ExtResource("8_nt8lu")
+secret_enabled = true
+secret_name = "Level 2 Chamber"
+enter_type = 1
+enter_amount = 5
+metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="ConfidenceZone2" index="0" unique_id=1490758631]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.125, 0.25, 2.375)
+shape = SubResource("BoxShape3D_i7vj6")
+
+[node name="floating_island3" parent="." index="10" unique_id=2112176503 groups=["navigation_mesh_source_group"] instance=ExtResource("12_2h80x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29.5, -3, 1.5)
 
-[node name="Path3D" type="Path3D" parent="." index="9" unique_id=2015356152]
+[node name="Path3D" type="Path3D" parent="." index="11" unique_id=2015356152]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -11.5, -1, 0)
 curve = SubResource("Curve3D_racov")
 
@@ -174,7 +459,7 @@ metadata/_custom_type_script = "uid://efge2y8tfd36"
 [node name="forest_platform" parent="Path3D/MovingPlatform" index="0" unique_id=1873223565 instance=ExtResource("5_4w7al")]
 transform = Transform3D(1, 0, 0, 0, 1.0000007, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="Path3D2" type="Path3D" parent="." index="10" unique_id=183985447]
+[node name="Path3D2" type="Path3D" parent="." index="12" unique_id=183985447]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -23.5, -1, 3)
 curve = SubResource("Curve3D_racov")
 
@@ -187,13 +472,13 @@ metadata/_custom_type_script = "uid://efge2y8tfd36"
 [node name="forest_platform" parent="Path3D2/MovingPlatform" index="0" unique_id=1999236723 instance=ExtResource("5_4w7al")]
 transform = Transform3D(1, 0, 0, 0, 1.0000007, 0, 0, 0, 1, 0, 0, 0)
 
-[node name="boss_wall" parent="." index="11" unique_id=491114134 instance=ExtResource("4_4w7al")]
+[node name="boss_wall" parent="." index="13" unique_id=491114134 instance=ExtResource("4_4w7al")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -33)
 
-[node name="east_mountain" parent="." index="12" unique_id=1110038043 instance=ExtResource("7_racov")]
+[node name="east_mountain" parent="." index="14" unique_id=1110038043 instance=ExtResource("7_racov")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0)
 
-[node name="ConfidenceZone" type="Area3D" parent="." index="13" unique_id=993226078]
+[node name="ConfidenceZone" type="Area3D" parent="." index="15" unique_id=993226078]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 17, -3, 0)
 script = ExtResource("8_nt8lu")
 constant_type = 2
@@ -204,26 +489,25 @@ metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
 transform = Transform3D(0.99999857, 0, 0, 0, 0.99999857, 0, 0, 0, 0.99999857, 1.5, 0, 0)
 shape = SubResource("BoxShape3D_06d4k")
 
-[node name="shade_tree" parent="." index="14" unique_id=1550524618 instance=ExtResource("8_srw2c")]
+[node name="shade_tree" parent="." index="16" unique_id=1550524618 instance=ExtResource("8_srw2c")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 37.75, -5.5, 8.5)
 
-[node name="shade_tree2" parent="." index="15" unique_id=2057789400 instance=ExtResource("8_srw2c")]
+[node name="shade_tree2" parent="." index="17" unique_id=2057789400 instance=ExtResource("8_srw2c")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 52.25, -0.5, -20)
 
-[node name="shade_tree3" parent="." index="16" unique_id=1781831073 instance=ExtResource("8_srw2c")]
+[node name="shade_tree3" parent="." index="18" unique_id=1781831073 instance=ExtResource("8_srw2c")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 40.25, -11, -42.75)
 
-[node name="signpost2" parent="." index="17" unique_id=1431861396 instance=ExtResource("2_hhsys")]
+[node name="signpost2" parent="." index="19" unique_id=1431861396 instance=ExtResource("2_hhsys")]
 transform = Transform3D(0.49999997, 0, -0.86602545, 0, 1, 0, 0.86602545, 0, 0.49999997, 9, 0, -1.5)
 enabled = true
 image = ExtResource("10_06d4k")
 message_text = "Warning: The darkest part of the forest lies ahead"
 
-[node name="Enemies" type="Node3D" parent="." index="18" unique_id=1344924753]
+[node name="Enemies" type="Node3D" parent="." index="20" unique_id=1344924753]
 
 [node name="hedgehog" parent="Enemies" index="0" unique_id=1940827871 instance=ExtResource("11_yor5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -2.75)
-log = true
 
 [node name="hedgehog8" parent="Enemies" index="1" unique_id=1761759839 instance=ExtResource("11_yor5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.25, 2, -20.5)
@@ -258,10 +542,10 @@ transform = Transform3D(0.25881907, 0, -0.9659258, 0, 1, 0, 0.9659258, 0, 0.2588
 [node name="hedgehog7" parent="Enemies" index="10" unique_id=312269329 instance=ExtResource("11_yor5b")]
 transform = Transform3D(-0.8660254, 0, 0.49999994, 0, 1, 0, -0.49999994, 0, -0.8660254, -1, 0, 11.25)
 
-[node name="floating_island" parent="." index="19" unique_id=1823503044 groups=["navigation_mesh_source_group"] instance=ExtResource("12_2h80x")]
+[node name="floating_island" parent="." index="21" unique_id=1823503044 groups=["navigation_mesh_source_group"] instance=ExtResource("12_2h80x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 16, 10.5)
 
-[node name="floating_island2" parent="." index="20" unique_id=2088361054 groups=["navigation_mesh_source_group"] instance=ExtResource("12_2h80x")]
+[node name="floating_island2" parent="." index="22" unique_id=2088361054 groups=["navigation_mesh_source_group"] instance=ExtResource("12_2h80x")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 16, -9.5)
 
 [node name="IslandSafteyZone" type="Area3D" parent="floating_island2" index="1" unique_id=289907872]
@@ -290,7 +574,7 @@ metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.125, 0.25)
 shape = SubResource("BoxShape3D_vp1mn")
 
-[node name="Path3D3" type="Path3D" parent="." index="21" unique_id=714884071]
+[node name="Path3D3" type="Path3D" parent="." index="23" unique_id=714884071]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -6.5, -1, 12.5)
 curve = SubResource("Curve3D_mxftt")
 
@@ -306,13 +590,13 @@ metadata/_custom_type_script = "uid://efge2y8tfd36"
 
 [node name="forest_platform" parent="Path3D3/MovingPlatform" index="0" unique_id=9428560 instance=ExtResource("5_4w7al")]
 
-[node name="signpost3" parent="." index="22" unique_id=385306429 instance=ExtResource("2_hhsys")]
+[node name="signpost3" parent="." index="24" unique_id=385306429 instance=ExtResource("2_hhsys")]
 transform = Transform3D(-0.50000006, 0, 0.8660254, 0, 1, 0, -0.8660254, 0, -0.50000006, -4.5, 0, 13.75)
 enabled = true
 image = ExtResource("15_vp1mn")
 message_text = "Elevator back to tutorial zone"
 
-[node name="SlideToCreepy" type="Area3D" parent="." index="23" unique_id=597414781]
+[node name="SlideToCreepy" type="Area3D" parent="." index="25" unique_id=597414781]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 18.25, -0.5, -8)
 script = ExtResource("8_nt8lu")
 secret_enabled = true
@@ -326,7 +610,7 @@ metadata/_custom_type_script = "uid://ba2byxdo5cmmb"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, -0.125)
 shape = SubResource("BoxShape3D_h0onf")
 
-[node name="west_mountain" parent="." index="24" unique_id=2045725706 instance=ExtResource("15_mxftt")]
+[node name="west_mountain" parent="." index="26" unique_id=2045725706 instance=ExtResource("15_mxftt")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0.5, -14)
 
 [node name="OmniLight3D" type="OmniLight3D" parent="west_mountain" index="1" unique_id=1517485231]
@@ -344,7 +628,7 @@ metadata/_custom_type_script = "uid://dryadt6ksv0u2"
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.375, 7.125, 0.5)
 shape = SubResource("BoxShape3D_5enw3")
 
-[node name="Berries" type="Node3D" parent="." index="25" unique_id=944193051]
+[node name="Berries" type="Node3D" parent="." index="27" unique_id=944193051]
 
 [node name="mullberry" parent="Berries" index="0" unique_id=475435490 instance=ExtResource("17_5enw3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 18.75, 2.75)
@@ -658,49 +942,42 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 1.5, -31.5)
 [node name="mullberry22" parent="Berries" index="103" unique_id=1180187377 instance=ExtResource("17_5enw3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.5, 1.5, -29.5)
 
-[node name="weasel" parent="." index="26" unique_id=230894949 instance=ExtResource("20_clacf")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 19, 8.25)
-weasel_id = "hub_intro"
-one_shot = true
-hide_automaticaly = true
-dialog = Array[ExtResource("21_msk2n")]([SubResource("Resource_ek2u1"), SubResource("Resource_sjrkk"), SubResource("Resource_vib1g")])
-
-[node name="gem_plinth" parent="." index="27" unique_id=1603351441 instance=ExtResource("27_sjrkk")]
+[node name="gem_plinth" parent="." index="28" unique_id=1603351441 instance=ExtResource("27_sjrkk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 19, -9.5)
 gem_id = 2
 
-[node name="gem_plinth2" parent="." index="28" unique_id=1196094736 instance=ExtResource("27_sjrkk")]
+[node name="gem_plinth2" parent="." index="29" unique_id=1196094736 instance=ExtResource("27_sjrkk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1)
 gem_id = 3
 lock_enabled = true
 
-[node name="gem_shard" parent="." index="29" unique_id=1248578273 instance=ExtResource("28_vib1g")]
+[node name="gem_shard" parent="." index="30" unique_id=1248578273 instance=ExtResource("28_vib1g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -29, 5, -17.5)
 shard_id = 1
 
-[node name="gem_shard3" parent="." index="30" unique_id=1986602454 instance=ExtResource("28_vib1g")]
+[node name="gem_shard3" parent="." index="31" unique_id=1986602454 instance=ExtResource("28_vib1g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -14.25, 10.75, -13.5)
 shard_id = 3
 
-[node name="gem_shard6" parent="." index="31" unique_id=903868863 instance=ExtResource("28_vib1g")]
+[node name="gem_shard6" parent="." index="32" unique_id=903868863 instance=ExtResource("28_vib1g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 13.75)
 shard_id = 6
 
-[node name="gem_shard7" parent="." index="32" unique_id=323543250 instance=ExtResource("28_vib1g")]
+[node name="gem_shard7" parent="." index="33" unique_id=323543250 instance=ExtResource("28_vib1g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -8.75, 11.5, 14)
 shard_id = 7
 
-[node name="gem_shard8" parent="." index="33" unique_id=1882201315 instance=ExtResource("28_vib1g")]
+[node name="gem_shard8" parent="." index="34" unique_id=1882201315 instance=ExtResource("28_vib1g")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -33, 0, 1.5)
 
-[node name="gem_plinth3" parent="." index="34" unique_id=1273879566 instance=ExtResource("27_sjrkk")]
+[node name="gem_plinth3" parent="." index="35" unique_id=1273879566 instance=ExtResource("27_sjrkk")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -28.25, 10.499327, -13.5)
 
-[node name="Rock" parent="." index="35" unique_id=94686507 instance=ExtResource("30_urvtv")]
+[node name="Rock" parent="." index="36" unique_id=94686507 instance=ExtResource("30_urvtv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 3, 0.25, 6.75)
 
-[node name="Rock2" parent="." index="36" unique_id=2136170646 instance=ExtResource("30_urvtv")]
+[node name="Rock2" parent="." index="37" unique_id=2136170646 instance=ExtResource("30_urvtv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 0.25, 9.5)
 
-[node name="Rock3" parent="." index="37" unique_id=923089195 instance=ExtResource("30_urvtv")]
+[node name="Rock3" parent="." index="38" unique_id=923089195 instance=ExtResource("30_urvtv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 0.25, 12.75)

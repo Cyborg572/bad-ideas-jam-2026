@@ -39,6 +39,9 @@ func _ready() -> void:
 
 
 func _physics_process(delta: float) -> void:
+	if GameManager.dialog_active:
+		return
+
 	velocity += get_gravity() * delta
 
 	match state:
