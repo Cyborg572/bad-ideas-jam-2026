@@ -20,6 +20,7 @@ enum ShardId {
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var area_3d: Area3D = $Area3D
 @onready var sound: AudioStreamPlayer3D = $Sound
+@onready var collision_shape_3d: CollisionShape3D = $Area3D/CollisionShape3D
 
 var host_level: Level
 
@@ -46,3 +47,13 @@ func _on_body_entered(body: Node3D) -> void:
 		await animation_player.animation_finished
 		collected.emit(shard_id)
 		queue_free()
+
+
+func disable():
+	hide()
+	collision_shape_3d.disabled = true
+
+
+func enable():
+	show()
+	collision_shape_3d.disabled = false

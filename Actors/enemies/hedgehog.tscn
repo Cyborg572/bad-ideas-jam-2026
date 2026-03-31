@@ -10,6 +10,18 @@ radius = 0.25
 height = 0.125
 radius = 0.438
 
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dwaxm"]
+animation = &"curl"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bb586"]
+animation = &"curled"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_12hd0"]
+animation = &"end_survey"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ak7bt"]
+animation = &"idle"
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7afrj"]
 animation = &"Roll"
 
@@ -22,6 +34,16 @@ nodes/Roll/position = Vector2(-240, 180)
 nodes/speed/node = SubResource("AnimationNodeTimeScale_12hd0")
 nodes/speed/position = Vector2(40, 160)
 node_connections = [&"output", 0, &"speed", &"speed", 0, &"Roll"]
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_of2bf"]
+animation = &"start_survey"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_swvh6"]
+animation = &"survey"
+
+[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ajsc6"]
+animation = &"curl"
+play_mode = 1
 
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_k4cxp"]
 animation = &"Walk"
@@ -36,28 +58,6 @@ nodes/Walk/position = Vector2(-60, 240)
 nodes/speed/node = SubResource("AnimationNodeTimeScale_of2bf")
 nodes/speed/position = Vector2(149.30193, 194.73746)
 node_connections = [&"output", 0, &"speed", &"speed", 0, &"Walk"]
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_dwaxm"]
-animation = &"curl"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_bb586"]
-animation = &"curled"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_12hd0"]
-animation = &"end_survey"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ak7bt"]
-animation = &"idle"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_of2bf"]
-animation = &"start_survey"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_swvh6"]
-animation = &"survey"
-
-[sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_ajsc6"]
-animation = &"curl"
-play_mode = 1
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_7afrj"]
 advance_mode = 2
@@ -104,7 +104,7 @@ advance_expression = "speed > 0"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_vfn3e"]
 advance_mode = 2
-advance_expression = "speed <= 0"
+advance_expression = "speed <= 0 or state == State.IDLE"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_fe7l1"]
 advance_mode = 2
@@ -117,15 +117,11 @@ advance_mode = 2
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_1pvvg"]
 switch_mode = 2
 advance_mode = 2
-advance_expression = "state == State.ATTACKING"
+advance_expression = "state == State.ATTACKING or state == State.DISTANCING"
 
 [sub_resource type="AnimationNodeStateMachine" id="AnimationNodeStateMachine_ajsc6"]
 states/End/position = Vector2(923, 138)
-states/Roll/node = SubResource("AnimationNodeBlendTree_k4cxp")
-states/Roll/position = Vector2(729, 317)
 states/Start/position = Vector2(165, 172)
-states/Walk/node = SubResource("AnimationNodeBlendTree_swvh6")
-states/Walk/position = Vector2(328, 305)
 states/curl/node = SubResource("AnimationNodeAnimation_dwaxm")
 states/curl/position = Vector2(574, 207)
 states/curled/node = SubResource("AnimationNodeAnimation_bb586")
@@ -134,13 +130,17 @@ states/end_survey/node = SubResource("AnimationNodeAnimation_12hd0")
 states/end_survey/position = Vector2(699, 64)
 states/idle/node = SubResource("AnimationNodeAnimation_ak7bt")
 states/idle/position = Vector2(378, 172)
+states/roll/node = SubResource("AnimationNodeBlendTree_k4cxp")
+states/roll/position = Vector2(729, 317)
 states/start_survey/node = SubResource("AnimationNodeAnimation_of2bf")
 states/start_survey/position = Vector2(328, 64)
 states/survey/node = SubResource("AnimationNodeAnimation_swvh6")
 states/survey/position = Vector2(501, -26)
 states/uncurl/node = SubResource("AnimationNodeAnimation_ajsc6")
 states/uncurl/position = Vector2(532, 292)
-transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_7afrj"), "idle", "Walk", SubResource("AnimationNodeStateMachineTransition_12hd0"), "Walk", "idle", SubResource("AnimationNodeStateMachineTransition_k4cxp"), "idle", "start_survey", SubResource("AnimationNodeStateMachineTransition_dwaxm"), "start_survey", "survey", SubResource("AnimationNodeStateMachineTransition_bb586"), "survey", "end_survey", SubResource("AnimationNodeStateMachineTransition_ak7bt"), "end_survey", "idle", SubResource("AnimationNodeStateMachineTransition_ajsc6"), "curl", "curled", SubResource("AnimationNodeStateMachineTransition_6jvoa"), "curled", "Roll", SubResource("AnimationNodeStateMachineTransition_wj1ho"), "Roll", "curled", SubResource("AnimationNodeStateMachineTransition_vfn3e"), "curled", "uncurl", SubResource("AnimationNodeStateMachineTransition_fe7l1"), "uncurl", "idle", SubResource("AnimationNodeStateMachineTransition_fm6gv"), "end_survey", "curl", SubResource("AnimationNodeStateMachineTransition_1pvvg")]
+states/walk/node = SubResource("AnimationNodeBlendTree_swvh6")
+states/walk/position = Vector2(328, 305)
+transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_7afrj"), "idle", "walk", SubResource("AnimationNodeStateMachineTransition_12hd0"), "walk", "idle", SubResource("AnimationNodeStateMachineTransition_k4cxp"), "idle", "start_survey", SubResource("AnimationNodeStateMachineTransition_dwaxm"), "start_survey", "survey", SubResource("AnimationNodeStateMachineTransition_bb586"), "survey", "end_survey", SubResource("AnimationNodeStateMachineTransition_ak7bt"), "end_survey", "idle", SubResource("AnimationNodeStateMachineTransition_ajsc6"), "curl", "curled", SubResource("AnimationNodeStateMachineTransition_6jvoa"), "curled", "roll", SubResource("AnimationNodeStateMachineTransition_wj1ho"), "roll", "curled", SubResource("AnimationNodeStateMachineTransition_vfn3e"), "curled", "uncurl", SubResource("AnimationNodeStateMachineTransition_fe7l1"), "uncurl", "idle", SubResource("AnimationNodeStateMachineTransition_fm6gv"), "end_survey", "curl", SubResource("AnimationNodeStateMachineTransition_1pvvg")]
 graph_offset = Vector2(-38, -39)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_855et"]
@@ -219,19 +219,23 @@ root_motion_track = NodePath("Armature/Skeleton3D:Root")
 tree_root = SubResource("AnimationNodeBlendTree_855et")
 advance_expression_base_node = NodePath("..")
 anim_player = NodePath("../AnimationPlayer")
-parameters/StateMachine/Roll/speed/scale = 1.0
-parameters/StateMachine/Walk/speed/scale = 1.0
+parameters/StateMachine/roll/speed/scale = 1.0
+parameters/StateMachine/walk/speed/scale = 1.0
 
 [node name="PatrolBeat" type="Timer" parent="." index="6" unique_id=1513831462]
 wait_time = 2.0
 one_shot = true
 
 [node name="JackSensor" type="Area3D" parent="." index="7" unique_id=67729027]
+collision_layer = 0
+collision_mask = 4
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="JackSensor" index="0" unique_id=241702528]
 shape = SubResource("SphereShape3D_7afrj")
 
 [node name="HitBox" type="Area3D" parent="." index="8" unique_id=1646832219]
+collision_layer = 0
+collision_mask = 196
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" index="0" unique_id=2072747725]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)

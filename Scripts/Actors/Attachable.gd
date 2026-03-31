@@ -11,6 +11,8 @@ var attachment_point : Node3D = Node3D.new()
 var interaction_point : InteractionPoint
 var passing : bool = false
 
+@onready var spawn_point: Vector3 = global_position
+
 #region Attach
 ## Override in a child class to do stuff before attachments.
 @warning_ignore("unused_parameter")

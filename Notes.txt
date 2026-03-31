@@ -41,9 +41,13 @@ Todo:
 	- [x] Weight triggers
 	- [x] Interaction triggers
 - [ ] Enemies
-  - [ ] Hedgehog
+  - [x] Hedgehog
 	- [x] Movement AI
-	- [ ] Real AI
+	- [x] Real AI
+  - [x] Ghosthog
+	- [x] Movement AI
+	- [x] Real AI
+	- [x] Drop Gem Shard
   - [ ] Boss
   - [ ] Others?
 - [ ] Hazzards

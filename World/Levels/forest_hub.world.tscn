@@ -223,6 +223,7 @@ message_text = "Warning: The darkest part of the forest lies ahead"
 
 [node name="hedgehog" parent="Enemies" index="0" unique_id=1940827871 instance=ExtResource("11_yor5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 0, -2.75)
+log = true
 
 [node name="hedgehog8" parent="Enemies" index="1" unique_id=1761759839 instance=ExtResource("11_yor5b")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -4.25, 2, -20.5)

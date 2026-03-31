@@ -80,6 +80,14 @@ func _on_interaction(point: InteractionPoint) -> void:
 	if not point.type == InteractionPoint.InteractionType.custom:
 		return
 
+	summon_gem()
+
+
+func _on_gem_claimed() -> void:
+	lock()
+
+
+func summon_gem() -> void:
 	# A claimed gem will no longer exist
 	if gem == null or gem.get_parent() == null:
 		return
@@ -93,10 +101,6 @@ func _on_interaction(point: InteractionPoint) -> void:
 	gem.attach(self)
 	unlock()
 	change_interaction_type.call_deferred(InteractionPoint.InteractionType.dispenser)
-
-
-func _on_gem_claimed() -> void:
-	lock()
 
 
 func are_shards_all_collected() -> bool:
@@ -149,6 +153,7 @@ func give_item(to: CharacterBody3D) -> void:
 func spawn_gem() -> void:
 	gem = gem_scene.instantiate()
 	gem.gem_id = gem_id
+	gem.plinth = self
 
 	add_sibling.call_deferred(gem)
 	await gem.ready

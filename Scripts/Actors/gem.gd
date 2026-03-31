@@ -12,6 +12,7 @@ enum GemID {
 
 @export var gem_id: GemID = GemID.NONE
 
+var plinth: GemPlinth
 
 func claim() -> void:
 	GameManager.active_level.level_state.collect_gem(gem_id)
