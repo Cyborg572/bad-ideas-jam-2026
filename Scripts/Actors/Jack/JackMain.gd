@@ -37,7 +37,9 @@ enum JumpType {
 	## Detached from the box
 	POP_OUT,
 	## The little boost from entering the box while carrying it
-	POP_IN
+	POP_IN,
+	## The down attack in the box
+	SLAM
 }
 
 ## The jump types count as flips for the various things that care.
@@ -238,6 +240,19 @@ func _enter_state(from : State, to : State) -> void:
 			box_collider.position = attachment_points['foot'].position + Vector3(0, 0.125, 0)
 			camera_target.position.y = 0
 		State.GROUNDED:
+			if jump_type == JumpType.SLAM:
+				print("Slammed!")
+				is_frozen = true
+				var hit = create_tween()
+				var pos = box.position.y
+				box.model.scale = Vector3(1,1,1)
+				hit.set_ease(Tween.EASE_OUT)
+				hit.tween_property(box, "position:y", pos + 0.125, 0.075)
+				hit.set_ease(Tween.EASE_IN)
+				hit.tween_property(box, "position:y", pos, 0.1)
+				await hit.finished
+				is_frozen = false
+
 			var score_jump: bool = jump_type not in UNSCORED_JUMPS
 			jump_type = JumpType.NONE
 			jump_cancelled = false
@@ -510,6 +525,24 @@ func jump(
 	sound_effects.play_jump_sound()
 
 
+func slam() -> void:
+	is_frozen = true
+	jump(JumpType.SLAM, Vector3(0, -5, 0))
+	var spin = create_tween()
+	spin.set_ease(Tween.EASE_OUT)
+	spin.set_parallel(true)
+	spin.tween_property(self, "position:y", position.y + 0.5, 0.75)
+	spin.set_ease(Tween.EASE_IN)
+	spin.tween_property(box.model, "scale", Vector3(1.25, 0.75, 1.25), 0.5)
+	spin.tween_property(self, "rotation:y", rotation.y + (2 * PI), 0.5)
+	await spin.finished
+	change_state(State.AIRBORN)
+	var expand = create_tween()
+	expand.tween_property(box.model, "scale", Vector3(0.75,1.25,0.75), 0.1)
+	is_frozen = false
+	sound_effects.play_attack_sound()
+
+
 func match_face_to_confidence(confidence: float) -> void:
 	var frown_amount: float = 1.0 - (confidence / 100.0)
 	anim.set("parameters/Frowning/blend_amount", frown_amount)
@@ -708,7 +741,7 @@ func _physics_process(delta: float) -> void:
 		hide_in_box()
 
 	if Input.is_action_just_released("Crouch") && is_boxed:
-		if not ceiling_detect.is_colliding():
+		if not ceiling_detect.is_colliding() and not jump_type == JumpType.SLAM:
 			pop_out()
 
 	if not Input.is_action_pressed("Crouch") && is_boxed:
@@ -730,13 +763,18 @@ func _physics_process(delta: float) -> void:
 			if Input.is_action_pressed("Jump"):
 				charge_jump(delta)
 
-			if Input.is_action_just_pressed("Attack") && is_carrying:
-				if is_hiding:
-					drop_carried_item(3, PI/4)
-					await box.pop()
-					box.slam()
+
+			if Input.is_action_just_pressed("Attack"):
+				if is_carrying:
+					if is_hiding:
+						drop_carried_item(3, PI/4)
+						await box.pop()
+						box.slam()
+					else:
+						drop_carried_item(3, PI/4)
 				else:
-					drop_carried_item(3, PI/4)
+					if is_hiding:
+						await slam()
 
 			# Handle jump.
 			if Input.is_action_just_released("Jump"):
@@ -921,6 +959,12 @@ func _physics_process(delta: float) -> void:
 					jump(JumpType.WALL, get_jump_strength(), wall_normal * 2)
 					follow_motion(wall_normal, 60 * delta)
 
+		State.AIRBORN when jump_type == JumpType.SLAM:
+			var gravity := get_gravity()
+			# Apply gravity
+			velocity += gravity * 3 * delta
+			velocity.y = clamp(velocity.y, -10.0, 10.0)
+
 		State.AIRBORN:
 			# Grab gravity
 			var gravity := get_gravity()
@@ -952,6 +996,9 @@ func _physics_process(delta: float) -> void:
 				&& jump_cancelled == false
 			) :
 				jump_cancelled = true
+
+			if (Input.is_action_just_pressed("Attack") and is_hiding):
+				await slam()
 
 			if is_falling():
 				# Fall faster for better Game Feel
@@ -1025,6 +1072,10 @@ func _on_player_confidence_changed(confidence: float, _old_confidence: float) ->
 
 func _on_global_interaction(interaction_point : InteractionPoint):
 	var types := InteractionPoint.InteractionType
+
+	if not interaction_point:
+		print("Weird...")
+		return
 
 	var target := interaction_point.get_parent_node_3d()
 

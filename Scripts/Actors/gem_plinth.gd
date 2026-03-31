@@ -88,7 +88,7 @@ func _on_interaction(point: InteractionPoint) -> void:
 	if gem.has_attachment:
 		return
 
-	lock()
+	#lock()
 	gem.detach()
 	gem.attach(self)
 	unlock()

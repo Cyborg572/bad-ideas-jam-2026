@@ -99,7 +99,6 @@ func be_held(delta : float) -> void:
 func reposition(
 		speed : float,
 		target_position: Vector3 = attachment.global_position,
-		scale_modifier: Vector3 = scale
 	):
 	var offset: Vector3 = attachment_point.global_position - global_position
 	var offset_position: Vector3 = target_position - offset

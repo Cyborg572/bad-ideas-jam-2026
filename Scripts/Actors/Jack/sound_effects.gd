@@ -8,6 +8,7 @@ extends Node3D
 @onready var nervous_sounds: AudioStreamPlayer3D = $NervousSounds
 @onready var panic_sounds: AudioStreamPlayer3D = $PanicSounds
 @onready var success_sounds: AudioStreamPlayer3D = $SuccessSounds
+@onready var attack_sounds: AudioStreamPlayer3D = $AttackSounds
 
 
 func _ready() -> void:
@@ -79,3 +80,7 @@ func play_panic_sound() -> void:
 
 func play_success_sound() -> void:
 	success_sounds.play()
+
+
+func play_attack_sound() -> void:
+	attack_sounds.play()

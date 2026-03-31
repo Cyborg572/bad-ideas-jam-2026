@@ -6,6 +6,10 @@
 [sub_resource type="SphereShape3D" id="SphereShape3D_pmixs"]
 radius = 0.25
 
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_7afrj"]
+height = 0.125
+radius = 0.438
+
 [sub_resource type="AnimationNodeAnimation" id="AnimationNodeAnimation_7afrj"]
 animation = &"Roll"
 
@@ -71,7 +75,7 @@ advance_expression = "speed <= 0"
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_dwaxm"]
 xfade_time = 0.1
 advance_mode = 2
-advance_expression = "state == State.SCANNING"
+advance_expression = "state == State.SCANNING or state == State.STUNNED"
 
 [sub_resource type="AnimationNodeStateMachineTransition" id="AnimationNodeStateMachineTransition_bb586"]
 switch_mode = 2
@@ -137,12 +141,19 @@ states/survey/position = Vector2(501, -26)
 states/uncurl/node = SubResource("AnimationNodeAnimation_ajsc6")
 states/uncurl/position = Vector2(532, 292)
 transitions = ["Start", "idle", SubResource("AnimationNodeStateMachineTransition_7afrj"), "idle", "Walk", SubResource("AnimationNodeStateMachineTransition_12hd0"), "Walk", "idle", SubResource("AnimationNodeStateMachineTransition_k4cxp"), "idle", "start_survey", SubResource("AnimationNodeStateMachineTransition_dwaxm"), "start_survey", "survey", SubResource("AnimationNodeStateMachineTransition_bb586"), "survey", "end_survey", SubResource("AnimationNodeStateMachineTransition_ak7bt"), "end_survey", "idle", SubResource("AnimationNodeStateMachineTransition_ajsc6"), "curl", "curled", SubResource("AnimationNodeStateMachineTransition_6jvoa"), "curled", "Roll", SubResource("AnimationNodeStateMachineTransition_wj1ho"), "Roll", "curled", SubResource("AnimationNodeStateMachineTransition_vfn3e"), "curled", "uncurl", SubResource("AnimationNodeStateMachineTransition_fe7l1"), "uncurl", "idle", SubResource("AnimationNodeStateMachineTransition_fm6gv"), "end_survey", "curl", SubResource("AnimationNodeStateMachineTransition_1pvvg")]
-graph_offset = Vector2(61, 24)
+graph_offset = Vector2(-38, -39)
 
 [sub_resource type="AnimationNodeBlendTree" id="AnimationNodeBlendTree_855et"]
+graph_offset = Vector2(-137.69424, -68.57025)
 nodes/StateMachine/node = SubResource("AnimationNodeStateMachine_ajsc6")
 nodes/StateMachine/position = Vector2(-175.31581, 154.27042)
 node_connections = [&"output", 0, &"StateMachine"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_7afrj"]
+radius = 2.0
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_12hd0"]
+radius = 0.3
 
 [node name="hedgehog" unique_id=1940827871 instance=ExtResource("1_pmixs")]
 script = ExtResource("2_855et")
@@ -193,11 +204,16 @@ bones/22/position = Vector3(0.07824553, 0.2959133, -0.17550878)
 bones/23/position = Vector3(-0.07824553, 0.2959133, -0.17550878)
 bones/23/rotation = Quaternion(-0.394573, 0.6140611, 0.6140584, -0.30028874)
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="." index="3" unique_id=298398843]
+[node name="RoundCollider" type="CollisionShape3D" parent="." index="3" unique_id=298398843]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
 shape = SubResource("SphereShape3D_pmixs")
 
-[node name="AnimationTree" type="AnimationTree" parent="." index="4" unique_id=1760588455]
+[node name="FlatCollider" type="CollisionShape3D" parent="." index="4" unique_id=479086794]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.049999967, 0)
+shape = SubResource("CylinderShape3D_7afrj")
+disabled = true
+
+[node name="AnimationTree" type="AnimationTree" parent="." index="5" unique_id=1760588455]
 active = false
 root_motion_track = NodePath("Armature/Skeleton3D:Root")
 tree_root = SubResource("AnimationNodeBlendTree_855et")
@@ -206,6 +222,17 @@ anim_player = NodePath("../AnimationPlayer")
 parameters/StateMachine/Roll/speed/scale = 1.0
 parameters/StateMachine/Walk/speed/scale = 1.0
 
-[node name="PatrolBeat" type="Timer" parent="." index="5" unique_id=1513831462]
+[node name="PatrolBeat" type="Timer" parent="." index="6" unique_id=1513831462]
 wait_time = 2.0
 one_shot = true
+
+[node name="JackSensor" type="Area3D" parent="." index="7" unique_id=67729027]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="JackSensor" index="0" unique_id=241702528]
+shape = SubResource("SphereShape3D_7afrj")
+
+[node name="HitBox" type="Area3D" parent="." index="8" unique_id=1646832219]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="HitBox" index="0" unique_id=2072747725]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0)
+shape = SubResource("SphereShape3D_12hd0")

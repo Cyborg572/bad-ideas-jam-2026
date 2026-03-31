@@ -13,6 +13,7 @@
 [ext_resource type="AudioStream" uid="uid://raidbk7jqe27" path="res://Sounds/jack/randomizers/nervous.tres" id="11_1kurg"]
 [ext_resource type="AudioStream" uid="uid://dcqtgme0ok0ac" path="res://Sounds/jack/randomizers/panic.tres" id="12_fa6cq"]
 [ext_resource type="AudioStream" uid="uid://d55ufwt1j1pr" path="res://Sounds/jack/randomizers/success.tres" id="13_lat47"]
+[ext_resource type="AudioStream" uid="uid://dgmsjx01bmv5v" path="res://Sounds/jack/hup7.ogg" id="14_1kurg"]
 
 [sub_resource type="Resource" id="Resource_yu5vu"]
 script = ExtResource("2_kyi2e")
@@ -70,6 +71,12 @@ bottom_radius = 0.0
 height = 0.25
 radial_segments = 16
 rings = 2
+
+[sub_resource type="AudioStreamRandomizer" id="AudioStreamRandomizer_fa6cq"]
+random_pitch = 1.0905077
+random_volume_offset_db = 1.0
+streams_count = 1
+stream_0/stream = ExtResource("14_1kurg")
 
 [node name="Jack" type="CharacterBody3D" unique_id=1250745410]
 collision_layer = 5
@@ -178,4 +185,8 @@ bus = &"Sound Effects"
 
 [node name="SuccessSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=1584679200]
 stream = ExtResource("13_lat47")
+bus = &"Sound Effects"
+
+[node name="AttackSounds" type="AudioStreamPlayer3D" parent="SoundEffects" unique_id=1714238744]
+stream = SubResource("AudioStreamRandomizer_fa6cq")
 bus = &"Sound Effects"

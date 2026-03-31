@@ -1,0 +1,41 @@
+[gd_scene format=3 uid="uid://c2w4ablihv3po"]
+
+[ext_resource type="Script" uid="uid://bctfng6rb7gfp" path="res://Scripts/Actors/Attachable.gd" id="1_1p5jm"]
+[ext_resource type="Material" uid="uid://dr4tvpg3c6rsm" path="res://Materials/stone.tres" id="2_mffol"]
+[ext_resource type="Script" uid="uid://bq67yvae5bmfy" path="res://Scripts/Actors/InteractionPoint.gd" id="3_kjrql"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_kjrql"]
+material = ExtResource("2_mffol")
+radius = 0.25
+height = 0.5
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_3pdey"]
+radius = 0.25
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kjrql"]
+height = 0.625
+radius = 0.75
+
+[node name="Rock" type="CharacterBody3D" unique_id=94686507]
+script = ExtResource("1_1p5jm")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="." unique_id=2091449465]
+mesh = SubResource("SphereMesh_kjrql")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="." unique_id=912338568]
+shape = SubResource("SphereShape3D_3pdey")
+
+[node name="InteractionPoint" type="Area3D" parent="." unique_id=652518289]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("3_kjrql")
+type = 1
+require_focus = true
+pointer_position = Vector3(0, 0.4, 0)
+metadata/_custom_type_script = "uid://bq67yvae5bmfy"
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="InteractionPoint" unique_id=2000021784]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0625, 0)
+shape = SubResource("CylinderShape3D_kjrql")
+
+[node name="AttachmentPoint" type="Node3D" parent="." unique_id=1301363872]
