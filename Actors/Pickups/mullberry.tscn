@@ -2,6 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://dp63uqiv36e7e" path="res://Models/original/mullberry.glb" id="1_vkxbp"]
 [ext_resource type="Script" uid="uid://cwsaxgha1n57p" path="res://Scripts/Actors/Pickups/mullberry.gd" id="2_fhpyp"]
+[ext_resource type="AudioStream" uid="uid://d0c0myfja0cog" path="res://Sounds/mulberry_2_chords.ogg" id="3_srfdy"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_vkxbp"]
 radius = 0.2
@@ -138,3 +139,7 @@ shape = SubResource("CapsuleShape3D_vkxbp")
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." index="2" unique_id=1272647807]
 libraries/ = SubResource("AnimationLibrary_srfdy")
+
+[node name="Sound" type="AudioStreamPlayer3D" parent="." index="3" unique_id=2104259577]
+stream = ExtResource("3_srfdy")
+bus = &"Sound Effects"

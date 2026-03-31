@@ -5,6 +5,7 @@ signal collected
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var area_3d: Area3D = $Area3D
+@onready var sound: AudioStreamPlayer3D = $Sound
 
 
 func _ready() -> void:
@@ -17,6 +18,7 @@ func _on_body_entered(body: Node3D) -> void:
 		GameManager.player_health += 1
 		GameManager.reward_player(3)
 		animation_player.play("pickup")
+		sound.play()
 		await animation_player.animation_finished
 		collected.emit()
 		queue_free()
