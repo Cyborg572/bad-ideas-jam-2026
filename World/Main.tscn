@@ -326,7 +326,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_q6i1d")
 script = ExtResource("2_4tara")
-starting_level = "uid://dqk2r40v804fr"
+starting_level = "uid://c66deceqdwy18"
 starting_level_gate = null
 
 [node name="BackgroundMusicPlayer" type="AudioStreamPlayer" parent="." unique_id=1958800623]

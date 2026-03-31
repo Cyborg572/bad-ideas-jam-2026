@@ -9,7 +9,8 @@ signal lock_released
 enum Shot {
 	Closeup,
 	Normal,
-	Wide
+	Wide,
+	ULTRAWIDE
 }
 
 
@@ -27,6 +28,8 @@ enum Shot {
 @export var distance_normal : float = 1.5
 ## How far way is the camera for wide tracking
 @export var distance_wide : float = 3
+## How far away is the camera for ultra-wide tracking
+@export var distance_ultrawide: float = 6
 
 var is_frozen: bool = false
 
@@ -101,6 +104,8 @@ func get_shot_distance(new_shot_type: Shot) -> float:
 			return distance_closeup
 		Shot.Wide:
 			return distance_wide
+		Shot.ULTRAWIDE:
+			return distance_ultrawide
 		_, Shot.Normal:
 			return distance_normal
 
