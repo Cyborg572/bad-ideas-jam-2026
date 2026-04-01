@@ -11,6 +11,8 @@ func kill_player(body: Node3D) -> void:
 		GameManager.box_out_of_bounds()
 	elif body is Gem and body.plinth is GemPlinth:
 		body.plinth.summon_gem()
+	elif body is Spikus:
+		pass
 	elif "spawn_point" in body:
 		body.velocity = Vector3.ZERO
 		body.global_position = body.spawn_point + Vector3.UP

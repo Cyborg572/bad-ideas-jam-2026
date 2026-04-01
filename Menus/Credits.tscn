@@ -2,6 +2,9 @@
 
 [ext_resource type="Theme" uid="uid://uc40vps8qn37" path="res://Menus/MenuTheme.tres" id="1_qqjfd"]
 [ext_resource type="Script" uid="uid://dls50o644dmn2" path="res://Scripts/Menus/Credits.gd" id="2_il7mn"]
+[ext_resource type="AudioStream" uid="uid://bwdm2axkc88g8" path="res://Music/melody_3_withPiano_60bpm.ogg" id="3_d7jex"]
+[ext_resource type="AudioStream" uid="uid://c5bgb51yyknsp" path="res://Music/Melody2_withPiano_85bpm.ogg" id="4_fldtd"]
+[ext_resource type="AudioStream" uid="uid://du5irbsci7q53" path="res://Music/sadMelody_melOnly_harp.ogg" id="5_h33bd"]
 
 [sub_resource type="Animation" id="Animation_il7mn"]
 length = 0.001
@@ -55,7 +58,7 @@ tracks/1/keys = {
 "times": PackedFloat32Array(1, 30),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(0, 383), Vector2(0, -1096)]
+"values": [Vector2(0, 383), Vector2(0, -1298.76)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_m6n7f"]
@@ -63,6 +66,12 @@ _data = {
 &"RESET": SubResource("Animation_il7mn"),
 &"scroll_credits": SubResource("Animation_lw8m3")
 }
+
+[sub_resource type="AudioStreamPlaylist" id="AudioStreamPlaylist_40tvf"]
+stream_count = 3
+stream_0 = ExtResource("3_d7jex")
+stream_1 = ExtResource("4_fldtd")
+stream_2 = ExtResource("5_h33bd")
 
 [node name="Credits" type="Control" unique_id=1067656539]
 layout_mode = 3
@@ -88,7 +97,7 @@ layout_mode = 1
 anchors_preset = 10
 anchor_right = 1.0
 offset_top = 11.0
-offset_bottom = 1531.0
+offset_bottom = 1856.0
 grow_horizontal = 2
 
 [node name="VBoxContainer" type="VBoxContainer" parent="ScrollContainer" unique_id=659402501]
@@ -123,6 +132,10 @@ Amy Tapley
 
 Mike Gossmann
 
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Video editing and puppetry[/font]
+
+Mike Gossmann
+
 [hr]
 
 [font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=32]Resources and Tools[/font]
@@ -135,6 +148,19 @@ Mike Gossmann
 [font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Sound Effects[/font]
 
 [url=https://freesound.org/]freesound.org[/url]
+[url=https://freesound.org/s/709969/]Toaster popping up by Squidems[/url] -- License: Creative Commons 0
+[url=https://freesound.org/s/817401/]Small, plastic ruler springing against table (lower pitch) by Chaos-Kid[/url] -- License: Creative Commons 0
+[url=https://freesound.org/s/457058/]SFX MAGIC APPORTATION.mp3 by watzl[/url] -- License: Creative Commons 0
+[url=https://freesound.org/s/848459/]Slap Book and Smack Book by 3D_Blanco[/url] -- License: Creative Commons 0
+[url=https://freesound.org/s/387834/]Poof.wav by ryansitz[/url] -- License: Creative Commons 0
+[url=https://freesound.org/s/346265/]RPG SFX #1 - Item Jingle by Sirkoto51[/url]  -- [url=https://creativecommons.org/licenses/by/4.0/]License: Attribution 4.0[/url]
+	Modifications: Lowered pitch and trimmed starts
+
+Audacity
+
+[font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Materials[/font]
+
+[url=https://polyhaven.com/a/polar_fleece]Polar Fleece by Rico Cilliers[/url] (via [url=https://polyhaven.com]Poly Haven[/url]
 
 [font name=\"res://Fonts/super_wonder/Super Wonder.ttf\" size=24]Fonts[/font]
 
@@ -176,6 +202,11 @@ flat = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="." unique_id=1837013663]
 libraries/ = SubResource("AnimationLibrary_m6n7f")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="." unique_id=608621290]
+stream = SubResource("AudioStreamPlaylist_40tvf")
+autoplay = true
+bus = &"Music"
 
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/HBoxContainer/MainMenuButton" to="." method="_on_main_menu_button_pressed"]
 [connection signal="pressed" from="ScrollContainer/VBoxContainer/HBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]

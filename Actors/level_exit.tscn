@@ -41,7 +41,7 @@ size = Vector3(1.65, 0.32500002, 0.22500001)
 size = Vector3(2, 2, 0.22500001)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_iacjk"]
-size = Vector3(2, 2, 0.75)
+size = Vector3(2, 1.875, 0.6)
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_6eupa"]
 size = Vector3(3, 2.3, 3.5)
@@ -311,7 +311,7 @@ trigger_by_jack = false
 metadata/_custom_type_script = "uid://iefdlteligvr"
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="ExitTrigger" index="0" unique_id=1807773594]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0.375)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9375, 0.3)
 shape = SubResource("BoxShape3D_iacjk")
 
 [node name="LockTrigger" type="Area3D" parent="." index="4" unique_id=2086427055]

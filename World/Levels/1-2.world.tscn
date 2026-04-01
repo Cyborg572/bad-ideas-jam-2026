@@ -9,9 +9,24 @@
 [ext_resource type="PackedScene" uid="uid://bnu7b8l8k0n3t" path="res://Actors/gem_plinth.tscn" id="7_dw7nw"]
 [ext_resource type="PackedScene" uid="uid://5qgf14nbd4k" path="res://Actors/Pickups/gem_shard.tscn" id="8_46bih"]
 [ext_resource type="PackedScene" uid="uid://boxmhcvi0fnpv" path="res://Actors/spiked_platform.tscn" id="9_yyhvu"]
+[ext_resource type="PackedScene" uid="uid://pbnithi5e6ud" path="res://Actors/weasel.tscn" id="10_y0k2c"]
+[ext_resource type="Script" uid="uid://cxeq256h0bwgt" path="res://Scripts/dialog_message.gd" id="11_hu4rf"]
+[ext_resource type="Texture2D" uid="uid://dsqoax1s6wkrh" path="res://Images/portraits/weasel_portrait.png" id="12_us4ux"]
+
+[sub_resource type="Resource" id="Resource_kjvxw"]
+script = ExtResource("11_hu4rf")
+portrait = ExtResource("12_us4ux")
+text = "Huh. The secret entrance really over-sold this place. I guess it's still under construction?"
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
+
+[sub_resource type="Resource" id="Resource_sf8wx"]
+script = ExtResource("11_hu4rf")
+portrait = ExtResource("12_us4ux")
+text = "Well hey. Easy gems for us. Scoop 'em up and lets go bash a gigantic angry ghosthog."
+metadata/_custom_type_script = "uid://cxeq256h0bwgt"
 
 [node name="level_template" unique_id=1740911666 instance=ExtResource("1_gni03")]
-title = "The Deep Woods"
+title = "Timber"
 world = 2
 level_number = 2
 entrance_gate = 1
@@ -38,51 +53,60 @@ lock_enabled = true
 [node name="gem_plinth" parent="." index="10" unique_id=1603351441 instance=ExtResource("7_dw7nw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.75, 0, -2.75)
 
-[node name="gem_plinth2" parent="." index="11" unique_id=1922465779 instance=ExtResource("7_dw7nw")]
+[node name="gem_plinth3" parent="." index="11" unique_id=1580994564 instance=ExtResource("7_dw7nw")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10.5, 0, 0.25)
+gem_id = 2
+
+[node name="gem_plinth2" parent="." index="12" unique_id=1922465779 instance=ExtResource("7_dw7nw")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, -2.75)
 gem_id = 3
 lock_enabled = true
 
-[node name="gem_shard" parent="." index="12" unique_id=1248578273 instance=ExtResource("8_46bih")]
+[node name="gem_shard" parent="." index="13" unique_id=1248578273 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.25, 1.1920929e-07, -7.75)
 shard_id = 1
 
-[node name="gem_shard2" parent="." index="13" unique_id=1305428919 instance=ExtResource("8_46bih")]
+[node name="gem_shard2" parent="." index="14" unique_id=1305428919 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.1920929e-07, -9.75)
 shard_id = 2
 
-[node name="gem_shard3" parent="." index="14" unique_id=460387964 instance=ExtResource("8_46bih")]
+[node name="gem_shard3" parent="." index="15" unique_id=460387964 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.5, 1.1920929e-07, -10.5)
 shard_id = 3
 
-[node name="gem_shard4" parent="." index="15" unique_id=1744394591 instance=ExtResource("8_46bih")]
+[node name="gem_shard4" parent="." index="16" unique_id=1744394591 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1, 1.1920929e-07, -10.5)
 shard_id = 4
 
-[node name="gem_shard5" parent="." index="16" unique_id=2029119358 instance=ExtResource("8_46bih")]
+[node name="gem_shard5" parent="." index="17" unique_id=2029119358 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.1920929e-07, -10)
 shard_id = 5
 
-[node name="gem_shard6" parent="." index="17" unique_id=1781350985 instance=ExtResource("8_46bih")]
+[node name="gem_shard6" parent="." index="18" unique_id=1781350985 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 1.1920929e-07, -9)
 shard_id = 6
 
-[node name="gem_shard7" parent="." index="18" unique_id=1204500765 instance=ExtResource("8_46bih")]
+[node name="gem_shard7" parent="." index="19" unique_id=1204500765 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.75, 1.1920929e-07, -8.25)
 shard_id = 7
 
-[node name="gem_shard8" parent="." index="19" unique_id=1380404510 instance=ExtResource("8_46bih")]
+[node name="gem_shard8" parent="." index="20" unique_id=1380404510 instance=ExtResource("8_46bih")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.75, 1.1920929e-07, -7.5)
 shard_id = 8
 
-[node name="spikes" parent="." index="20" unique_id=1795965154 instance=ExtResource("9_yyhvu")]
+[node name="spikes" parent="." index="21" unique_id=1795965154 instance=ExtResource("9_yyhvu")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 3)
 
-[node name="spikes4" parent="." index="21" unique_id=287838924 instance=ExtResource("9_yyhvu")]
+[node name="spikes4" parent="." index="22" unique_id=287838924 instance=ExtResource("9_yyhvu")]
 transform = Transform3D(-1, 8.742278e-08, 0, 8.742278e-08, 1, 8.742278e-08, 7.642742e-15, 8.742278e-08, -1, 9.25, 0, -2.25)
 
-[node name="spikes2" parent="." index="22" unique_id=84556201 instance=ExtResource("9_yyhvu")]
+[node name="spikes2" parent="." index="23" unique_id=84556201 instance=ExtResource("9_yyhvu")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 12.75, 1, 0.75)
 
-[node name="spikes3" parent="." index="23" unique_id=1443928375 instance=ExtResource("9_yyhvu")]
+[node name="spikes3" parent="." index="24" unique_id=1443928375 instance=ExtResource("9_yyhvu")]
 transform = Transform3D(-4.371139e-08, -1, 0, 1, -4.371139e-08, 0, 0, 0, 1, 12.75, 0.25, -1.5)
+
+[node name="weasel" parent="." index="25" unique_id=230894949 instance=ExtResource("10_y0k2c")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.25, 0, -1.75)
+weasel_id = "construction"
+dialog = Array[ExtResource("11_hu4rf")]([SubResource("Resource_kjvxw"), SubResource("Resource_sf8wx")])

@@ -332,7 +332,7 @@ sign_image = ExtResource("6_sjrkk")
 
 [node name="exit_world2" parent="Gates" index="1" unique_id=1583817992 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 23, -3, -8)
-gate_id = 2
+gate_id = 3
 destination_world = "uid://bedr1rqakjlna"
 lock_enabled = true
 lock_gem_count = 2
@@ -340,7 +340,7 @@ sign_image = ExtResource("10_urvtv")
 
 [node name="exit_world3" parent="Gates" index="2" unique_id=1753961271 instance=ExtResource("3_hi3ln")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -20.75, 2.5, -27.75)
-gate_id = 3
+gate_id = 2
 destination_world = "uid://dlfi5o7ls16y8"
 lock_enabled = true
 lock_gem_count = 2
